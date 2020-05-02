@@ -1,9 +1,10 @@
 #' Panel of frequency barchart
 #'
-#' @inheritParams lattice::levelplot
-#' @inheritParams panel.annotation
-#'
+#' @inheritParams lattice::panel.levelplot
 #' @inheritParams lattice::panel.barchart
+#' @inheritParams panel.annotation
+#' 
+#' @param w weights for percentage, with the same length as `z[subscripts]`
 #' @param yscale frequency range, `[0, 100]`
 #' @param yticks yaxis ticks position
 #'

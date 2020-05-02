@@ -19,33 +19,27 @@ panel.barchartFreq(
 )
 }
 \arguments{
+\item{z}{ Variables defining the plot. }
+
+\item{subscripts}{
+    Integer vector indicating what subset of \code{x}, \code{y} and
+    \code{z} to draw.
+  }
+
 \item{bbox}{The region to plot \code{grob}, \verb{[xmin, xmax, ymin, ymax]} in the unit
 of npc.}
 
 \item{at}{
-    A numeric vector giving breakpoints along the range of
-    \code{z}. Contours (if any) will be drawn at these heights, and the
-    regions in between would be colored using \code{col.regions}.  In
-    the latter case, values outside the range of \code{at} will not be
-    drawn at all.  This serves as a way to limit the range of the data
-    shown, similar to what a \code{zlim} argument might have been used
-    for.  However, this also means that when supplying \code{at}
-    explicitly, one has to be careful to include values outside the
-    range of \code{z} to ensure that all the data are shown.
-
-    \code{at} can have length one only if \code{region=FALSE}.  
+    Numeric vector giving breakpoints along the range of
+    \code{z}.  See \code{\link[lattice]{levelplot}} for details.
   }
 
-\item{col.regions}{ color vector to be used if regions is TRUE. The
-    general idea is that this should be a color vector of moderately
-    large length (longer than the number of regions. By default this is
-    100). It is expected that this vector would be gradually varying in
-    color (so that nearby colors would be similar). When the colors are
-    actually chosen, they are chosen to be equally spaced along this
-    vector.  When there are more regions than colors in
-    \code{col.regions}, the colors are recycled.  The actual color
-    assignment is performed by \code{\link[lattice]{level.colors}}, which is
-    documented separately.
+\item{col.regions}{
+    A vector of colors, or a function to produce a vecor of colors, to
+    be used if \code{region=TRUE}.  Each interval defined by \code{at}
+    is assigned a color, so the number of colors actually used is one
+    less than the length of \code{at}.  See \code{\link[lattice]{level.colors}}
+    for details on how the color assignment is done.
   }
 
 \item{box.width}{ Thickness of bars in absolute units; overrides
@@ -53,23 +47,15 @@ of npc.}
     categorical variable is not a factor, as use of \code{box.ratio}
     alone cannot achieve a thickness greater than 1. }
 
-\item{border}{
-    Graphical parameters for the bars. By default, the trellis parameter
-    \code{plot.polygon} is used if there is no grouping variable, otherwise
-    \code{superpose.polygon} is used.  \code{col} gives the fill color,
-    \code{border} the border color, and \code{lty} and \code{lwd} the
-    line type and width of the borders.
-  }
+\item{border}{ Border color for rectangles used when \code{region=TRUE}. }
 
 \item{yscale}{frequency range, \verb{[0, 100]}}
 
 \item{yticks}{yaxis ticks position}
 
-\item{...}{
-    Further arguments may be supplied.  Some are processed by
-    \code{levelplot} or \code{contourplot}, and those that are
-    unrecognized are passed on to the panel function.
-  }
+\item{w}{weights for percentage, with the same length as \code{z[subscripts]}}
+
+\item{...}{ Extra parameters. }
 }
 \description{
 Panel of frequency barchart

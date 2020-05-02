@@ -14,14 +14,14 @@ grid.draw2 <- function(p) {
 }
 
 #' panel.annotation
-#'
+#' 
+#' @inheritParams grid::viewport
 #' @param grob grob object
 #' @param bbox The region to plot `grob`, `[xmin, xmax, ymin, ymax]` in the unit
 #' of npc.
-#' @param xscale,yscale
 #'
 #' @param ... ignored
-#'
+#' 
 #' @export
 panel.annotation <- function (grob, bbox = c(0.5, 1, 0, 1),
     xscale = FALSE,

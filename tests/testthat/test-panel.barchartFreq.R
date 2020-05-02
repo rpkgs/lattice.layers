@@ -18,7 +18,8 @@ test_that("panel.barchartFreq works", {
                       panel = panel
                       # at = c(-Inf, seq(-0.8, 0.8, by = 0.2), Inf)
             ) +
-                theme_lattice(c(0, 4, 0, 0))
+                theme_lattice(c(0, 4, 0, 0)), 
+            show = FALSE
         )
     })
 })

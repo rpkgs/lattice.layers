@@ -19,7 +19,18 @@ panel.annotation(
 \item{bbox}{The region to plot \code{grob}, \verb{[xmin, xmax, ymin, ymax]} in the unit
 of npc.}
 
-\item{xscale, yscale}{}
+\item{xscale}{A numeric vector of length two indicating the minimum and
+    maximum on the x-scale.  The limits may not be identical. }
+
+\item{yscale}{A numeric vector of length two indicating the minimum
+    and maximum on the y-scale. The limits may not be identical. }
+
+\item{clip}{One of \code{"on"}, \code{"inherit"}, or
+    \code{"off"}, indicating whether to
+    clip to the extent of this viewport, inherit the clipping region
+    from the parent viewport, or turn clipping off altogether.
+    For back-compatibility, a logical value of \code{TRUE} corresponds
+    to \code{"on"} and \code{FALSE} corresponds to \code{"inherit"}.}
 
 \item{...}{ignored}
 }
