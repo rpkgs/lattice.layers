@@ -1,0 +1,26 @@
+Package: latticeGrob
+Title: Extend Lattice Panels by Grob Objects
+Version: 0.0.0.9000
+Authors@R: person("Dongdong", "Kong", email = "kongdd.sysu@gmail.com",
+  role = c("aut", "cre"))
+Description: Based on lattice, this package extends Lattice Panels by `panel.annotation`,
+    and provides several high-level function for preoducing figure.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.0
+Imports:
+    lattice,
+    magrittr,
+    ggplotify
+Suggests: 
+    testthat,
+    devEMF,
+    sp,
+    covr,
+    gridExtra,
+    latticeExtra,
+    Cairo
+Depends: 
+    R (>= 2.10)

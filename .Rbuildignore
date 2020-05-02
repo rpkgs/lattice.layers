@@ -1,0 +1,8 @@
+^latticeGrob\.Rproj$
+^\.Rproj\.user$
+^README\.Rmd$
+^LICENSE\.md$
+^data-raw$
+^\.travis\.yml$
+^appveyor\.yml$
+^codecov\.yml$
