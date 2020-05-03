@@ -9,7 +9,7 @@ panel.annotation(
   bbox = c(0.5, 1, 0, 1),
   xscale = FALSE,
   yscale = FALSE,
-  clip = "off",
+  clip = "on",
   ...
 )
 }

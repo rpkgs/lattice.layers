@@ -26,7 +26,7 @@ grid.draw2 <- function(p) {
 panel.annotation <- function (grob, bbox = c(0.5, 1, 0, 1),
     xscale = FALSE,
     yscale = FALSE,
-    clip = "off",
+    clip = "on",
     ...)
 {
     width <- diff(bbox[1:2])

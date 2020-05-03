@@ -6,3 +6,4 @@
 *.svg
 *.pdf
 lgd*
+inst/doc

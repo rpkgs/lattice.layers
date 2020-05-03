@@ -33,6 +33,34 @@ listk <- function (...)
     return(x)
 }
 
+alpha <- function (colour, alpha = NA) {
+    if (length(colour) != length(alpha)) {
+        if (length(colour) > 1 && length(alpha) > 1) {
+            stop("Only one of colour and alpha can be vectorised")
+        }
+        if (length(colour) > 1) {
+            alpha <- rep(alpha, length.out = length(colour))
+        }
+        else {
+            colour <- rep(colour, length.out = length(alpha))
+        }
+    }
+    rgb <- farver::decode_colour(colour, alpha = TRUE)
+    rgb[!is.na(alpha), 4] <- alpha[!is.na(alpha)]
+    farver::encode_colour(rgb, rgb[, 4])
+}
+
+clamp <- function(x, lims = c(0, 1), fill.na = FALSE){
+    if (fill.na) {
+        x[x < lims[1]] <- NA_real_
+        x[x > lims[2]] <- NA_real_
+    } else {
+        x[x < lims[1]] <- lims[1]
+        x[x > lims[2]] <- lims[2]
+    }
+    x
+}
+
 #' help of gpar
 #' 
 #' @keywords internal
