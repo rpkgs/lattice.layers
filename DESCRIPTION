@@ -29,6 +29,7 @@ Suggests:
     gridExtra,
     latticeExtra,
     maptools,
+    rgeos,
     Cairo,
     knitr,
     rmarkdown
