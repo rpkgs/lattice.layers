@@ -22,19 +22,7 @@ You can install the released version of latticeGrob from
 
 ``` r
 install.packages("latticeGrob")
-
-covr::package_coverage()
-# latticeGrob Coverage: 59.67%
-# R/component_axis.R: 0.00%
-# R/latitude_bar.R: 0.00%
-# R/panel.annotation.R: 0.00%
-# R/panel.barchart.R: 0.00%
-# R/tools.R: 17.39%
-# R/theme_lattice.R: 37.93%
-# R/write_fig.R: 68.12%
-# R/draw.colorkey.R: 83.77%
-# R/file_name.R: 84.62%
-# R/key_triangle.R: 94.27%
+# covr::package_coverage()
 ```
 
 ## Example

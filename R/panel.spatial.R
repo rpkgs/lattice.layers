@@ -11,15 +11,15 @@
 #' @importFrom grid viewport popViewport grid.layout rasterGrob nullGrob
 #' @export
 panel.spatial <- function(x, y, z, subscripts, 
-    ...,  
-    contour = FALSE, 
-    sp.layout, 
+    contour = FALSE,     
     pars, 
     class = NULL, 
     interpolate = TRUE, 
     list.mask = NULL, 
     SpatialPixel = NULL,
-    data.stat = NULL)
+    data.stat = NULL,
+    ...,
+    sp.layout)
 {
     NO_panel = panel.number()
     fontfamily = get_family()
@@ -35,7 +35,7 @@ panel.spatial <- function(x, y, z, subscripts,
     panel.signDist(list.mask, SpatialPixel, ...) # spatial polygon pattern
     panel.signPerc(z, subscripts, mask = list.mask[[NO_panel]], xpos = 0.03, ypos = 0.67, ...)
 
-    ## 4. add panel title
+    ## 3. add panel title
     panel.text2(pars$title$x, pars$title$y, dot$panel.titles_full, dot$panel.titles, 
         NO_begin, ...)
 
@@ -48,14 +48,14 @@ panel.spatial <- function(x, y, z, subscripts,
         ylim = bbox[3:4], 
         col.regions = dot$col.regions, length.out = 1e3, is_spatial = TRUE)
 
-    ## 5. panel.text statistic values
+    ## 4. panel.text statistic values
     if (!is.null(data.stat)) {
         loc   <- data.stat$loc # 81.5, 26.5
         label <- data.stat$label[[NO_panel]]
         panel.text(loc[[1]], loc[[2]], label, fontfamily = fontfamily, cex = 1.2, adj = c(0, 0))
     }
 
-    ## 7. panel.hist
+    ## 5. panel.hist
     panel.barchartFreq(z, subscripts, bbox = c(0.04, 0.26, 0.15, 0.65), ..., 
         yticks = seq(0, 0.6, 0.2), yscale = c(0, 100))
 }

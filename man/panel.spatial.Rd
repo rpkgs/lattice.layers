@@ -10,15 +10,15 @@ panel.spatial(
   y,
   z,
   subscripts,
-  ...,
   contour = FALSE,
-  sp.layout,
   pars,
   class = NULL,
   interpolate = TRUE,
   list.mask = NULL,
   SpatialPixel = NULL,
-  data.stat = NULL
+  data.stat = NULL,
+  ...,
+  sp.layout
 )
 
 panel.spatialBasic(
@@ -45,13 +45,9 @@ panel.spatialBasic(
     \code{z} to draw.
   }
 
-\item{...}{ Extra parameters. }
-
 \item{contour}{
     A logical flag, specifying whether contour lines should be drawn.
   }
-
-\item{sp.layout}{NULL or list; see notes below}
 
 \item{pars}{parameters controlling hist, e.g. \code{list(title = list(x=77, y=39, cex=1.5),  hist = list(origin.x=77, origin.y=28, A=15, by = 0.4))}.}
 
@@ -63,6 +59,10 @@ indicates significant.}
 \item{SpatialPixel}{corresponding SpatialPixel object of \code{df}
 
 If \code{mask} present in \code{df}, \code{df.mask} will be ignored.}
+
+\item{...}{ Extra parameters. }
+
+\item{sp.layout}{NULL or list; see notes below}
 
 \item{par}{position of title, \code{list(title = list(x, y))}}
 }

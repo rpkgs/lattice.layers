@@ -14,6 +14,72 @@ knitr::opts_chunk$set(
 )
 ```
 
+今天介绍一个非常实用的lattice函数`panel.annotation`，抛砖引玉，以飨读者。
+
+作为lattice的用户，想必你对如下形式的panel函数非常熟悉：
+
+``` r
+panel <- function(x, y, z, subscripts, ..., sp.layout) {
+  ...
+}
+```
+lattice中以panel函数控制着每个面板中的绘图内容。通过修改panel函数，我们可以批量、便捷地做出专业、复杂的地图。
+
+借助latticeGrob，用户可以在每个面板便捷地插入统计指标、直方图、饼状图、everything you want。
+
 ```{r setup}
 library(latticeGrob)
 ```
+
+```{r}
+panel.spatial <- function(x, y, z, subscripts, 
+    contour = FALSE,     
+    pars, 
+    class = NULL, 
+    interpolate = TRUE, 
+    list.mask = NULL, 
+    SpatialPixel = NULL,
+    data.stat = NULL,
+    ...,
+    sp.layout)
+{
+    NO_panel = panel.number()
+    fontfamily = get_family()
+    dot <- list(...)
+
+    panel.spatialBasic(x, y, z, subscripts, class, contour, interpolate, ..., sp.layout = sp.layout)
+    # mask lat <= -60
+    panel.annotation(grid.rect(gp = gpar(col = "transparent", fill = "white")), 
+        bbox = c(-180, 180, -75, -60), "native", clip = "off")
+    
+    # 2. stands out significant part
+    # density = 1, angle = 45
+    panel.signDist(list.mask, SpatialPixel, ...) # spatial polygon pattern
+    panel.signPerc(z, subscripts, mask = list.mask[[NO_panel]], xpos = 0.03, ypos = 0.67, ...)
+
+    ## 3. add panel title
+    panel.text2(pars$title$x, pars$title$y, dot$panel.titles_full, dot$panel.titles, 
+        NO_begin, ...)
+
+    v <- current.viewport()
+    xlim <- v$xscale
+    bbox <- c(190, max(xlim), -60, 90)
+    # panel.annotation(grid.rect(), bbox = bbox, "native")
+    panel.horizontalFreq(x, y, z, subscripts, bbox = bbox + c(0, -10, 0, 0), "native", 
+        # xlim = c(-1, 1)*5, 
+        ylim = bbox[3:4], 
+        col.regions = dot$col.regions, length.out = 1e3, is_spatial = TRUE)
+
+    ## 4. panel.text statistic values
+    if (!is.null(data.stat)) {
+        loc   <- data.stat$loc # 81.5, 26.5
+        label <- data.stat$label[[NO_panel]]
+        panel.text(loc[[1]], loc[[2]], label, fontfamily = fontfamily, cex = 1.2, adj = c(0, 0))
+    }
+
+    ## 5. panel.hist
+    panel.barchartFreq(z, subscripts, bbox = c(0.04, 0.26, 0.15, 0.65), ..., 
+        yticks = seq(0, 0.6, 0.2), yscale = c(0, 100))
+}
+```
+
