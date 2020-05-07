@@ -15,15 +15,14 @@ test_that("panel.annotation and panel.sign works", {
             plot(rep(1, 151), -60:90, tck = 0.01, xlab = "", ylab = "", yaxs = "i")
             grid()
         }, c(0.7, 1, 0, 1))
-        # browser()
         # panel.barchart2(z, subscripts, at = at, ...)
-        panel.sign(z)
+        panel.signPerc(z, subscripts)
     }
 
     # data <- data.table(x, y, r)
     # d <- data[, .(value = mean(r)), .(y)]
     expect_silent({
-        p <- levelplot(z ~ x * y, volcano, col.regions = topo.colors(10),
+        p <- levelplot(z ~ x * y, dvolcano, col.regions = topo.colors(10),
                        panel = panel,
                        at = c(-Inf, seq(-0.8, 0.8, by = 0.2), Inf)) +
             theme_lattice(c(0, 4, 0, 0))

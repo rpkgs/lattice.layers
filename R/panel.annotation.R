@@ -19,11 +19,13 @@ grid.draw2 <- function(p) {
 #' @param grob grob object
 #' @param bbox The region to plot `grob`, `[xmin, xmax, ymin, ymax]` in the unit
 #' of npc.
-#'
+#' @param unit A character vector specifying the units for the corresponding numeric values.
 #' @param ... ignored
 #' 
+#' @inherit grid::unit details
 #' @export
-panel.annotation <- function (grob, bbox = c(0.5, 1, 0, 1),
+panel.annotation <- function (grob, bbox = c(0.5, 1, 0, 1), 
+    unit = "npc",
     xscale = FALSE,
     yscale = FALSE,
     clip = "on",
@@ -31,8 +33,10 @@ panel.annotation <- function (grob, bbox = c(0.5, 1, 0, 1),
 {
     width <- diff(bbox[1:2])
     height <- diff(bbox[3:4])
-    x <- bbox[1] + width/2
-    y <- bbox[3] + height/2
+    x <- {bbox[1] + width/2} %>% unit(unit)
+    y <- {bbox[3] + height/2} %>% unit(unit)
+    width %<>% unit(unit)
+    height %<>% unit(unit)
 
     v <- current.viewport()
     ylim <- v$yscale
@@ -42,7 +46,6 @@ panel.annotation <- function (grob, bbox = c(0.5, 1, 0, 1),
     yyscale = set_xscale(yscale, ylim)
     # browser()
     # print(yyscale)
-
     pushViewport(viewport(x, y, width, height, name = "panel.annotation",
         xscale = xxscale, yscale = yyscale, clip = clip))
     grid.draw2(grob)

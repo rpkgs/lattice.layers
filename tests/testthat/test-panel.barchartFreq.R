@@ -9,17 +9,17 @@ panel <- function(x, y, z, subscripts, ...) {
     panel.barchartFreq(z, subscripts, bbox, ..., yscale = c(0, 20))
 }
 
-library(lattice)
 
+library(lattice)
 test_that("panel.barchartFreq works", {
-    expect_silent({
+    expect_true({
         write_fig(
-            levelplot(z ~ x * y, volcano, col.regions = topo.colors(10),
+            levelplot(z ~ x * y, dvolcano, col.regions = topo.colors(10),
                       panel = panel
                       # at = c(-Inf, seq(-0.8, 0.8, by = 0.2), Inf)
-            ) +
-                theme_lattice(c(0, 4, 0, 0)), 
+            ) + theme_lattice(c(0, 4, 0, 0)),
             show = FALSE
         )
+        TRUE
     })
 })

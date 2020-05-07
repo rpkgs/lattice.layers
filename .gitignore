@@ -7,3 +7,5 @@
 *.pdf
 lgd*
 inst/doc
+
+# *.tif

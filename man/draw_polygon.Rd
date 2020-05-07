@@ -9,7 +9,9 @@ draw_polygon(
   x = NULL,
   type = "horizontal",
   length.out = 10000,
+  col.regions = c("blue", "red"),
   alpha = 0.6,
+  zlim = c(-Inf, Inf),
   ...
 )
 }
@@ -22,7 +24,19 @@ draw_polygon(
 
 \item{length.out}{the length of interpolated \code{vals} and \code{x}}
 
+\item{col.regions}{
+    A vector of colors, or a function to produce a vecor of colors, to
+    be used if \code{region=TRUE}.  Each interval defined by \code{at}
+    is assigned a color, so the number of colors actually used is one
+    less than the length of \code{at}.  See \code{\link[lattice]{level.colors}}
+    for details on how the color assignment is done.
+  }
+
 \item{alpha}{the alpha of polygon's fill color}
+
+\item{zlim}{limits of \code{vals}}
+
+\item{...}{ Extra parameters. }
 }
 \description{
 draw horizontal and vertical polygons

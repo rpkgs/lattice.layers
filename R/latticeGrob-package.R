@@ -1,9 +1,12 @@
 #' @keywords internal
 #' @import magrittr
-#' @importFrom stats median approx setNames
+#' @importFrom stats median approx setNames quantile
 #' @importFrom utils str assignInNamespace
 #' @importFrom grDevices cairo_pdf jpeg dev.off svg tiff colorRampPalette xy.coords
-#' @importFrom graphics par polygon 
+#' @importFrom graphics par polygon abline axis rect
+#' @importFrom methods as
+#' @importFrom data.table data.table
+#' @importFrom plyr dlply
 "_PACKAGE"
 
 # The following block is used by usethis to automatically manage

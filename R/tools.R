@@ -1,10 +1,3 @@
-get_family <- function() {
-    family <- par("family")
-    if (family == "") family <- "Times"
-    # fontfamily = "rTimes"
-    family
-}
-
 #' check_dir
 #' @param path character vectors 
 #' 
@@ -18,19 +11,6 @@ check_dir <- function(path){
         }
     }
     path
-}
-
-listk <- function (...) 
-{
-    cols <- as.list(substitute(list(...)))[-1]
-    vars <- names(cols)
-    Id_noname <- if (is.null(vars)) 
-        seq_along(cols)
-    else which(vars == "")
-    if (length(Id_noname) > 0) 
-        vars[Id_noname] <- sapply(cols[Id_noname], deparse)
-    x <- setNames(list(...), vars)
-    return(x)
 }
 
 alpha <- function (colour, alpha = NA) {
@@ -61,6 +41,14 @@ clamp <- function(x, lims = c(0, 1), fill.na = FALSE){
     x
 }
 
+# for levelplot2
+parse.formula <- function(formula = x~s1+s2) {
+    str_formula <- gsub("s1 \\+ s2 *\\|*| ", "", as.character(formula))
+    value.var = str_formula[2]
+    groups    = strsplit(str_formula[3], "\\+|\\*")[[1]]
+    list(value.var = value.var, groups = groups)    
+}
+
 #' help of gpar
 #' 
 #' @keywords internal
@@ -82,3 +70,13 @@ help_gpar <- function() {
         fontface   = "The font face (bold, italic, ...",
         font       = "Font face (alias for fontface; for backward compatibility") %>% str()
 }
+
+#' fprintf
+#' Print sprintf result into console, just like C style fprintf function
+#' @param fmt a character vector of format strings, each of up to 8192 bytes.
+#' @param ... other parameters will be passed to `sprintf`
+#'
+#' @examples
+#' cat(fprintf("%s\n", "Hello phenofit!"))
+#' @export
+fprintf <- function(fmt, ...) cat(sprintf(fmt, ...))

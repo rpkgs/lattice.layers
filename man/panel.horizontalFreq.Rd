@@ -2,7 +2,6 @@
 % Please edit documentation in R/panel.horizontalFreq.R
 \name{panel.horizontalFreq}
 \alias{panel.horizontalFreq}
-\alias{panel.verticalFreq}
 \title{Panel of horizontal and vertical polygons}
 \usage{
 panel.horizontalFreq(
@@ -10,21 +9,16 @@ panel.horizontalFreq(
   y,
   z,
   subscripts,
+  bbox = c(0.7, 1, 0, 1),
+  unit = "npc",
+  length.out = 10000,
   ...,
-  tck = 0.02,
-  xlab = "",
-  ylab = ""
-)
-
-panel.verticalFreq(
-  x,
-  y,
-  z,
-  subscripts,
-  ...,
-  tck = 0.02,
+  tcl = 0.4,
   xlab = "",
   ylab = "",
+  zlim = NULL,
+  zticks = NULL,
+  is_spatial = FALSE,
   xlabels = NULL,
   ylabels = NULL,
   digit = 1
@@ -42,15 +36,27 @@ panel.verticalFreq(
     \code{z} to draw.
   }
 
+\item{bbox}{The region to plot \code{grob}, \verb{[xmin, xmax, ymin, ymax]} in the unit
+of npc.}
+
+\item{unit}{A character vector specifying the units for the corresponding numeric values.}
+
 \item{...}{ Extra parameters. }
+
+\item{xlab, ylab}{the title of xaxis and yaxis.}
+
+\item{zlim}{the limits of \code{z} value. If not specified, it's \code{c(-1, 1)*quantile(abs(z), 0.9)}.}
 
 \item{tck}{The length of tick marks as a fraction of the smaller of the width
 or height of the plotting region. If tck >= 0.5 it is interpreted as a fraction
 of the relevant side, so if tck = 1 grid lines are drawn. The default setting
 (tck = NA) is to use tcl = -0.5.}
-
-\item{xlab, ylab}{the title of xaxis and yaxis.}
 }
 \description{
 Panel of horizontal and vertical polygons
+}
+\examples{
+\dontrun{
+panel.horizontalFreq(x, y, z, subscripts, bbox = c(0.7, 1, 0, 1), unit = "npc")
+}
 }

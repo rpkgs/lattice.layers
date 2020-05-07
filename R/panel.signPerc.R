@@ -1,19 +1,26 @@
 #' Panel of percentage of negative (significant negative%) and positive% (significant positive%)
 #' 
+#' @inheritParams panel.spatial
 #' @param z numeric vector
 #' @param mask boolean vector with the same length as z, indicating whether 
 #' corresponding z value is significant.
 #' @param xpos,ypos The x and y position of positive and negative percentage label.
 #' @param ... ignored
 #' 
+#' @examples 
+#' \dontrun{
+#' panel.signPerc(z = NULL, mask = NULL, xpos = 0.1, ypos = 0.9, ...)
+#' }
 #' @export 
-panel.sign <- function(z = NULL, mask = NULL, xpos = 0.1, ypos = 0.9, ...) {
+panel.signPerc <- function(z = NULL, subscripts, mask = NULL, xpos = 0.1, ypos = 0.9, 
+    col.regions = c("blue", "red"), ...) 
+{
     # val <- sign(d[[value.var]]) # 只考虑-1, 1，不考虑0
-    val <- sign(z)
+    val <- sign(z[subscripts])
     val %<>% factor(c(-1, 0, 1), c("neg", NA, "pos"))
     # N   <- table(Z)
     if (!is.null(mask)) {
-        mask <- mask %>% as.character() %>% factor(c("FALSE", "TRUE"))
+        mask <- mask[subscripts] %>% as.character() %>% factor(c("FALSE", "TRUE"))
         tbl <- table(mask, val)
         # print(tbl)
         # browser()
@@ -38,14 +45,31 @@ panel.sign <- function(z = NULL, mask = NULL, xpos = 0.1, ypos = 0.9, ...) {
     ypos <- unit(ypos, "npc")
 
     family <- get_family()
-    # browser()
-
     grid.rect(xpos, ypos, width = width, height = height*2, just = c(0, 1), gp = gpar(col = "transparent"))
-    grid.text(str_neg, 0.1, ypos, just = c(0, 1),
+    grid.text(str_neg, xpos, ypos, just = c(0, 1),
               name = "label_perc.neg",
-              gp = gpar(col = "blue", fill = "white", fontfamily = family))
-    grid.text(str_pos, 0.1, ypos - height , just = c(0, 1),
+              gp = gpar(col = col.regions[1], fill = "white", fontfamily = .options$family))
+    grid.text(str_pos, xpos, ypos - height , just = c(0, 1),
               name = "label_perc.pos",
-              gp = gpar(col = "red", fill = "white", fontfamily = family))
+              gp = gpar(col = last(col.regions), fill = "white", fontfamily = .options$family))
     # data.frame(str_neg, str_pos)
+}
+
+#' @rdname panel.signPerc
+#' @export
+panel.signDist <- function(list.mask, SpatialPixel, par.shade = NULL, density = 1, angle = 45, ... ) {
+    if (!is.null(list.mask) && !is.null(SpatialPixel)) {
+        mask = list.mask[[NO_panel]]
+        I_sign <- which(mask)
+        
+        if (length(I_sign) > 0) {
+            # modifyList
+            par.shade <- .options$shadePattern
+            poly_shade = raster2poly(SpatialPixel[I_sign, ])
+
+            params.shade = list(poly_shade, union = FALSE, density, angle, sp.layout = NULL) %>%
+                c(., par.shade, list(...))
+            do.call(panel.poly_grid, params.shade)
+        }
+    }
 }

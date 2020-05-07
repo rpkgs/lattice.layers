@@ -8,13 +8,16 @@ panel.barchartFreq(
   z,
   subscripts,
   bbox = c(0.05, 0.5, 0, 0.5),
+  unit = "npc",
   at,
   col.regions,
   box.width = 0.8,
   border = "transparent",
   yscale = NULL,
   yticks = NULL,
+  ntick = NULL,
   w = NULL,
+  digit = 2,
   ...
 )
 }
@@ -28,6 +31,8 @@ panel.barchartFreq(
 
 \item{bbox}{The region to plot \code{grob}, \verb{[xmin, xmax, ymin, ymax]} in the unit
 of npc.}
+
+\item{unit}{A character vector specifying the units for the corresponding numeric values.}
 
 \item{at}{
     Numeric vector giving breakpoints along the range of
@@ -51,12 +56,21 @@ of npc.}
 
 \item{yscale}{frequency range, \verb{[0, 100]}}
 
-\item{yticks}{yaxis ticks position}
+\item{yticks}{yaxis ticks position, in the range of \verb{[0, 100]}}
+
+\item{ntick}{Integer, number of ticks}
 
 \item{w}{weights for percentage, with the same length as \code{z[subscripts]}}
+
+\item{digit}{the digit in the labels}
 
 \item{...}{ Extra parameters. }
 }
 \description{
 Panel of frequency barchart
+}
+\examples{
+\dontrun{
+panel.barchartFreq(z, subscripts, bbox = c(0.05, 0.5, 0, 0.5), unit = "npc")
+}
 }

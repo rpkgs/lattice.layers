@@ -2,7 +2,7 @@ test_that("theme_lattice works", {
     library(lattice)
 
     expect_true({
-        p <- levelplot(z~x+y, volcano)
+        p <- levelplot(z~x+y, dvolcano)
         print(p + theme_lattice(c(-4, 0, 1, 1)))
         TRUE
     })

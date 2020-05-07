@@ -103,9 +103,9 @@ write_fig <- function (p, file = "Rplot.pdf", width = 10, height = 5,
         dev_open(outfile, width, height, res, use.cairo_pdf)
         # 1. print plot
         if (is_expr) {
-            eval(expr, envir = env)
+            suppressWarnings(eval(expr, envir = env))
         } else {
-            temp <- FUN(p)    
+            temp <- suppressWarnings(FUN(p))
         }
         dev.off() # close device
         if (show) showfig(outfile)

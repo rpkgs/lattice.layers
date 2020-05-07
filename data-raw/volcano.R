@@ -5,7 +5,7 @@ x = 1:ncol(z)
 y = 1:nrow(z)
 data = expand.grid(x = x, y = y)
 data$z = as.numeric(t(z))
-volcano = data
+dvolcano = data
 levelplot(z~x+y, data)
 
-usethis::use_data(volcano, overwrite = TRUE)
+usethis::use_data(dvolcano, overwrite = TRUE)

@@ -11,16 +11,24 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Imports:
+    sp,
+    raster,
+    matrixStats,
+    RColorBrewer,
+    data.table,
     lattice,
     magrittr,
-    ggplotify
+    ggplotify, 
+    methods,
+    plyr,
+    reshape2
 Suggests: 
     testthat,
     devEMF,
-    sp,
     covr,
     gridExtra,
     latticeExtra,
+    maptools,
     Cairo,
     knitr,
     rmarkdown
