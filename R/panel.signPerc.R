@@ -45,13 +45,21 @@ panel.signPerc <- function(z = NULL, subscripts, mask = NULL, xpos = 0.1, ypos =
     ypos <- unit(ypos, "npc")
 
     family <- get_family()
-    grid.rect(xpos, ypos, width = width, height = height*2, just = c(0, 1), gp = gpar(col = "transparent"))
+    grid.rect(xpos, ypos, width = width*(1/1.2), height = height*2, just = c(0, 1), gp = gpar(col = "transparent"))
+    
+    ncolors <- length(col.regions)
+    col.neg = col.regions[1]
+    col.pos = col.regions[ncolors]
+    if (ncolors >= 6) {
+        col.neg = col.regions[2]
+        col.pos = col.regions[ncolors-1]
+    }
     grid.text(str_neg, xpos, ypos, just = c(0, 1),
               name = "label_perc.neg",
-              gp = gpar(col = col.regions[1], fill = "white", fontfamily = .options$family))
+              gp = gpar(col = col.neg, fill = "transparent", fontfamily = .options$family))
     grid.text(str_pos, xpos, ypos - height , just = c(0, 1),
               name = "label_perc.pos",
-              gp = gpar(col = last(col.regions), fill = "white", fontfamily = .options$family))
+              gp = gpar(col = col.pos, fill = "transparent", fontfamily = .options$family))
     # data.frame(str_neg, str_pos)
 }
 

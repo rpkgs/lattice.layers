@@ -173,7 +173,7 @@ levelplot2 <- function(
     )
     if (!is.null(xlim)) params$xlim <- xlim
     if (!is.null(ylim)) params$ylim <- ylim
-    
+        
     nbrk = length(brks)
     params$at <- if (!is_factor) brks else seq(0.5, nbrk+1)
     if (is.list(colorkey) || colorkey) {

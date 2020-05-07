@@ -17,7 +17,8 @@ panel.spatial <- function(x, y, z, subscripts,
     interpolate = TRUE, 
     list.mask = NULL, 
     SpatialPixel = NULL,
-    data.stat = NULL,
+    data.stat = NULL, 
+    yticks = seq(0, 0.6, 0.2),
     ...,
     sp.layout)
 {
@@ -33,7 +34,7 @@ panel.spatial <- function(x, y, z, subscripts,
     # 2. stands out significant part
     # density = 1, angle = 45
     panel.signDist(list.mask, SpatialPixel, ...) # spatial polygon pattern
-    panel.signPerc(z, subscripts, mask = list.mask[[NO_panel]], xpos = 0.03, ypos = 0.67, ...)
+    panel.signPerc(z, subscripts, mask = list.mask[[NO_panel]], xpos = 0.02, ypos = 0.65, ...)
 
     ## 3. add panel title
     panel.text2(pars$title$x, pars$title$y, dot$panel.titles_full, dot$panel.titles, 
@@ -41,7 +42,7 @@ panel.spatial <- function(x, y, z, subscripts,
 
     v <- current.viewport()
     xlim <- v$xscale
-    bbox <- c(190, max(xlim), -60, 90)
+    bbox <- c(194, max(xlim), -60, 90)
     # panel.annotation(grid.rect(), bbox = bbox, "native")
     panel.horizontalFreq(x, y, z, subscripts, bbox = bbox + c(0, -10, 0, 0), "native", 
         # xlim = c(-1, 1)*5, 
@@ -56,8 +57,9 @@ panel.spatial <- function(x, y, z, subscripts,
     }
 
     ## 5. panel.hist
-    panel.barchartFreq(z, subscripts, bbox = c(0.04, 0.26, 0.15, 0.65), ..., 
-        yticks = seq(0, 0.6, 0.2), yscale = c(0, 100))
+    panel.barchartFreq(z, subscripts, bbox = c(0.04, 0.26, 0.15, 0.4), ..., 
+        # yticks = seq(0, 0.6, 0.2), 
+        yticks = yticks)
 }
 
 #' @rdname panel.spatial
@@ -90,4 +92,10 @@ dev_off <- function() {
         return(invisible())
         # message(sprintf('%s', e))
     })
+}
+
+round_decade <- function(x) {
+    p <- floor(log10(abs(x)))
+    times <- 10^p
+    round(x/times)*times
 }

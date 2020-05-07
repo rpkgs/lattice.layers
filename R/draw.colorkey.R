@@ -1,13 +1,3 @@
-
-#' initialize the new lattice functions in arrangeGrob 
-#' @keywords internal
-#' @export 
-init_lattice <- function() {
-    eval(parse(text = 'environment(draw.colorkey) <- environment(lattice::xyplot)'))
-    eval(parse(text = 'assignInNamespace("draw.colorkey", draw.colorkey, ns="lattice")'))
-    invisible()
-}
-
 #' convertTri
 #'
 #' Setting 'open.lower' and 'open.upper' to non-zero makes colorkey end with

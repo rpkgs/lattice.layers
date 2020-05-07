@@ -28,8 +28,9 @@ panel.barchartFreq <- function(z, subscripts,
     ypos <- perc * 100
 
     yticks <- get_yticks(perc, yticks, ntick)*100
-    xticks <- seq_along(xpos)
+    if (is.null(yscale)) yscale = c(0, max(yticks))
 
+    xticks <- seq_along(xpos)
     xlabels <- if (!is.null(at) & !is.factor(z)) {
         xticks  <- xticks - 0.5
         round(at, digit)

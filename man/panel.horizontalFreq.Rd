@@ -43,14 +43,14 @@ of npc.}
 
 \item{...}{ Extra parameters. }
 
-\item{xlab, ylab}{the title of xaxis and yaxis.}
-
-\item{zlim}{the limits of \code{z} value. If not specified, it's \code{c(-1, 1)*quantile(abs(z), 0.9)}.}
-
-\item{tck}{The length of tick marks as a fraction of the smaller of the width
+\item{tcl}{The length of tick marks as a fraction of the smaller of the width
 or height of the plotting region. If tck >= 0.5 it is interpreted as a fraction
 of the relevant side, so if tck = 1 grid lines are drawn. The default setting
 (tck = NA) is to use tcl = -0.5.}
+
+\item{xlab, ylab}{the title of xaxis and yaxis.}
+
+\item{zlim}{the limits of \code{z} value. If not specified, it's \code{c(-1, 1)*quantile(abs(z), 0.9)}.}
 }
 \description{
 Panel of horizontal and vertical polygons

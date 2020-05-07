@@ -3,7 +3,7 @@
 #' @inheritParams lattice::panel.levelplot
 #' @inheritParams panel.annotation
 #' 
-#' @param tck The length of tick marks as a fraction of the smaller of the width
+#' @param tcl The length of tick marks as a fraction of the smaller of the width
 #' or height of the plotting region. If tck >= 0.5 it is interpreted as a fraction
 #' of the relevant side, so if tck = 1 grid lines are drawn. The default setting
 #' (tck = NA) is to use tcl = -0.5.
@@ -34,7 +34,7 @@ panel.horizontalFreq <- function(x, y, z, subscripts,
         
         if (is.null(zlim)) {
             zmax <- z[subscripts] %>% abs %>% quantile(0.90, na.rm = TRUE) 
-            zmax <- if (zmax > 0.5) round(zmax) else round(zmax, 1)
+            zmax <- if (zmax > 0.5) round_decade(zmax) else round(zmax, 1)
             zlim <- c(-1, 1)*zmax
         } else zmax = max(zlim)
         
@@ -49,9 +49,11 @@ panel.horizontalFreq <- function(x, y, z, subscripts,
         if (is_spatial) {
             at = seq(-60, 90, 10)
             abline(h = seq(-60, 90, 30), lty = 3, col = "grey", lwd  = 0.5)
-            axis(side = 2, tcl = tcl, at = yticks, labels = yticks) # label_sp(yticks)
-            axis(side = 2, tcl = tcl/2, at = seq(-60, 90, 10), labels = rep("", length(at)), lwd = 0.5)
+            ylabels <- as.character(yticks)
+            ylabels[c(1, length(ylabels))] <- " "
             # browser()
+            axis(side = 2, tcl = tcl, at = yticks, labels = ylabels) # label_sp(yticks)
+            axis(side = 2, tcl = tcl/2, at = seq(-60, 90, 10), labels = rep("", length(at)), lwd = 0.5)
             if (is.null(zticks)) {
                 xticks_major = c(-1, 0, 1)*zmax
                 xticks_minor = c(-1, 1)*zmax/2

@@ -27,3 +27,26 @@ NULL
     # set_font()
     invisible()
 }
+
+
+asign_func <- function(func_old, func_new) {
+    name <- deparse(substitute(func_new))
+    pkg <- str_extract(name, ".*(?=:)") %>% gsub(":", "", .)
+    funcname <- str_extract(name, "(?<=:).*") %>% gsub(":", "", .)
+
+    temp <- func_new
+    cmd1 <- sprintf("environment(temp) <- environment(%s:::%s)", pkg, funcname)
+    cmd2 <- sprintf('assignInNamespace("%s", temp, ns="%s")', funcname, pkg)
+    eval(parse(text = cmd1))
+    eval(parse(text = cmd2))
+}
+
+
+#' initialize the new lattice functions in arrangeGrob 
+#' @keywords internal
+#' @export 
+init_lattice <- function() {
+    # latticeGrob:::`+.trellis`
+    # environment(latticeExtra:::`+.trellis`)
+    invisible()
+}

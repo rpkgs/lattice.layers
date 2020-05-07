@@ -17,6 +17,7 @@ panel.spatial(
   list.mask = NULL,
   SpatialPixel = NULL,
   data.stat = NULL,
+  yticks = seq(0, 0.6, 0.2),
   ...,
   sp.layout
 )

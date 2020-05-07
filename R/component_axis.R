@@ -16,7 +16,7 @@ component_axis <- function(ticks, labels = TRUE, origin = 0, tck = 0.4, angle = 
     tck    = unit(tck, "lines")
     origin = unit(origin, "native")
 
-    tick_max = unit(max(ticks), "native") + unit(1.2, "lines")
+    tick_max = unit(max(ticks), "native") + unit(0.8, "lines") # 1.2
     tick_min = unit(ticks[1], "native")
     # x1 = max(ticks)
     # browser()

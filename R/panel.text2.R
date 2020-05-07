@@ -1,5 +1,5 @@
 #' @export
-panel.text2 <- function(x, y, panel.titles_full = NULL, panel.tiles = NULL, NO_begin = 1, ...) {
+panel.text2 <- function(x, y, panel.titles_full = NULL, panel.titles = NULL, NO_begin = 1, ...) {
     not.titles_full = is.null(panel.titles_full)
     
     NO_panel = panel.number()
