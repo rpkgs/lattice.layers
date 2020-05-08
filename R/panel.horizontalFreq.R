@@ -9,6 +9,7 @@
 #' (tck = NA) is to use tcl = -0.5.
 #' @param xlab,ylab the title of xaxis and yaxis.
 #' @param zlim the limits of `z` value. If not specified, it's `c(-1, 1)*quantile(abs(z), 0.9)`.
+#' @param prob_z default 0.9, the probability of z quantile, which used to determine the zlim.
 #' 
 #' @examples
 #' \dontrun{
@@ -21,7 +22,8 @@ panel.horizontalFreq <- function(x, y, z, subscripts,
     tcl = 0.4, xlab = "", ylab = "", 
     zlim = NULL, 
     zticks = NULL,
-    is_spatial = FALSE,
+    is_spatial = FALSE, 
+    prob_z = 0.9,
     xlabels = NULL, ylabels = NULL, digit = 1)
 {
     family <- get_family()
@@ -33,13 +35,17 @@ panel.horizontalFreq <- function(x, y, z, subscripts,
         }
         
         if (is.null(zlim)) {
-            zmax <- z[subscripts] %>% abs %>% quantile(0.90, na.rm = TRUE) 
+            zmax <- z[subscripts] %>% abs %>% quantile(prob_z, na.rm = TRUE) 
             zmax <- if (zmax > 0.5) round_decade(zmax) else round(zmax, 1)
             zlim <- c(-1, 1)*zmax
         } else zmax = max(zlim)
         
+        d <- data.table(vals = z[subscripts], x = y[subscripts])
+        d2 <- d[, .(value = mean(vals, na.rm = TRUE)), .(x)]
+        d2[is.na(value), value := 0]
+
         par(mar = c(0, 0, 0, 0), mgp = c(1, 0, 0), oma = c(0, 0, 0, 0), family = family)
-        draw_polygon(z[subscripts], y[subscripts], length.out = 1e4, type = "vertical",
+        draw_polygon(d2$value, d2$x, length.out = nrow(d2), type = "vertical",
                      tcl = tcl,
                      ...,
                      zlim = zlim, 

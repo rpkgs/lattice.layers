@@ -77,7 +77,7 @@ get_perc.factor <- function (z, subscripts, w = NULL, at, ...)
 {
     z <- z[subscripts]
     if (!is.null(at) & !is.factor(z)) {
-        z <- cut(z, at) %>% as.numeric()
+        z <- cut(z, at) #%>% as.numeric()
     }
 
     if (is.null(w)) {

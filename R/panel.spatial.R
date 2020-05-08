@@ -17,8 +17,10 @@ panel.spatial <- function(x, y, z, subscripts,
     interpolate = TRUE, 
     list.mask = NULL, 
     SpatialPixel = NULL,
+    show_signPerc = TRUE,
     data.stat = NULL, 
     yticks = seq(0, 0.6, 0.2),
+    prob_z = 0.9,
     ...,
     sp.layout)
 {
@@ -32,10 +34,12 @@ panel.spatial <- function(x, y, z, subscripts,
         bbox = c(-180, 180, -75, -60), "native", clip = "off")
     
     # 2. stands out significant part
-    # density = 1, angle = 45
-    panel.signDist(list.mask, SpatialPixel, ...) # spatial polygon pattern
-    panel.signPerc(z, subscripts, mask = list.mask[[NO_panel]], xpos = 0.02, ypos = 0.65, ...)
-
+    if (show_signPerc) {
+        # density = 1, angle = 45
+        panel.signDist(list.mask, SpatialPixel, ...) # spatial polygon pattern
+        panel.signPerc(z, subscripts, mask = list.mask[[NO_panel]], xpos = 0.02, ypos = 0.65, ...)
+    }
+    
     ## 3. add panel title
     panel.text2(pars$title$x, pars$title$y, dot$panel.titles_full, dot$panel.titles, 
         NO_begin, ...)
@@ -46,6 +50,7 @@ panel.spatial <- function(x, y, z, subscripts,
     # panel.annotation(grid.rect(), bbox = bbox, "native")
     panel.horizontalFreq(x, y, z, subscripts, bbox = bbox + c(0, -10, 0, 0), "native", 
         # xlim = c(-1, 1)*5, 
+        prob_z = prob_z, 
         ylim = bbox[3:4], 
         col.regions = dot$col.regions, length.out = 1e3, is_spatial = TRUE)
 
@@ -96,6 +101,7 @@ dev_off <- function() {
 
 round_decade <- function(x) {
     p <- floor(log10(abs(x)))
+    if (x > 1000) p <- p - 1
     times <- 10^p
     round(x/times)*times
 }

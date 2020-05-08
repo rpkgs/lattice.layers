@@ -19,7 +19,6 @@ component_axis <- function(ticks, labels = TRUE, origin = 0, tck = 0.4, angle = 
     tick_max = unit(max(ticks), "native") + unit(0.8, "lines") # 1.2
     tick_min = unit(ticks[1], "native")
     # x1 = max(ticks)
-    # browser()
     param_arrow <- listk(
         x0 = tick_min, y0 = origin, x1 = tick_max, y1 = origin,
         col.line = "black", type = "closed", length = unit(0.1, "lines"),
@@ -32,7 +31,7 @@ component_axis <- function(ticks, labels = TRUE, origin = 0, tck = 0.4, angle = 
             x0 = ticks[I], x1 = ticks[I], y0 = origin, y1 = origin - tck_half,
             identifier = "xaxis.tick.minor")
         if (length(ticks) <= 6) {
-            I <- seq(1, length(ticks) - 1)
+            I <- seq(1, length(ticks) - 1)[-1]
         } else {
             I <- seq(1, length(ticks) - 1, 2)[-1]
         }

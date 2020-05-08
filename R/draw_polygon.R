@@ -28,6 +28,10 @@ draw_polygon <- function(vals, x = NULL, type = "horizontal", length.out = 1e4,
     zlim = c(-Inf, Inf),
     ...) 
 {
+    n    <- length(vals)
+    vals <- vals %>% c(0, ., 0)
+    x    <- x %>% c(.[1], ., .[n])
+    
     if (is.null(x)) x <- seq_along(vals)
     xx <- seq(min(x), max(x), length.out = length.out)
     suppressWarnings(yy <- approx(x, vals, xx)$y)
@@ -44,20 +48,26 @@ draw_polygon <- function(vals, x = NULL, type = "horizontal", length.out = 1e4,
     params <- listk(type = "n", ...)
     if (all(is.finite(zlim))) params$xlim <- zlim
     
+    xxx = xx %>% c(., rev(.))
     if (type == "horizontal") {
         params %<>% c(list(x, vals), .)
         do.call(plot, params)
         # grid(nx = NULL, ny = NA)
-        polygon(x = xx %>% c(., rev(.)), y = clamp(yy, c(0, zlim[2])) %>% c(., .*0), col = col.pos)
-        polygon(x = xx %>% c(., rev(.)), y = clamp(yy, c(zlim[1], 0)) %>% c(., .*0), col = col.neg)
+        # {
+        #     y <- vals
+        #     plot(x, y)
+        #     xxx = x %>% c(., rev(.))
+        #     polygon(xxx, clamp(y, c(0, zlim[2])) %>% c(., .*0), col = col.pos)
+        #     polygon(xxx, clamp(y, c(zlim[1], 0)) %>% c(., .*0), col = col.neg)
+        # }
+        polygon(xxx, clamp(yy, c(0, zlim[2])) %>% c(., .*0), col = col.pos)
+        polygon(xxx, clamp(yy, c(zlim[1], 0)) %>% c(., .*0), col = col.neg)
     } else {
         params %<>% c(list(vals, x), .)
         do.call(plot, params)
         # grid(nx = NULL, ny = NA)
-        # d <- data.table(yy, xx)
-        # a <- clamp(yy, c(0, Inf)) #%>% c(., 0, .*0)
-        polygon(clamp(yy, c(0, zlim[2])) %>% c(., .*0), xx %>% c(., rev(.)), col = col.pos)
-        polygon(clamp(yy, c(zlim[1], 0)) %>% c(., .*0), xx %>% c(., rev(.)), col = col.neg)
+        polygon(clamp(yy, c(0, zlim[2])) %>% c(., .*0), xxx, col = col.pos)
+        polygon(clamp(yy, c(zlim[1], 0)) %>% c(., .*0), xxx, col = col.neg)
     }
 }
 
