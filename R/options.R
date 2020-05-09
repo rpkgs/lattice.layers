@@ -3,7 +3,7 @@
 .options <- list(
     style = c("EN", "CH")[2],
     family = "Times",
-    family_CH = "rTimes",
+    family_CH = c("TimesSimSun", "rTimes")[2], # TimesSimSun, rTimes
     shadePattern = list(col = "black", lwd = 1, lty = 1))
 
 #' set latticeGrob options
@@ -30,7 +30,7 @@ get_options <- function(verbose = TRUE) {
 get_family <- function() {
     family <- par("family")
     if (family == "") {
-        family <- ifelse(.options$style == "EN", "Times", "rTimes")
+        family <- ifelse(.options$style == "EN", "Times", .options$family_CH)
     }
     family
 }

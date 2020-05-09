@@ -14,10 +14,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-今天介绍一个非常实用的lattice函数`panel.annotation`，抛砖引玉，以飨读者。
+今天为大家介绍，如何采用`panel.annotation`制作下图格式的专业地图，抛砖引玉，以飨读者。
+
+该图使用的是R包latticeGrob中的levelplot2绘制。
 
 作为lattice的用户，想必你对如下形式的panel函数非常熟悉：
-
 ``` r
 panel <- function(x, y, z, subscripts, ..., sp.layout) {
   ...
@@ -25,12 +26,54 @@ panel <- function(x, y, z, subscripts, ..., sp.layout) {
 ```
 lattice中以panel函数控制着每个面板中的绘图内容。通过修改panel函数，我们可以批量、便捷地做出专业、复杂的地图。
 
-借助latticeGrob，用户可以在每个面板便捷地插入统计指标、直方图、饼状图、everything you want。
+latticeGrob中设计了`panel.annotation`函数，便捷地为子图添加插件。`panel.annotation`主要是将grob对象绘制到viewpoint的指定位置。调用方法如下：
+``` r
+panel.annotation(
+  grob,
+  bbox = c(xmin, xmax, ymin, ymax),
+  unit = "npc",
+  xscale = FALSE,
+  yscale = FALSE,
+  clip = "on",
+  ...
+)
+```
+主要参数：
 
-```{r setup}
-library(latticeGrob)
+- `grob`: grob object   
+- `bbox`: The region to plot grob, [xmin, xmax, ymin, ymax].   
+- `unit`  : A character vector specifying the units for the corresponding numeric values.   
+- `xscale`: A numeric vector of length two indicating the minimum and maximum on the x-scale. The limits may not be identical.   
+- `yscale`: A numeric vector of length two indicating the minimum and maximum on the y-scale. The limits may not be identical.   
+- `clip`  : One of "on", "inherit", or "off", indicating whether to clip to the extent of this viewport, inherit the clipping region from the parent viewport, or turn clipping off altogether. For back-compatibility, a logical value of TRUE corresponds to "on" and FALSE corresponds to "inherit".
+
+现在已完成的基于`panel.annotation`的函数，也是上图中用到的panel：
+
+  - `panel.barchartFreq`: 左下角的直方图
+  - `panel.horizontalFreq`: 右侧的随纬度波动的子图。
+
+借助R包ggplotify，R语言任何绘图内容均可转化为grob对象，因此`panel.annotation`的功能绝不仅限于此，借助`panel.annotation`可以很容易扩展其他绘图功能饼状图、箱线图、散点图等。用户脑洞多大，就能做出多漂亮的图。
+
+以`panel.barchartFreq`为例，该函数的编写思路如下：
+
+  1. 先将左下角的直方图通过lattice::panel.barchart绘制出来   
+  2. 将绘图内容转为grob对象  
+  3. 采用panel.annotation将grob对象绘制在指定位置  
+  4. 将上述过程封装成panel函数，以便批量制图。  
+
+<!-- levelplot2使用panel.spatial扩展了绘制专业地图的功能。 -->
+<!-- panel.spatial中的地图插件，大多是基于`panel.annotation`绘制的，如: -->
+<!-- ，然后借用`panel.annotation`即可把grob对象绘制在panel中指定的位置。 -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE, 
+  fig.width = 7)
 ```
 
+闲话莫提，直接上代码：
+
+## 定制panel.spatial函数
 ```{r}
 panel.spatial <- function(x, y, z, subscripts, 
     contour = FALSE,     
@@ -48,19 +91,20 @@ panel.spatial <- function(x, y, z, subscripts,
     dot <- list(...)
 
     panel.spatialBasic(x, y, z, subscripts, class, contour, interpolate, ..., sp.layout = sp.layout)
-    # mask lat <= -60
+    # mask shapefiels in lat <= -60
     panel.annotation(grid.rect(gp = gpar(col = "transparent", fill = "white")), 
         bbox = c(-180, 180, -75, -60), "native", clip = "off")
     
-    # 2. stands out significant part
-    # density = 1, angle = 45
-    panel.signDist(list.mask, SpatialPixel, ...) # spatial polygon pattern
-    panel.signPerc(z, subscripts, mask = list.mask[[NO_panel]], xpos = 0.03, ypos = 0.67, ...)
+    # # 2. stands out significant part
+    # # density = 1, angle = 45
+    # panel.signDist(list.mask, SpatialPixel, ...) # spatial polygon pattern
+    # panel.signPerc(z, subscripts, mask = list.mask[[NO_panel]], xpos = 0.03, ypos = 0.67, ...)
 
     ## 3. add panel title
     panel.text2(pars$title$x, pars$title$y, dot$panel.titles_full, dot$panel.titles, 
         NO_begin, ...)
 
+    ## 4. 右侧随纬度波动子图
     v <- current.viewport()
     xlim <- v$xscale
     bbox <- c(190, max(xlim), -60, 90)
@@ -70,16 +114,60 @@ panel.spatial <- function(x, y, z, subscripts,
         ylim = bbox[3:4], 
         col.regions = dot$col.regions, length.out = 1e3, is_spatial = TRUE)
 
-    ## 4. panel.text statistic values
+    ## 5. 右下角直方图
+    panel.barchartFreq(z, subscripts, bbox = c(0.04, 0.26, 0.15, 0.65), ..., 
+        yticks = seq(0, 0.6, 0.2), yscale = c(0, 100))
+
+    ## 6. panel.text statistic values
     if (!is.null(data.stat)) {
         loc   <- data.stat$loc # 81.5, 26.5
         label <- data.stat$label[[NO_panel]]
         panel.text(loc[[1]], loc[[2]], label, fontfamily = fontfamily, cex = 1.2, adj = c(0, 0))
     }
-
-    ## 5. panel.hist
-    panel.barchartFreq(z, subscripts, bbox = c(0.04, 0.26, 0.15, 0.65), ..., 
-        yticks = seq(0, 0.6, 0.2), yscale = c(0, 100))
 }
 ```
 
+## 带上panel.spatial出发
+```r
+library(latticeGrob)
+library(rgdal)
+
+# shapefiles of countries
+shp <- readOGR("data-raw/shp/world_poly.shp")
+sp_layout <- list("sp.polygons", shp, lwd = 0.2, first = FALSE)
+
+pars = list(title = list(x = -180, y = 90, cex = 1.4))
+stat = list(show = TRUE, name = "u", loc = c(-30, -60), digit = 1, include.sd = TRUE, FUN = matrixStats::weightedMean)
+brks <- c(-Inf, 10, 20, 50, 100, 150, 200, 300, 400, 500, 800, 1000, 1500, Inf)
+# brks <- {c(2, 5, 10, 20, 50)} %>% c(-Inf, -rev(.), 0, ., Inf)
+ncol <- length(brks) - 1
+cols <- Rcolors::get_color("amwg256", ncol) %>% rev()
+
+p <- levelplot2(mean ~ s1+s2 | band,
+                df,    # corresponding data input
+                grid5, # spatialPixel
+                colors = cols, brks = brks,
+                layout = c(2, 2),
+                panel  = panel.spatial,
+                pars = pars,                   # the position of panel.title
+                stat = stat,                   # statistic in the bottom
+                unit = "(mm)", unit.adj = 0.5, # unit in the colorbar
+                yticks = seq(0, 0.2, 0.1),     # yticks in the histogram
+                ylim = c(-72, 99),
+                xlim = c(-190, 240),
+                aspect = 0.5,
+                show_signPerc = FALSE,
+                prob_z = 0.98, 
+                # unit = "km2", unit.adj = 0.5,
+                legend.num2factor = TRUE,
+                colorkey = list(width = 1.4, height = 0.96, labels = list(cex = 1)),
+                sp.layout = list(sp_layout), # , sp_poly
+                interpolate = FALSE
+) + 
+    theme_lattice(key.margin = c(0, 1.5, 0, 0),
+                    plot.margin = c(0, 3, -1.5, 1))
+```
+
+经过前人的努力，绘制一幅专业的地图仅需20行代码左右，远比ArcGIS方便，值得你去学习。
+
+latticeGrob处于频繁维护期，尚未发布稳定版。想要尝鲜的用户，需要关注微信号，回复latticeGrob。

@@ -34,7 +34,13 @@ spplot_grid(
 )
 }
 \arguments{
-\item{pars}{parameters controlling hist, e.g. \code{list(title = list(x=77, y=39, cex=1.5),  hist = list(origin.x=77, origin.y=28, A=15, by = 0.4))}.}
+\item{brks}{either a numeric vector of two or more unique cut points to convert
+values in df into factor.}
+
+\item{colors}{corresponding colors of every break interval}
+
+\item{pars}{parameters controlling the position of histogram and panel titles,
+e.g. \code{list(title = list(x=77, y=39, cex=1.5), hist = list(origin.x=77, origin.y=28))}.}
 
 \item{colorkey}{Boolean or list returned by \code{\link[=get_colorkey]{get_colorkey()}}.}
 

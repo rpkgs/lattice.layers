@@ -16,12 +16,13 @@ component_axis <- function(ticks, labels = TRUE, origin = 0, tck = 0.4, angle = 
     tck    = unit(tck, "lines")
     origin = unit(origin, "native")
 
-    tick_max = unit(max(ticks), "native") + unit(0.8, "lines") # 1.2
+    width_arrow = unit(0.2, "cm")
+    tick_max = unit(max(ticks)+0.5 , "native") + width_arrow + unit(0.15, "cm") # 1.2
     tick_min = unit(ticks[1], "native")
     # x1 = max(ticks)
     param_arrow <- listk(
         x0 = tick_min, y0 = origin, x1 = tick_max, y1 = origin,
-        col.line = "black", type = "closed", length = unit(0.1, "lines"),
+        col.line = "black", type = "closed", length = width_arrow,
         col = "black", fill = "black", identifier = paste0(type, ".arrow"))
 
     if (type == "xaxis") {

@@ -19,6 +19,7 @@ panel.horizontalFreq(
   zlim = NULL,
   zticks = NULL,
   is_spatial = FALSE,
+  prob_z = 0.9,
   xlabels = NULL,
   ylabels = NULL,
   digit = 1
@@ -51,6 +52,8 @@ of the relevant side, so if tck = 1 grid lines are drawn. The default setting
 \item{xlab, ylab}{the title of xaxis and yaxis.}
 
 \item{zlim}{the limits of \code{z} value. If not specified, it's \code{c(-1, 1)*quantile(abs(z), 0.9)}.}
+
+\item{prob_z}{default 0.9, the probability of z quantile, which used to determine the zlim.}
 }
 \description{
 Panel of horizontal and vertical polygons

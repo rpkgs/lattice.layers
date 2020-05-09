@@ -1,6 +1,6 @@
 #' check_dir
-#' @param path character vectors 
-#' 
+#' @param path character vectors
+#'
 #' @keywords internal
 #' @export
 check_dir <- function(path){
@@ -46,13 +46,13 @@ parse.formula <- function(formula = x~s1+s2) {
     str_formula <- gsub("s1 \\+ s2 *\\|*| ", "", as.character(formula))
     value.var = str_formula[2]
     groups    = strsplit(str_formula[3], "\\+|\\*")[[1]]
-    list(value.var = value.var, groups = groups)    
+    list(value.var = value.var, groups = groups)
 }
 
 #' help of gpar
-#' 
+#'
 #' @keywords internal
-#' @export 
+#' @export
 help_gpar <- function() {
     list(col       = "Colour for lines and borders.",
         fill       = "Colour for filling rectangles, polygons, ...",
@@ -80,3 +80,16 @@ help_gpar <- function() {
 #' cat(fprintf("%s\n", "Hello phenofit!"))
 #' @export
 fprintf <- function(fmt, ...) cat(sprintf(fmt, ...))
+
+
+asign_func <- function(func_old, func_new) {
+    name <- deparse(substitute(func_new))
+    pkg <- str_extract(name, ".*(?=:)") %>% gsub(":", "", .)
+    funcname <- str_extract(name, "(?<=:).*") %>% gsub(":", "", .)
+
+    temp <- func_new
+    cmd1 <- sprintf("environment(temp) <- environment(%s:::%s)", pkg, funcname)
+    cmd2 <- sprintf('assignInNamespace("%s", temp, ns="%s")', funcname, pkg)
+    eval(parse(text = cmd1))
+    eval(parse(text = cmd2))
+}
