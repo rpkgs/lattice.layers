@@ -275,11 +275,6 @@ draw.colorkey <- function(key, draw = FALSE, vp = NULL)
 #' @rdname draw.colorkey
 draw.colorkey2 <- draw.colorkey
 
-# suppressWarnings({
-#     environment(draw.colorkey) <- environment(lattice::xyplot)
-#     assignInNamespace("draw.colorkey", draw.colorkey, ns="lattice")  
-# })
-
 updateList <- function(x, val)
 {
     if (is.null(x)) x <- list()

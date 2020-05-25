@@ -48,5 +48,11 @@ asign_func <- function(func_old, func_new) {
 init_lattice <- function() {
     # latticeGrob:::`+.trellis`
     # environment(latticeExtra:::`+.trellis`)
+    asign_func(draw.colorkey, lattice::draw.colorkey)
     invisible()
 }
+
+# suppressWarnings({
+#     environment(draw.colorkey) <- environment(lattice::xyplot)
+#     assignInNamespace("draw.colorkey", draw.colorkey, ns="lattice")
+# })

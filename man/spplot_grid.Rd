@@ -17,8 +17,7 @@ spplot_grid(
   panel.title = NULL,
   unit = "",
   unit.adj = 0.3,
-  pars = list(title = list(x = 77, y = 39, cex = 1.5), hist = list(origin.x = 77,
-    origin.y = 28, A = 15, by = 0.4)),
+  pars = list(title = list(x = 77, y = 39, cex = 1.5)),
   stat = list(show = FALSE, name = "RC", loc = c(81.5, 26.5), digit = 1, include.sd =
     FALSE),
   area.weighted = FALSE,
