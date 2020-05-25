@@ -3,7 +3,7 @@
 .options <- list(
     style = c("EN", "CH")[2],
     family = "Times",
-    family_CH = c("TimesSimSun", "rTimes")[2], # TimesSimSun, rTimes
+    family_CH = c("TimesSimSun", "rTimes")[1], # TimesSimSun, rTimes
     shadePattern = list(col = "black", lwd = 1, lty = 1))
 
 #' set latticeGrob options
