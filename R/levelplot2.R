@@ -165,7 +165,7 @@ levelplot2 <- function(
         col.regions = cols,
         panel.titles = zcols,
         panel.titles_full = panel.titles_full,
-        panel = panel.spatial,
+        panel = panel,
         NO_begin = NO_begin,
         brks = brks,
         strip = strip,

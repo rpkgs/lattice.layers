@@ -18,8 +18,10 @@ panel.spatial <- function(x, y, z, subscripts,
     list.mask = NULL,
     SpatialPixel = NULL,
     show_signPerc = TRUE,
-    data.stat = NULL,
+    show_horizontalFreq = FALSE,
+    bbox_barchartFreq = c(0.04, 0.26, 0.15, 0.4),
     yticks = seq(0, 0.6, 0.2),
+    data.stat = NULL,
     prob_z = 0.9,
     ...,
     sp.layout)
@@ -40,19 +42,22 @@ panel.spatial <- function(x, y, z, subscripts,
         panel.signPerc(z, subscripts, mask = list.mask[[NO_panel]], xpos = 0.02, ypos = 0.65, ...)
     }
 
+    # browser()
     ## 3. add panel title
     panel.text2(pars$title$x, pars$title$y, dot$panel.titles_full, dot$panel.titles,
-        NO_begin, ...)
+        NO_begin, pars = pars, ...)
 
     v <- current.viewport()
     xlim <- v$xscale
     bbox <- c(194, max(xlim), -60, 90)
     # panel.annotation(grid.rect(), bbox = bbox, "native")
-    panel.horizontalFreq(x, y, z, subscripts, bbox = bbox + c(0, -10, 0, 0), "native",
-        # xlim = c(-1, 1)*5,
-        prob_z = prob_z,
-        ylim = bbox[3:4],
-        col.regions = dot$col.regions, length.out = 1e3, is_spatial = TRUE)
+    if (show_horizontalFreq) {
+        panel.horizontalFreq(x, y, z, subscripts, bbox = bbox + c(0, -10, 0, 0), "native",
+            # xlim = c(-1, 1)*5,
+            prob_z = prob_z,
+            ylim = bbox[3:4],
+            col.regions = dot$col.regions, length.out = 1e3, is_spatial = TRUE)
+    }
 
     ## 4. panel.text statistic values
     if (!is.null(data.stat)) {
@@ -62,7 +67,7 @@ panel.spatial <- function(x, y, z, subscripts,
     }
 
     ## 5. panel.hist
-    panel.barchartFreq(z, subscripts, bbox = c(0.04, 0.26, 0.15, 0.4), ...,
+    panel.barchartFreq(z, subscripts, bbox = bbox_barchartFreq, ...,
         # yticks = seq(0, 0.6, 0.2),
         yticks = yticks)
 }

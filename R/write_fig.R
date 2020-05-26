@@ -111,3 +111,12 @@ write_fig <- function (p, file = "Rplot.pdf", width = 10, height = 5,
         if (show) showfig(outfile)
     }
 }
+
+shell <- function(..., ignore.stderr = FALSE, wait = FALSE) {
+    FUN <- switch(.Platform$OS.type,
+        "windows" = base::shell,
+        "unix" = base::system
+    )
+    suppressWarnings(FUN(..., ignore.stderr = ignore.stderr, wait = wait))
+    invisible()
+}

@@ -1,8 +1,8 @@
 #' label_tag
-#' 
+#'
 #' @param labels character vector or expression vector
 #' @param tag boolean
-#' 
+#'
 #' @examples
 #' label_tag(1:5)
 #' char2expr(1:5)
@@ -10,7 +10,7 @@
 label_tag <- function(labels, tag = TRUE) {
     n <- length(labels)
     sapply(seq_along(labels), function(i) {
-        name = labels[i]
+        name = labels[[i]]
         data <- list(tag = letters[i], x = name)
         if (tag) {
             eval(substitute(expression(bold("(" * tag * ")" ~ x)), data))
@@ -20,6 +20,7 @@ label_tag <- function(labels, tag = TRUE) {
     })
     # sprintf("(%s) %s", letters[1:n], labels)
 }
+
 
 #' @rdname label_tag
 #' @export
