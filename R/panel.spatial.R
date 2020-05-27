@@ -42,7 +42,6 @@ panel.spatial <- function(x, y, z, subscripts,
         panel.signPerc(z, subscripts, mask = list.mask[[NO_panel]], xpos = 0.02, ypos = 0.65, ...)
     }
 
-    # browser()
     ## 3. add panel title
     panel.text2(pars$title$x, pars$title$y, dot$panel.titles_full, dot$panel.titles,
         NO_begin, pars = pars, ...)

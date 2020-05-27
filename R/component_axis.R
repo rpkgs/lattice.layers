@@ -26,6 +26,7 @@ component_axis <- function(ticks, labels = TRUE, origin = 0, tck = 0.4, angle = 
         col = "black", fill = "black", identifier = paste0(type, ".arrow"))
 
     if (type == "xaxis") {
+        ## TODO: control xticks number
         do.call(panel.arrows, param_arrow)
         I <- seq(2, length(ticks), 2)
         panel.segments(

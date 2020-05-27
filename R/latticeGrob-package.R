@@ -23,7 +23,7 @@ NULL
     #     # library(lattice)
     #     library(devtools)
     # })
-    # init_lattice()
+    init_lattice()
     # set_font()
     invisible()
 }
@@ -35,8 +35,8 @@ asign_func <- function(func_old, func_new) {
     funcname <- str_extract(name, "(?<=:).*") %>% gsub(":", "", .)
 
     temp <- func_new
-    cmd1 <- sprintf("environment(temp) <- environment(%s:::%s)", pkg, funcname)
-    cmd2 <- sprintf('assignInNamespace("%s", temp, ns="%s")', funcname, pkg)
+    cmd1 <- sprintf("environment(%s) <- environment(%s:::%s)", name, pkg, funcname)
+    cmd2 <- sprintf('assignInNamespace("%s", %s, ns="%s")', funcname, name, pkg)
     eval(parse(text = cmd1))
     eval(parse(text = cmd2))
 }
@@ -48,8 +48,12 @@ asign_func <- function(func_old, func_new) {
 init_lattice <- function() {
     # latticeGrob:::`+.trellis`
     # environment(latticeExtra:::`+.trellis`)
-    asign_func(draw.colorkey, lattice::draw.colorkey)
-    invisible()
+    suppressWarnings({
+        eval(parse(text = 'environment(draw.colorkey) <- environment(lattice::xyplot)'))
+        eval(parse(text = 'assignInNamespace("draw.colorkey", draw.colorkey, ns="lattice")'))
+    })
+    # asign_func(draw.colorkey, lattice::draw.colorkey)
+    # invisible()
 }
 
 # suppressWarnings({

@@ -35,8 +35,8 @@ test_that("draw.colorkey works", {
         g <- grid.arrange(p1, p2, nrow = 2)
         write_fig(g, "lgd.pdf", 6, 12, show = FALSE)
         write_fig(g, "lgd.pdf", devices = c("png", "tif", "jpg"),6, 12, show = FALSE)
-
         file.remove(list.files(".", "lgd", full.names = TRUE))
+        # }
         TRUE
     })
 
