@@ -43,34 +43,39 @@
 #' @importFrom data.table as.data.table
 #' @export
 levelplot2 <- function(
-                       formula,
-                       df,
-                       SpatialPixel,
-                       df.mask = NULL,
-                       brks, colors,
-                       strip = FALSE,
-                       toFactor = FALSE,
-                       # xlim = c(73.5049, 104.9725), ylim = c(25.99376, 40.12632),
-                       panel.titles_full = NULL,
-                       panel = panel.spatial,
-                       xlim = NULL, ylim = NULL,
-                       strip.factors = NULL,
-                       unit = "", unit.adj = 0.3,
-                       pars = NULL,
-                       stat = list(show = FALSE, name = "RC", loc = c(81.5, 26.5), digit = 1, include.sd = FALSE, FUN = weightedMedian),
-                       area.weighted = FALSE,
-                       legend.space = "right",
-                       layout = NULL,
-                       colorkey = TRUE,
-                       legend.num2factor = FALSE,
-                       interpolate = FALSE,
-                       lgd.title = NULL,
-                       sp.layout = NULL,
-                       NO_begin = 1,
-                       cex.lgd = 1.3,
-                       par.settings = opt_trellis_default,
-                       par.settings2 = list(axis.line = list(col = "transparent")),
-                       ...) {
+    formula,
+    df,
+    SpatialPixel,
+    df.mask = NULL,
+
+    brks, colors,
+    strip = FALSE,
+    strip.factors = NULL,
+    toFactor = FALSE,
+    
+    panel.titles_full = NULL,
+    panel = panel.spatial,
+    xlim = NULL, ylim = NULL,
+    unit = "", unit.adj = 0.3,
+
+    pars = NULL,
+    stat = list(show = FALSE, name = "RC", loc = c(81.5, 26.5), digit = 1, 
+        include.sd = FALSE, FUN = weightedMedian),
+    area.weighted = FALSE,
+    legend.space = "right",
+    legend.num2factor = FALSE,
+
+    colorkey = TRUE,
+    interpolate = FALSE,
+    lgd.title = NULL,
+    sp.layout = NULL,
+    layout = NULL,
+    NO_begin = 1,
+    cex.lgd = 1.3,
+    par.settings = opt_trellis_default,
+    par.settings2 = list(axis.line = list(col = "transparent")),
+    ...) 
+{
     info.formula <- parse.formula(formula)
     value.var <- info.formula$value.var
     groups <- info.formula$groups
@@ -118,15 +123,12 @@ levelplot2 <- function(
                   spatial_meansd(d[[value.var]], area, stat, unit, FUN = stat$FUN)
               })
             list(loc = stat$loc, label = labels)
-        } else {
-            NULL
-        }
+        } else NULL
+        
 
     is_factor <- is.factor(df[[value.var]])
-
-    if (missing(colors)) {
-        colors <- c("red", "grey80", "blue4")
-    }
+    if (missing(colors)) colors <- c("red", "grey80", "blue4")
+    
     if (missing(brks)) {
         if (!is_factor) {
             vals <- df[[value.var]]
@@ -162,29 +164,33 @@ levelplot2 <- function(
         list.mask = list.mask,
         SpatialPixel = SpatialPixel,
         ...,
-        col.regions = cols,
-        panel.titles = zcols,
+        col.regions       = cols,
+        panel.titles      = zcols,
         panel.titles_full = panel.titles_full,
-        panel = panel,
-        NO_begin = NO_begin,
-        brks = brks,
-        strip = strip,
-        as.table = TRUE,
-        sp.layout = sp.layout,
-        layout = layout,
-        scales = list(draw = FALSE),
-        xlab = NULL, ylab = NULL,
-        interpolate = interpolate,
-        par.settings = par.settings,
-        pars = pars,
-        data.stat = data.stat,
-        class = class
+        panel             = panel,
+        NO_begin          = NO_begin,
+        brks              = brks,
+        strip             = strip,
+        as.table          = TRUE,
+        sp.layout         = sp.layout,
+        layout            = layout,
+
+        xlab              = NULL, 
+        ylab              = NULL,
+        interpolate       = interpolate,
+        par.settings      = par.settings,
+
+        scales            = list(draw = FALSE),
+        pars              = pars,
+        data.stat         = data.stat,
+        class             = class
     )
     if (!is.null(xlim)) params$xlim <- xlim
     if (!is.null(ylim)) params$ylim <- ylim
 
     nbrk <- length(brks)
     params$at <- if (!is_factor) brks else seq(0.5, nbrk + 1)
+
     if (is.list(colorkey) || colorkey) {
         is_factor2 <- legend.num2factor || is_factor
         colorkey.param <- get_colorkey(brks, NULL, legend.space, lgd.title, is_factor2, cex = cex.lgd)

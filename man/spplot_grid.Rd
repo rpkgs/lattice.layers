@@ -9,24 +9,28 @@ spplot_grid(
   zcols,
   brks,
   colors,
-  col.rev = FALSE,
+  strip = FALSE,
+  strip.factors = NULL,
   toFactor = FALSE,
-  sub.hist = TRUE,
-  grob = NULL,
-  bbox = c(0, 0.5, 0.5, 1),
-  panel.title = NULL,
+  panel.titles_full = NULL,
+  panel = panel.spatial,
+  xlim = NULL,
+  ylim = NULL,
   unit = "",
   unit.adj = 0.3,
-  pars = list(title = list(x = 77, y = 39, cex = 1.5)),
+  pars = NULL,
   stat = list(show = FALSE, name = "RC", loc = c(81.5, 26.5), digit = 1, include.sd =
-    FALSE),
+    FALSE, FUN = weightedMedian),
   area.weighted = FALSE,
   legend.space = "right",
-  layout = NULL,
+  legend.num2factor = FALSE,
   colorkey = TRUE,
   interpolate = FALSE,
   lgd.title = NULL,
   sp.layout = NULL,
+  layout = NULL,
+  NO_begin = 1,
+  cex.lgd = 1.3,
   par.settings = opt_trellis_default,
   par.settings2 = list(axis.line = list(col = "transparent")),
   ...
@@ -38,12 +42,31 @@ values in df into factor.}
 
 \item{colors}{corresponding colors of every break interval}
 
+\item{strip}{
+    These arguments are described in the help page for
+    \code{\link[lattice]{xyplot}}.
+  }
+
+\item{panel.titles_full}{string or expression vectors of panel titles, default NULL.
+If provided, group names in \code{df} will be overwritten.}
+
+\item{panel}{
+    panel function used to create the display, as described in
+    \code{\link[lattice]{xyplot}}
+  }
+
+\item{xlim}{The limits of x and y}
+
+\item{ylim}{The limits of x and y}
+
 \item{pars}{parameters controlling the position of histogram and panel titles,
 e.g. \code{list(title = list(x=77, y=39, cex=1.5), hist = list(origin.x=77, origin.y=28))}.}
 
 \item{colorkey}{Boolean or list returned by \code{\link[=get_colorkey]{get_colorkey()}}.}
 
 \item{sp.layout}{NULL or list; see notes below}
+
+\item{NO_begin}{beginning NO of the first panel}
 
 \item{...}{other parameters to spplot, for example:
 \itemize{

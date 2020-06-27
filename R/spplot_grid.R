@@ -15,51 +15,60 @@ check_brks <- function(brks){
 # ylim <- c(25.99376, 40.12632)
 
 #' Plot methods for spatial data with attributes
-#' 
+#'
 #' Lattice (trellis) plot methods for spatial data with attributes
-#' 
+#'
 #' @inheritParams levelplot2
 #' @inheritParams sp::spplot
 #' @param ... other parameters to spplot, for example:
 #' - xlim
-#' - ylim 
+#' - ylim
 #' - ...
-#' 
+#'
 #' @example man/examples/ex-spplot_grid.R
-#' 
+#'
 #' @seealso [sp::spplot()], [lattice::levelplot()]
-#' 
+#'
 #' @importFrom matrixStats weightedMedian weightedSd
-#' @importFrom sp spplot 
-#' @importFrom grid frameGrob placeGrob rectGrob segmentsGrob polygonGrob 
+#' @importFrom sp spplot
+#' @importFrom grid frameGrob placeGrob rectGrob segmentsGrob polygonGrob
 #' @importFrom lattice panel.number panel.segments panel.points panel.arrows
-#' 
+#'
 #' @importFrom raster plot
 #' @export
 spplot_grid <- function(
-    grid, zcols, 
-    brks, colors, col.rev = FALSE, 
-    toFactor = FALSE, 
-    sub.hist = TRUE, 
-    grob = NULL, bbox = c(0, 0.5, 0.5, 1),
-    # xlim = NULL, #c(73.5049, 104.9725)
-    # ylim = NULL, #c(25.99376, 40.12632)
-    panel.title = NULL, 
-    unit = "",  
-    unit.adj = 0.3, 
-    pars = list(title = list(x=77, y=39, cex=1.5)), 
-    stat = list(show = FALSE, name="RC", loc = c(81.5, 26.5), digit = 1, include.sd = FALSE),
-    area.weighted = FALSE, 
-    legend.space = "right", 
-    layout = NULL,
-    colorkey = TRUE, 
+    grid, zcols,
+
+    brks, colors,
+    strip = FALSE,
+    strip.factors = NULL,
+    toFactor = FALSE,
+
+    panel.titles_full = NULL,
+    panel = panel.spatial,
+    xlim = NULL, ylim = NULL,
+    unit = "", unit.adj = 0.3,
+
+    pars = NULL,
+    stat = list(show = FALSE, name = "RC", loc = c(81.5, 26.5), digit = 1,
+        include.sd = FALSE, FUN = weightedMedian),
+    area.weighted = FALSE,
+    legend.space = "right",
+    legend.num2factor = FALSE,
+
+    colorkey = TRUE,
     interpolate = FALSE,
-    lgd.title = NULL, 
-    sp.layout = NULL, 
-    par.settings = opt_trellis_default, 
+    lgd.title = NULL,
+    sp.layout = NULL,
+    layout = NULL,
+    NO_begin = 1,
+    cex.lgd = 1.3,
+    par.settings = opt_trellis_default,
     par.settings2 = list(axis.line = list(col = "transparent")),
     ...)
 {
+    df <- grid@data[, zcols, drop = FALSE]
+
     # update par.settings (20191003)
     par.settings <- modifyList(par.settings, par.settings2)
 
@@ -67,16 +76,17 @@ spplot_grid <- function(
     if (is.numeric(zcols)) { zcols <- names(grid)[zcols] }
     zcols %<>% intersect(names(grid@data))
 
-    # statistic mean value 
-    data.stat <- 
+    # statistic mean value
+    data.stat <-
         if (stat$show && !is.null(stat$loc)) {
             area = area.spatial(grid, area.weighted)
-            
+
             labels <- grid@data[, zcols, drop = FALSE] %>% lapply(spatial_meansd, area, stat, unit)
             list(loc = stat$loc, label = labels)
         } else NULL
-    
-    if (missing(colors)){ colors <- c("red", "grey80", "blue4") }
+
+    is_factor <- is.factor(df[[1]])
+    if (missing(colors)) colors <- c("red", "grey80", "blue4")
 
     if (missing(brks)) {
         vals <- grid@data[[zcols[1]]]
@@ -85,9 +95,7 @@ spplot_grid <- function(
         brks <- pretty(vals, n = 10) %>% c(-Inf, ., Inf)
         cols <- get_break_colors(colors, brks)
     } else {
-        cols <- get_break_colors(colors, brks)        
-        # cut into factor
-        df <- grid@data[, zcols, drop = FALSE]
+        cols <- get_break_colors(colors, brks)
         if (toFactor) {
             # drawkey can't support factor well
             df <- lapply(df, cut, brks) %>% as.data.frame()
@@ -95,38 +103,46 @@ spplot_grid <- function(
         levels <- cut(1, brks) %>% levels()
         grid@data <- df
     }
-    if (col.rev) cols %<>% rev()   
-    
+
     class  <- class(grid)
     params <- list(
         grid, zcols,
-        col.regions = cols,
-        panel.titles      = zcols,
-        panel.titles_full = panel.title,
-        panel = panel.spatial, 
-        sub.hist = sub.hist,
-        brks = brks,
-        # xlim = xlim, ylim = ylim, 
         ...,
-        strip = FALSE, as.table = TRUE,
-        sp.layout = sp.layout,
-        layout = layout,
-        # drop.unused.levels = FALSE, 
-        interpolate = interpolate,
-        par.settings = par.settings,
-        grob = grob, bbox = bbox,
-        pars = pars,
-        data.stat = data.stat,
-        class = class
+        col.regions       = cols,
+        panel.titles      = zcols,
+        panel.titles_full = panel.titles_full,
+        panel             = panel,
+        NO_begin          = NO_begin,
+        brks              = brks,
+        strip             = strip,
+        as.table          = TRUE,
+        sp.layout         = sp.layout,
+        layout            = layout,
+
+        xlab              = NULL,
+        ylab              = NULL,
+        interpolate       = interpolate,
+        par.settings      = par.settings,
+
+        scales            = list(draw = FALSE),
+        pars              = pars,
+        data.stat         = data.stat,
+        class             = class
     )
-    is_factor <- is.factor(grid@data[, zcols, drop = FALSE][[1]])
- 
-    if (!is_factor) params$at <- brks 
+    if (!is.null(xlim)) params$xlim <- xlim
+    if (!is.null(ylim)) params$ylim <- ylim
+
+    nbrk <- length(brks)
+    params$at <- if (!is_factor) brks else seq(0.5, nbrk + 1)
     
-    if (colorkey) {
-        params$colorkey <- get_colorkey(brks, NULL, legend.space, lgd.title, is_factor)
-        params$colorkey$unit     = unit
-        params$colorkey$unit.adj = unit.adj
+    if (is.list(colorkey) || colorkey) {
+        is_factor2 <- legend.num2factor || is_factor
+        colorkey.param <- get_colorkey(brks, NULL, legend.space, lgd.title, is_factor2, cex = cex.lgd)
+        colorkey.param$unit <- unit
+        colorkey.param$unit.adj <- unit.adj
+    
+        if (is.list(colorkey)) colorkey.param %<>% updateList(colorkey)
+        params$colorkey <- colorkey.param
     } else {
         params$colorkey <- FALSE
     }

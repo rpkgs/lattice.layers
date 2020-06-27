@@ -49,6 +49,7 @@ panel.spatial <- function(x, y, z, subscripts,
     v <- current.viewport()
     xlim <- v$xscale
     bbox <- c(194, max(xlim), -60, 90)
+
     # panel.annotation(grid.rect(), bbox = bbox, "native")
     if (show_horizontalFreq) {
         panel.horizontalFreq(x, y, z, subscripts, bbox = bbox + c(0, -10, 0, 0), "native",

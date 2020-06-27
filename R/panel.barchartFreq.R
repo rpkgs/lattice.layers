@@ -3,7 +3,7 @@
 #' @inheritParams lattice::panel.levelplot
 #' @inheritParams lattice::panel.barchart
 #' @inheritParams panel.annotation
-#' 
+#'
 #' @param w weights for percentage, with the same length as `z[subscripts]`
 #' @param yscale frequency range, `[0, 100]`
 #' @param yticks yaxis ticks position, in the range of `[0, 100]`
@@ -25,7 +25,7 @@ panel.barchartFreq <- function(z, subscripts,
     perc <- d$perc
     xpos <- seq_along(perc)
     xpos[1] <- 1
-    ypos <- perc * 100
+    ypos    <- perc * 100
 
     yticks <- get_yticks(perc, yticks, ntick)*100
     if (is.null(yscale)) yscale = c(0, max(yticks))

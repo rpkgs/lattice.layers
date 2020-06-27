@@ -1,7 +1,7 @@
 
 
 .options <- list(
-    style = c("EN", "CH")[2],
+    style = c("EN", "CH")[1],
     family = "Times",
     family_CH = c("TimesSimSun", "rTimes")[1], # TimesSimSun, rTimes
     shadePattern = list(col = "black", lwd = 1, lty = 1))
