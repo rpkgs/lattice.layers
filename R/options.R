@@ -15,7 +15,7 @@
 #' 
 #' @export
 set_options <- function(options) {
-    .options %<>% modifyList(options)
+    .options <<- modifyList(.options, options)
 }
 
 #' @rdname set_options

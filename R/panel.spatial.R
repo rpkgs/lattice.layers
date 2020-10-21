@@ -19,7 +19,8 @@ panel.spatial <- function(x, y, z, subscripts,
     SpatialPixel = NULL,
     show_signPerc = TRUE,
     show_horizontalFreq = FALSE,
-    bbox_barchartFreq = c(0.04, 0.26, 0.15, 0.4),
+    zlim_ratio = c(-1, 1),
+    bbox_barchartFreq = c(0.05, 0.26, 0.15, 0.4),
     yticks = seq(0, 0.6, 0.2),
     data.stat = NULL,
     prob_z = 0.9,
@@ -45,7 +46,7 @@ panel.spatial <- function(x, y, z, subscripts,
     ## 3. add panel title
     panel.text2(pars$title$x, pars$title$y, dot$panel.titles_full, dot$panel.titles,
         NO_begin, pars = pars, ...)
-
+    
     v <- current.viewport()
     xlim <- v$xscale
     bbox <- c(194, max(xlim), -60, 90)
@@ -56,6 +57,7 @@ panel.spatial <- function(x, y, z, subscripts,
             # xlim = c(-1, 1)*5,
             prob_z = prob_z,
             ylim = bbox[3:4],
+            zlim_ratio = zlim_ratio,
             col.regions = dot$col.regions, length.out = 1e3, is_spatial = TRUE)
     }
 

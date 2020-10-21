@@ -18,6 +18,7 @@ panel.spatial(
   SpatialPixel = NULL,
   show_signPerc = TRUE,
   show_horizontalFreq = FALSE,
+  zlim_ratio = c(-1, 1),
   bbox_barchartFreq = c(0.04, 0.26, 0.15, 0.4),
   yticks = seq(0, 0.6, 0.2),
   data.stat = NULL,

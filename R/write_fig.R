@@ -13,7 +13,7 @@
 #' @param use.cairo_pdf This parameter is for pdf type. whether to use `grDevices::cairo_pdf`?
 #' `cairo_pdf` supports self defined font, but can not create multiple page pdf.
 #' 
-#' @seealso [grDevices::cairo()], [grDevices::png()], [Cairo::Cairo()]
+#' @seealso [grDevices::cairo_pdf()], [grDevices::png()], [Cairo::Cairo()]
 #' @example man/examples/ex-write_fig.R
 #' 
 #' @importFrom grDevices svg tiff
@@ -51,7 +51,7 @@ write_fig <- function (p, file = "Rplot.pdf", width = 10, height = 5,
 
         if (file_ext == "pdf") {
             devicefun <- ifelse (use.cairo_pdf, cairo_pdf, Cairo::CairoPDF)
-            param %<>% c(list(family = "Times"))
+            # param %<>% c(list(family = "Times"))
         } else if (file_ext == "svg") {
             devicefun <- svg
         } else if (file_ext == "emf") {

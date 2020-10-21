@@ -17,6 +17,7 @@ panel.horizontalFreq(
   xlab = "",
   ylab = "",
   zlim = NULL,
+  zlim_ratio = c(-1, 1),
   zticks = NULL,
   is_spatial = FALSE,
   prob_z = 0.9,
@@ -52,6 +53,8 @@ of the relevant side, so if tck = 1 grid lines are drawn. The default setting
 \item{xlab, ylab}{the title of xaxis and yaxis.}
 
 \item{zlim}{the limits of \code{z} value. If not specified, it's \code{c(-1, 1)*quantile(abs(z), 0.9)}.}
+
+\item{zlim_ratio}{If \code{zlim} not provided, \code{zlim = zlim_ratio * zmax}}
 
 \item{prob_z}{default 0.9, the probability of z quantile, which used to determine the zlim.}
 }

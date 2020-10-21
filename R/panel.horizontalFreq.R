@@ -9,6 +9,7 @@
 #' (tck = NA) is to use tcl = -0.5.
 #' @param xlab,ylab the title of xaxis and yaxis.
 #' @param zlim the limits of `z` value. If not specified, it's `c(-1, 1)*quantile(abs(z), 0.9)`.
+#' @param zlim_ratio If `zlim` not provided, `zlim = zlim_ratio * zmax`
 #' @param prob_z default 0.9, the probability of z quantile, which used to determine the zlim.
 #' 
 #' @examples
@@ -21,6 +22,7 @@ panel.horizontalFreq <- function(x, y, z, subscripts,
     length.out = 1e4, ...,
     tcl = 0.4, xlab = "", ylab = "", 
     zlim = NULL, 
+    zlim_ratio = c(-1, 1),
     zticks = NULL,
     is_spatial = FALSE, 
     prob_z = 0.9,
@@ -37,7 +39,7 @@ panel.horizontalFreq <- function(x, y, z, subscripts,
         if (is.null(zlim)) {
             zmax <- z[subscripts] %>% abs %>% quantile(prob_z, na.rm = TRUE) 
             zmax <- if (zmax > 0.5) round_decade(zmax) else round(zmax, 1)
-            zlim <- c(-1, 1)*zmax
+            zlim <- zlim_ratio * zmax
         } else zmax = max(zlim)
         
         d <- data.table(vals = z[subscripts], x = y[subscripts])
