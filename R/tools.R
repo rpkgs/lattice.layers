@@ -1,17 +1,17 @@
-#' check_dir
-#' @param path character vectors
-#'
-#' @keywords internal
-#' @export
-check_dir <- function(path){
-    for (i in seq_along(path)) {
-        path_i <- path[[i]]
-        if (!dir.exists(path_i)){
-            dir.create(path_i, recursive = TRUE)
-        }
-    }
-    path
-}
+# #' check_dir
+# #' @param path character vectors
+# #'
+# #' @keywords internal
+# #' @export
+# check_dir <- function(path){
+#     for (i in seq_along(path)) {
+#         path_i <- path[[i]]
+#         if (!dir.exists(path_i)){
+#             dir.create(path_i, recursive = TRUE)
+#         }
+#     }
+#     path
+# }
 
 alpha <- function (colour, alpha = NA) {
     if (length(colour) != length(alpha)) {
@@ -71,15 +71,15 @@ help_gpar <- function() {
         font       = "Font face (alias for fontface; for backward compatibility") %>% str()
 }
 
-#' fprintf
-#' Print sprintf result into console, just like C style fprintf function
-#' @param fmt a character vector of format strings, each of up to 8192 bytes.
-#' @param ... other parameters will be passed to `sprintf`
-#'
-#' @examples
-#' cat(fprintf("%s\n", "Hello phenofit!"))
-#' @export
-fprintf <- function(fmt, ...) cat(sprintf(fmt, ...))
+# #' fprintf
+# #' Print sprintf result into console, just like C style fprintf function
+# #' @param fmt a character vector of format strings, each of up to 8192 bytes.
+# #' @param ... other parameters will be passed to `sprintf`
+# #'
+# #' @examples
+# #' cat(fprintf("%s\n", "Hello phenofit!"))
+# #' @export
+# fprintf <- function(fmt, ...) cat(sprintf(fmt, ...))
 
 
 asign_func <- function(func_old, func_new) {

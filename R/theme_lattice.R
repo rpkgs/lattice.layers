@@ -115,6 +115,8 @@ updateList <- function(x, val) {
     if (missing(object) || missing(lay)) 
         stop("Only one argument supplied to binary operator + which requires two.")
     stopifnot(inherits(object, "trellis"))
+    browser()
+    
     lay <- latticeExtra::as.layer(lay)
     if (inherits(object, "layer")) {
         return(structure(c(unclass(object), unclass(lay)), class = c("layer", "trellis")))

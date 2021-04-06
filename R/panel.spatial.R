@@ -87,6 +87,7 @@ panel.spatialBasic <- function(x, y, z, subscripts, class, contour, interpolate,
         panel.polygonsplot(x, y, z, subscripts, ..., sp.layout = sp.layout)
     }
     if (contour) {
+        browser()
         panel.levelplot(x, y, z, subscripts,
             region = TRUE, contour = TRUE, labels = TRUE, interpolate = FALSE)
     }

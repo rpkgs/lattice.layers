@@ -12,6 +12,7 @@ panel.text2 <- function(x, y, panel.titles_full = NULL, panel.titles = NULL, NO_
     if (!(not.titles_full && is.null(panel.titles[NO_panel]))) {
         panel.title <- ifelse(not.titles_full,
             paste0("(", letters[i], ") ", panel.titles[NO_panel]),
+            # paste0(letters[i], ". ", panel.titles[NO_panel]),
             panel.titles_full[NO_panel]
         )
         panel.text(x, y, panel.title, # english name: New_names[i])

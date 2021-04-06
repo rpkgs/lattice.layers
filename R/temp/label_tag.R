@@ -14,6 +14,7 @@ label_tag <- function(labels, tag = TRUE) {
         data <- list(tag = letters[i], x = name)
         if (tag) {
             eval(substitute(expression(bold("(" * tag * ")" ~ x)), data))
+            # eval(substitute(expression(bold(tag * ". " ~ x)), data))
         } else {
             eval(substitute(expression(bold(x)), data))
         }
