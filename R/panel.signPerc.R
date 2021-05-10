@@ -1,19 +1,19 @@
 #' Panel of percentage of negative (significant negative%) and positive% (significant positive%)
-#' 
+#'
 #' @inheritParams panel.spatial
 #' @param z numeric vector
-#' @param mask boolean vector with the same length as z, indicating whether 
+#' @param mask boolean vector with the same length as z, indicating whether
 #' corresponding z value is significant.
 #' @param xpos,ypos The x and y position of positive and negative percentage label.
 #' @param ... ignored
-#' 
-#' @examples 
+#'
+#' @examples
 #' \dontrun{
 #' panel.signPerc(z = NULL, mask = NULL, xpos = 0.1, ypos = 0.9, ...)
 #' }
-#' @export 
-panel.signPerc <- function(z = NULL, subscripts, mask = NULL, xpos = 0.1, ypos = 0.9, 
-    col.regions = c("blue", "red"), ...) 
+#' @export
+panel.signPerc <- function(z = NULL, subscripts, mask = NULL, xpos = 0.1, ypos = 0.9,
+    col.regions = c("blue", "red"), ...)
 {
     # val <- sign(d[[value.var]]) # 只考虑-1, 1，不考虑0
     val <- sign(z[subscripts])
@@ -46,7 +46,7 @@ panel.signPerc <- function(z = NULL, subscripts, mask = NULL, xpos = 0.1, ypos =
 
     family <- get_family()
     grid.rect(xpos, ypos, width = width*(1/1.2), height = height*2, just = c(0, 1), gp = gpar(col = "transparent"))
-    
+
     ncolors <- length(col.regions)
     col.neg = col.regions[1]
     col.pos = col.regions[ncolors]
@@ -63,21 +63,27 @@ panel.signPerc <- function(z = NULL, subscripts, mask = NULL, xpos = 0.1, ypos =
     # data.frame(str_neg, str_pos)
 }
 
+#' @importFrom stars st_as_stars
+#' @importFrom sf st_as_sf as_Spatial
 #' @rdname panel.signPerc
 #' @export
 panel.signDist <- function(list.mask, SpatialPixel, par.shade = NULL, density = 1, angle = 45, ... ) {
+    NO_panel = panel.number()
     if (!is.null(list.mask) && !is.null(SpatialPixel)) {
         mask = list.mask[[NO_panel]]
         I_sign <- which(mask)
-        
-        if (length(I_sign) > 0) {
-            # modifyList
-            par.shade <- .options$shadePattern
-            poly_shade = raster2poly(SpatialPixel[I_sign, ])
 
-            params.shade = list(poly_shade, union = FALSE, density, angle, sp.layout = NULL) %>%
-                c(., par.shade, list(...))
-            do.call(panel.poly_grid, params.shade)
+        if (length(I_sign) > 0) {
+            grid <- SpatialPixel[I_sign, ]
+            grid@data <- data.frame(mask = rep(TRUE, length(grid)))
+
+            poly_shade <- st_as_stars(grid) %>%
+                st_as_sf(as_points = FALSE, merge = TRUE) %>% as_Spatial()
+            # poly_shade = st_as_sf(as_SpatialGridDataFrame(grid), as_points = FALSE, merge = TRUE) %>% as_Spatial()
+            # poly_shade <- raster2poly(grid)
+            params = listk(union = FALSE, density, angle, sp.layout = NULL) %>%
+                c(., list(...))
+            do.call(panel.poly_grid, c(list(poly_shade), params))
         }
     }
 }

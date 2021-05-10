@@ -14,7 +14,7 @@
 #' `cairo_pdf` supports self defined font, but can not create multiple page pdf.
 #' 
 #' @seealso [grDevices::cairo_pdf()], [grDevices::png()], [Cairo::Cairo()]
-#' @example man/examples/ex-write_fig.R
+#' @example R/examples/ex-write_fig.R
 #' 
 #' @importFrom grDevices svg tiff
 #' @export

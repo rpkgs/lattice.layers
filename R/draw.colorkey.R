@@ -37,7 +37,7 @@ convertTri <- function(x, inf = FALSE, height = 0.05)
 #'
 #' @inheritParams lattice::draw.colorkey
 #' 
-#' @example man/examples/ex-draw.colorkey.R
+#' @example R/examples/ex-draw.colorkey.R
 #' @import lattice
 #' @export
 draw.colorkey <- function(key, draw = FALSE, vp = NULL)

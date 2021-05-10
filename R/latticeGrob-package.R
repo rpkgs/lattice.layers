@@ -5,7 +5,8 @@
 #' @importFrom grDevices cairo_pdf jpeg dev.off svg tiff colorRampPalette xy.coords
 #' @importFrom graphics par polygon abline axis rect
 #' @importFrom methods as
-#' @importFrom data.table data.table
+#' @importFrom data.table data.table is.data.table
+#' @importFrom Ipaper write_fig first last melt_list listk label_tag
 #' @importFrom plyr dlply
 "_PACKAGE"
 

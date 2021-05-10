@@ -1,6 +1,6 @@
 Package: latticeGrob
 Title: Extend Lattice Panels by Grob Objects
-Version: 0.0.0.9000
+Version: 0.1.0.9000
 Authors@R: person("Dongdong", "Kong", email = "kongdd.sysu@gmail.com",
   role = c("aut", "cre"))
 Description: Based on lattice, this package extends Lattice Panels by `panel.annotation`,
@@ -11,6 +11,8 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports:
+    sf,
+    stars,
     sp,
     raster,
     matrixStats,
@@ -21,7 +23,11 @@ Imports:
     ggplotify, 
     methods,
     plyr,
-    reshape2
+    stringr,
+    reshape2,
+    Ipaper
+Remotes:
+    rpkgs/Ipaper
 Suggests: 
     testthat,
     devEMF,

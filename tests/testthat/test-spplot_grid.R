@@ -10,7 +10,7 @@ test_that("spplot_grid, levelplot2 works", {
     # 1. spplot_grid
     expect_true({
         p <- spplot_grid(grid_avhrr, stat = stat, interpolate = FALSE)
-        write_fig(p, "ex-spplot_grid.svg", 10, 7, show = FALSE)
+        write_fig(p, "ex-spplot_grid.pdf", 10, 7, show = FALSE)
         TRUE
     })
 
@@ -36,16 +36,16 @@ test_that("spplot_grid, levelplot2 works", {
     # 3. levelplot-shade
     expect_true({
         # data <- coordinates(grid) %>% as.data.table() %>% cbind(grid@data)
-        d  = grid@data %>% data.table()
-        df = d
+        df = grid@data %>% data.table()
         df.mask = df[, .(mask = (X1982 > 270 | X1982 < 240))]
         p <- levelplot2(X1982~s1+s2, df, SpatialPixel,
                         df.mask,
                         aspect = 0.75,
                         NO_begin = 3,
+                        lwd.patch = 1,
                         stat = stat, pars = pars,
-                        density = 0.5, interpolate = FALSE)
-        write_fig(p, "ex-levelplot2.svg", 10, 7, show = FALSE)
+                        density = 1, interpolate = FALSE)
+        write_fig(p, "ex-levelplot2.pdf", show = FALSE)
         TRUE
     })
 })

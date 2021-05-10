@@ -29,7 +29,7 @@
 #' @param colorkey Boolean or list returned by [get_colorkey()].
 #' @param NO_begin beginning NO of the first panel
 #'
-#' @example man/examples/ex-spplot_grid.R
+#' @example R/examples/ex-spplot_grid.R
 #'
 #' @seealso [spplot_grid()], [sp::spplot()], [lattice::levelplot()]
 #' @note parameter `panel.title` change to `panel.titles_full`
@@ -52,19 +52,19 @@ levelplot2 <- function(
     strip = FALSE,
     strip.factors = NULL,
     toFactor = FALSE,
-    
+
     panel.titles_full = NULL,
     panel = panel.spatial,
     xlim = NULL, ylim = NULL,
     unit = "", unit.adj = 0.3,
 
     pars = NULL,
-    stat = list(show = FALSE, name = "RC", loc = c(81.5, 26.5), digit = 1, 
+    stat = list(show = FALSE, name = "RC", loc = c(81.5, 26.5), digit = 1,
         include.sd = FALSE, FUN = weightedMedian),
     area.weighted = FALSE,
     legend.space = "right",
     legend.num2factor = FALSE,
-
+#
     colorkey = TRUE,
     interpolate = FALSE,
     lgd.title = NULL,
@@ -74,22 +74,27 @@ levelplot2 <- function(
     cex.lgd = 1.3,
     par.settings = opt_trellis_default,
     par.settings2 = list(axis.line = list(col = "transparent")),
-    ...) 
+    ...)
 {
     info.formula <- parse.formula(formula)
     value.var <- info.formula$value.var
     groups <- info.formula$groups
 
+    if (!is.data.table(df)) df = data.table(df)
     # zcols only for one group
-    zcols <- if (length(groups) == 1) {
-        levels <- levels(df[[groups]])
-        labs_unique <- unique(df[[groups]])
-        if (is.null(levels)) {
-            levels <- labs_unique
-        } else {
-            levels <- intersect(levels, labs_unique)
+    d_grp = NULL
+    if (length(groups) > 0) {
+        d_grp = unique(df[, ..groups])
+        if (is.null(panel.titles_full)) {
+            panel.titles_full = d_grp[, do.call(paste, c(.SD, list(sep = " ")))] %>%
+                label_tag()
         }
-        levels
+    }
+
+    zcols <- if (length(groups) == 1) {
+        vals_unique <- d_grp[[1]]
+        levels <- levels(vals_unique)
+        levels <- if (is.null(levels)) vals_unique else  intersect(levels, vals_unique) # rm no-value levels
     } else {
         NULL
     }
@@ -124,11 +129,10 @@ levelplot2 <- function(
               })
             list(loc = stat$loc, label = labels)
         } else NULL
-        
 
     is_factor <- is.factor(df[[value.var]])
     if (missing(colors)) colors <- c("red", "grey80", "blue4")
-    
+
     if (missing(brks)) {
         if (!is_factor) {
             vals <- df[[value.var]]
@@ -175,7 +179,7 @@ levelplot2 <- function(
         sp.layout         = sp.layout,
         layout            = layout,
 
-        xlab              = NULL, 
+        xlab              = NULL,
         ylab              = NULL,
         interpolate       = interpolate,
         par.settings      = par.settings,

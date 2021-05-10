@@ -42,10 +42,17 @@ clamp <- function(x, lims = c(0, 1), fill.na = FALSE){
 }
 
 # for levelplot2
-parse.formula <- function(formula = x~s1+s2) {
-    str_formula <- gsub("s1 \\+ s2 *\\|*| ", "", as.character(formula))
+#' @importFrom stringr str_extract str_split
+parse.formula <- function(formula = x~s1+s2|b1+b2) {
+    str_formula <- as.character(formula)
+    # str_formula[3] %>% str_extract("(?<=|).*")
+    # str_formula <- gsub("s1 \\+ s2 *\\|*| ", "", ) %>%
+    #     gsub("Var1 \\+ Var2 *\\|*| ", "", .)
     value.var = str_formula[2]
-    groups    = strsplit(str_formula[3], "\\+|\\*")[[1]]
+    groups    = str_formula[3] %>% str_extract("(?<=\\| ).*") %>%
+        gsub(" ", "", .) %>%
+        str_split("\\+") %>% .[[1]]
+    if (length(groups) == 1 && is.na(groups)) groups = NULL
     list(value.var = value.var, groups = groups)
 }
 

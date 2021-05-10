@@ -25,7 +25,7 @@ check_brks <- function(brks){
 #' - ylim
 #' - ...
 #'
-#' @example man/examples/ex-spplot_grid.R
+#' @example R/examples/ex-spplot_grid.R
 #'
 #' @seealso [sp::spplot()], [lattice::levelplot()]
 #'

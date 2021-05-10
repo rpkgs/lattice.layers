@@ -44,9 +44,10 @@ panel.spatial <- function(x, y, z, subscripts,
     }
 
     ## 3. add panel title
+    # browser()
     panel.text2(pars$title$x, pars$title$y, dot$panel.titles_full, dot$panel.titles,
         NO_begin, pars = pars, ...)
-    
+
     v <- current.viewport()
     xlim <- v$xscale
     bbox <- c(194, max(xlim), -60, 90)
