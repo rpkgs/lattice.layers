@@ -8,6 +8,8 @@
 #' @importFrom data.table data.table is.data.table
 #' @importFrom Ipaper write_fig first last melt_list listk label_tag
 #' @importFrom plyr dlply
+#' @importFrom dplyr select
+#' 
 "_PACKAGE"
 
 # The following block is used by usethis to automatically manage

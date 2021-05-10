@@ -31,10 +31,11 @@ panel.spatial <- function(x, y, z, subscripts,
     fontfamily = get_family()
     dot <- list(...)
 
+# browser()
     panel.spatialBasic(x, y, z, subscripts, class, contour, interpolate, ..., sp.layout = sp.layout)
     # mask lat <= -60
-    panel.annotation(grid.rect(gp = gpar(col = "transparent", fill = "white")),
-        bbox = c(-180, 180, -75, -60), "native", clip = "off")
+    # panel.annotation(grid.rect(gp = gpar(col = "transparent", fill = "white")),
+    #     bbox = c(-180, 180, -75, -60), "native", clip = "off")
 
     # 2. stands out significant part
     if (show_signPerc) {

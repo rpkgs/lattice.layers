@@ -102,7 +102,12 @@ panel.gridplot2(
 panel.patch
 }
 \details{
-shadePattern can be set by \code{set_options(list(col, lty, lwd))}
+shadePattern can be set by \code{set_options(list(shadePattern = list(col = "black", lty = 1, lwd = 2)))}
+
+\itemize{
+\item \code{panel.gridplot2}: SpatialPixels or SpatialGrid
+\item \code{panel.polygonsplot2}: SpatialPolygon
+}
 }
 \examples{
 \dontrun{
@@ -130,8 +135,8 @@ print(spplot(r[I, ], poly_shade = poly2, panel = panel.gridplot2,
 }
 }
 \seealso{
-\link[graphics:polygon]{graphics::polygon}
+\code{\link[graphics:polygon]{graphics::polygon()}}
 }
 \author{
-XiHui Gu
+XiHui Gu and Dongdong Kong
 }

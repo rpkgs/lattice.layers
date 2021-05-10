@@ -6,12 +6,12 @@
 #' - `panel.patch.list`: other parameters to [panel.patch()]
 #'
 #' @details
-#' shadePattern can be set by `set_options(list(col, lty, lwd))`
-#' @author XiHui Gu
+#' shadePattern can be set by `set_options(list(shadePattern = list(col = "black", lty = 1, lwd = 2)))`
+#' @author XiHui Gu and Dongdong Kong
 #'
 #' @example R/examples/ex-panel.patch.R
 #'
-#' @seealso [graphics::polygon]
+#' @seealso [graphics::polygon()]
 #' @export
 panel.patch <- function(
     x, y = NULL,
@@ -114,6 +114,10 @@ panel.polygonsplot2 <- function (
     # sppanel(list(sp.layout), panel.number(), first = FALSE)
 }
 
+#' @details 
+#' - `panel.gridplot2`: SpatialPixels or SpatialGrid
+#' - `panel.polygonsplot2`: SpatialPolygon
+#' 
 #' @rdname panel.patch
 #' @export
 panel.gridplot2 <- function (

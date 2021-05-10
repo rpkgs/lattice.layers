@@ -1,3 +1,4 @@
+library(Ipaper)
 
 # 暂且使用rTIMES
 write_fig({

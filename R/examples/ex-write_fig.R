@@ -1,4 +1,5 @@
 \dontrun{
+library(Ipaper)
 library(ggplot2)
 p <- ggplot(mpg, aes(class, hwy))
 p1 <- p + geom_boxplot2()
