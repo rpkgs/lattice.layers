@@ -1,5 +1,23 @@
-#' Panel of frequency barchart
+#' layer of frequency histogram
 #'
+#' @param ... other parameters to [panel.latFreq()]
+#' @export
+layer_histFreq <- function(
+    x = 0.05, y = 0.15, 
+    width = 0.25, height = 0.4, 
+    yticks = seq(0, 0.3, 0.1),
+    box.width = 0.8,
+    digit = 2,
+    ...)
+{
+    dots = mget(ls()) %>% c(...)
+    layer({
+        params <- listk(z, subscripts, at, col.regions)
+        params %<>% c(dots2)
+        do.call(panel.histFreq, params)
+    }, data = listk(dots2 = dots))
+}
+
 #' @inheritParams lattice::panel.levelplot
 #' @inheritParams lattice::panel.barchart
 #' @inheritParams panel.annotation
@@ -14,13 +32,20 @@
 #' \dontrun{
 #' panel.barchartFreq(z, subscripts, bbox = c(0.05, 0.5, 0, 0.5), unit = "npc")
 #' }
+#' @rdname layer_histFreq
 #' @export
-panel.barchartFreq <- function(z, subscripts,
-    bbox = c(0.05, 0.5, 0, 0.5), unit = "npc",
-    at, col.regions,
-    box.width = 0.8, border = "transparent",
-    yscale = NULL,  yticks = NULL, ntick = NULL, w = NULL, digit = 2, ...)
+panel.histFreq <- function(z, subscripts, at, col.regions,
+    x = 0.05, y = 0.15, 
+    width = 0.25, height = 0.4, 
+    yticks = NULL,
+    box.width = 0.8,
+    digit = 2,
+    unit = "npc",
+    border = "transparent",
+    yscale = NULL,
+    ntick = NULL, w = NULL, ...)
 {
+    # browser()
     d <- get_perc.factor(z, subscripts, at = at, ...)
     perc <- d$perc
     xpos <- seq_along(perc)
@@ -52,6 +77,8 @@ panel.barchartFreq <- function(z, subscripts,
 
     xscale = c(-1.9, max(xpos)+1.4)
     if (is.null(yscale)) yscale = range(ypos)
+
+    bbox = c(x, x + width, y, y + height)
     panel.annotation(g, bbox, unit, xscale = xscale, yscale = yscale, clip = "off")
 }
 

@@ -7,7 +7,7 @@ modify_list <- function(old, new)  {
     old
 }
 
-find_args <- function(...) 
+find_args <- function(...)
 {
     env <- parent.frame()
     args <- names(formals(sys.function(sys.parent(1))))
@@ -17,28 +17,28 @@ find_args <- function(...)
 }
 
 #' theme_lattice
-#' 
+#'
 #' margin object in the order to `"top", "right", "bottom", "left"`.
-#' 
+#'
 #' @param plot.margin plot padding in layout.heights and layoutheights
-#' @param key.margin legend margin 
+#' @param key.margin legend margin
 #' @param axis.margin axis margin
 #' @param layout.widths,layout.heights margins of `layout.widths` and `layout.heights`
 #' @param par.settings `par.settings` for lattice
-#' 
+#'
 #' @param axis.components.inner,axis.components.outer margins
 #' @param ... ignored
-#' 
+#'
 #' @note key.margin left not work (right controls)
-#' 
+#'
 #' @export
-theme_lattice <- function(plot.margin, key.margin, axis.margin, 
+theme_lattice <- function(plot.margin, key.margin, axis.margin,
     axis.components.inner,
     axis.components.outer,
-    ..., 
+    ...,
     layout.widths,
-    layout.heights, 
-    par.settings) 
+    layout.heights,
+    par.settings)
 {
     orders = c("top", "right", "bottom", "left")
     dots   = list(...)
@@ -54,13 +54,13 @@ theme_lattice <- function(plot.margin, key.margin, axis.margin,
     if (!missing(key.margin)) {
         margin = key.margin %>% as.numeric()
         setting$layout.heights %<>% updateList(list(key.top   = margin[1], key.bottom = margin[3]))
-        setting$layout.widths  %<>% updateList(list(key.right = margin[2], key.left = margin[4]))   
+        setting$layout.widths  %<>% updateList(list(key.right = margin[2], key.left = margin[4]))
     }
 
     if (!missing(axis.margin)) {
         margin = axis.margin %>% as.numeric()
         setting$layout.heights %<>% updateList(list(axis.top   = margin[1], axis.bottom = margin[3]))
-        setting$layout.widths  %<>% updateList(list(axis.right = margin[2], axis.left = margin[4]))   
+        setting$layout.widths  %<>% updateList(list(axis.right = margin[2], axis.left = margin[4]))
     }
 
     if (!missing(axis.components.inner)) {
@@ -71,7 +71,7 @@ theme_lattice <- function(plot.margin, key.margin, axis.margin,
         }
         setting$axis.components %<>% updateList(axis.components)
     }
-    
+
     if (!missing(axis.components.outer)) {
         margin = axis.components.outer %>% as.numeric()
         axis.components = NULL
@@ -108,24 +108,23 @@ updateList <- function(x, val) {
     modifyList(x, val)
 }
 
-`+.trellis0` <- function (object, lay) 
+`+.trellis0` <- function (object, lay)
 {
     ocall <- sys.call(sys.parent())
     ocall[[1]] <- quote(`+`)
-    if (missing(object) || missing(lay)) 
+    if (missing(object) || missing(lay))
         stop("Only one argument supplied to binary operator + which requires two.")
     stopifnot(inherits(object, "trellis"))
-    browser()
-    
+
     lay <- latticeExtra::as.layer(lay)
     if (inherits(object, "layer")) {
         return(structure(c(unclass(object), unclass(lay)), class = c("layer", "trellis")))
     }
 
-    panel <- if ("panel" %in% names(object$panel.args.common)) 
+    panel <- if ("panel" %in% names(object$panel.args.common))
         object$panel.args.common$panel
     else object$panel
-    panel <- if (is.function(panel)) 
+    panel <- if (is.function(panel))
         panel
     else if (is.character(panel)) {
         tmp <- function(...) NA
@@ -141,7 +140,7 @@ updateList <- function(x, val) {
         panel(...)
         latticeExtra::drawLayer(lay[.UNDER == FALSE], list(...))
     }
-    if ("panel" %in% names(object$panel.args.common)) 
+    if ("panel" %in% names(object$panel.args.common))
         object$panel.args.common$panel <- newpanel
     else object$panel <- newpanel
     object$call <- call("update", ocall)
@@ -149,10 +148,10 @@ updateList <- function(x, val) {
 }
 
 #' lattice plus manipulation
-#' 
+#'
 #' @param p lattice plot
 #' @param setting `par.settings` for lattice
-#' 
+#'
 #' @keywords internal
 #' @export
 `+.trellis` <- function(p, setting){
@@ -161,7 +160,7 @@ updateList <- function(x, val) {
             `+.trellis0`(p, setting)
         } else {
             # setting = p$par.settings
-            p$par.settings %<>% updateList(setting)        
+            p$par.settings %<>% updateList(setting)
             p
         }
     } else p
@@ -170,7 +169,7 @@ updateList <- function(x, val) {
 #' @importFrom utils modifyList
 ## Test about modifyList
 
-# par.strip.text = list(cex = 2) 
+# par.strip.text = list(cex = 2)
 layout.heights <- function(
     main             = 1,
     main.key.padding = 1,
@@ -191,16 +190,16 @@ layout.heights <- function(
 }
 
 layout.widths <- function(
-    axis.key.padding = 1, 
-    axis.panel       = 1, 
-    between          = 1, 
-    key.ylab.padding = 0, 
-    panel            = 1, 
-    strip.left       = 1, 
-    ylab             = 1, 
-    ylab.axis.padding= 1, 
+    axis.key.padding = 1,
+    axis.panel       = 1,
+    between          = 1,
+    key.ylab.padding = 0,
+    panel            = 1,
+    strip.left       = 1,
+    ylab             = 1,
+    ylab.axis.padding= 1,
     ylab.right       = 1, ...)
 {
     elements <- find_args(..., complete = NULL, validate = NULL)
-    elements 
+    elements
 }

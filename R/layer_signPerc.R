@@ -1,19 +1,38 @@
+#' @export
+layer_signPerc <- function(
+    x = 0.05, y = 0.6, 
+    bg = "transparent",
+    # cex = 1.2, adj = c(0, 0),
+    ...)
+{    
+    # dots = listk(digit, include.sd, unit, FUN)
+    dots = mget(ls())
+    layer({
+        ij = panel.number()
+        mask = parent.frame(n = 2)$list.mask[[ij]]
+        params <- listk(z = z[subscripts], mask, col.regions) %>% c(dots)
+        do.call(panel.signPerc, params)
+        # grid.text(label, dots3)
+    }, data = listk(dots = dots))
+}
+
 #' Panel of percentage of negative (significant negative%) and positive% (significant positive%)
 #'
 #' @inheritParams panel.spatial
 #' @param z numeric vector
 #' @param mask boolean vector with the same length as z, indicating whether
 #' corresponding z value is significant.
-#' @param xpos,ypos The x and y position of positive and negative percentage label.
+#' @param x,y The x and y position of positive and negative percentage label.
 #' @param ... ignored
-#'
+#' @param bg background color
+#' 
 #' @examples
 #' \dontrun{
-#' panel.signPerc(z = NULL, mask = NULL, xpos = 0.1, ypos = 0.9, ...)
+#' panel.signPerc(z = NULL, mask = NULL, x = 0.1, y = 0.9, ...)
 #' }
 #' @export
-panel.signPerc <- function(z = NULL, mask = NULL, xpos = 0.1, ypos = 0.9,
-    col.regions = c("blue", "red"), ...)
+panel.signPerc <- function(z = NULL, mask = NULL, col.regions = c("blue", "red"), 
+    x = 0.05, y = 0.8, bg = "transparent")
 {
     # val <- sign(d[[value.var]]) # 只考虑-1, 1，不考虑0
     val <- sign(z)
@@ -36,15 +55,16 @@ panel.signPerc <- function(z = NULL, mask = NULL, xpos = 0.1, ypos = 0.9,
         str_pos <- sprintf("P: %.1f%%", sum(perc[3]))
     }
     # listk(str_neg, str_pos) %>% str() %>% print() # debug
-    width  <- max(stringWidth(str_neg), stringWidth(str_pos)) * 1.2
+    width  <- max(stringWidth(str_neg), stringWidth(str_pos)) 
     height <- max(stringHeight(str_neg), stringHeight(str_pos))*2
 
-    xpos <- unit(xpos, "npc")
-    ypos <- unit(ypos, "npc")
+    x <- unit(x, "npc")
+    y <- unit(y, "npc")
 
     family <- get_family()
-    grid.rect(xpos, ypos, width = width*(1/1.2), height = height*2, just = c(0, 1), gp = gpar(col = "transparent"))
-
+    grid.rect(x, y, width = width*0.94, height = height*2, just = c(0, 1), 
+        gp = gpar(col = bg))
+    
     ncolors <- length(col.regions)
     col.neg = col.regions[1]
     col.pos = col.regions[ncolors]
@@ -53,10 +73,11 @@ panel.signPerc <- function(z = NULL, mask = NULL, xpos = 0.1, ypos = 0.9,
         col.pos = col.regions[ncolors-1]
     }
 
-    grid.text(str_neg, xpos, ypos, just = c(0, 1),
+    y = y - height*0.2
+    grid.text(str_neg, x, y, just = c(0, 1),
               name = "label_perc.neg",
               gp = gpar(col = col.neg, fill = "transparent", fontfamily = .options$family))
-    grid.text(str_pos, xpos, ypos - height , just = c(0, 1),
+    grid.text(str_pos, x, y - height , just = c(0, 1),
               name = "label_perc.pos",
               gp = gpar(col = col.pos, fill = "transparent", fontfamily = .options$family))
     # data.frame(str_neg, str_pos)

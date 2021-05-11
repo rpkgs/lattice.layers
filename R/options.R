@@ -1,10 +1,9 @@
 
 
 .options <- list2env(list(
-    style = c("EN", "CH")[2],
+    style = c("EN", "CH")[1],
     family = "Times",
-    family_CH = c("TimesSimSun", "rTimes")[2], # TimesSimSun, rTimes
-    shadePattern = list(col = "black", lty = 1, lwd = 1) # 
+    family_CH = c("TimesSimSun", "rTimes")[2] # TimesSimSun, rTimes
 ))
 
 #' set latticeMap options

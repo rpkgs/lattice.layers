@@ -17,25 +17,25 @@
 #' @param length.out the length of interpolated `vals` and `x`
 #' @param alpha the alpha of polygon's fill color
 #' @param zlim limits of `vals`
-#' 
+#'
 #' @examples
 #' set.seed(1)
 #' y <- rnorm(10)
 #' x <- seq_along(y)
 #' @export
-draw_polygon <- function(vals, x = NULL, type = "horizontal", length.out = 1e4, 
-    col.regions = c("blue", "red"), alpha = 0.6, 
+draw_polygon <- function(vals, x = NULL, type = "horizontal", length.out = 1e4,
+    col.regions = c("blue", "red"), alpha = 0.6,
     zlim = c(-Inf, Inf),
-    ...) 
+    ...)
 {
     n    <- length(vals)
     vals <- vals %>% c(0, ., 0)
     x    <- x %>% c(.[1], ., .[n])
-    
+
     if (is.null(x)) x <- seq_along(vals)
     xx <- seq(min(x), max(x), length.out = length.out)
     suppressWarnings(yy <- approx(x, vals, xx)$y)
-    
+
     I_good <- which(!is.na(yy))
     ind <- first(I_good):last(I_good)
     yy <- yy[ind]
@@ -44,10 +44,10 @@ draw_polygon <- function(vals, x = NULL, type = "horizontal", length.out = 1e4,
     # polygon(x = xx, y = clamp_min(yy, 0), col = "red")
     col.neg = alpha(col.regions[1], alpha = alpha)
     col.pos = alpha(last(col.regions), alpha = alpha)
-    
+
     params <- listk(type = "n", ...)
     if (all(is.finite(zlim))) params$xlim <- zlim
-    
+
     xxx = xx %>% c(., rev(.))
     if (type == "horizontal") {
         params %<>% c(list(x, vals), .)

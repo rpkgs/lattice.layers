@@ -1,8 +1,31 @@
-#' Panel of horizontal and vertical polygons
+#' layer of latitude frequency barchart
 #'
+#' @param ... other parameters to [panel.latFreq()]
+#' @export
+layer_latFreq <- function(
+    bbox = c(0.7, 1, 0, 1),
+    # unit = "npc",
+    length.out = 1e4,
+    tcl = 0.4, xlab = "", ylab = "",
+    zlim = NULL,
+    zlim_ratio = c(-1, 1),
+    prob_z = 0.9,
+    is_spatial = FALSE,
+    zticks = NULL,
+    xlabels = NULL, ylabels = NULL, digit = 1,
+    ...)
+{
+    dots = mget(ls()) #%>% c(...)
+    layer({
+        params <- listk(x, y, z, subscripts)
+        params %<>% c(dots2)
+        do.call(panel.latFreq, params)
+    }, data = listk(dots2 = dots))
+}
+
 #' @inheritParams lattice::panel.levelplot
 #' @inheritParams panel.annotation
-#' 
+#'
 #' @param tcl The length of tick marks as a fraction of the smaller of the width
 #' or height of the plotting region. If tck >= 0.5 it is interpreted as a fraction
 #' of the relevant side, so if tck = 1 grid lines are drawn. The default setting
@@ -11,46 +34,53 @@
 #' @param zlim the limits of `z` value. If not specified, it's `c(-1, 1)*quantile(abs(z), 0.9)`.
 #' @param zlim_ratio If `zlim` not provided, `zlim = zlim_ratio * zmax`
 #' @param prob_z default 0.9, the probability of z quantile, which used to determine the zlim.
-#' 
+#'
 #' @examples
 #' \dontrun{
 #' panel.horizontalFreq(x, y, z, subscripts, bbox = c(0.7, 1, 0, 1), unit = "npc")
 #' }
+#' @rdname layer_latFreq
 #' @export
-panel.horizontalFreq <- function(x, y, z, subscripts, 
-    bbox = c(0.7, 1, 0, 1), unit = "npc", 
-    length.out = 1e4, ...,
-    tcl = 0.4, xlab = "", ylab = "", 
-    zlim = NULL, 
+panel.latFreq <- function(x, y, z, subscripts,
+    bbox = c(0.7, 1, 0, 1),
+    # unit = "npc",
+    length.out = 1e4,
+    tcl = 0.4, xlab = "", ylab = "",
+    zlim = NULL,
     zlim_ratio = c(-1, 1),
-    zticks = NULL,
-    is_spatial = FALSE, 
     prob_z = 0.9,
-    xlabels = NULL, ylabels = NULL, digit = 1)
+    is_spatial = FALSE,
+    zticks = NULL,
+    xlabels = NULL, ylabels = NULL, digit = 1,
+    ...)
 {
     family <- get_family()
+    v <- current.viewport()
     g <- as.grob(function() {
         yaxt = "s"
         if (is_spatial) {
             yaxt = "n"
             yticks = if (diff(range(y)) > 60) seq(-60, 90, 30) else pretty(y[subscripts])
         }
-        
+
         if (is.null(zlim)) {
-            zmax <- z[subscripts] %>% abs %>% quantile(prob_z, na.rm = TRUE) 
+            zmax <- z[subscripts] %>% abs %>% quantile(prob_z, na.rm = TRUE)
             zmax <- if (zmax > 0.5) round_decade(zmax) else round(zmax, 1)
             zlim <- zlim_ratio * zmax
         } else zmax = max(zlim)
-        
+
+        ylim = v$yscale
         d <- data.table(vals = z[subscripts], x = y[subscripts])
-        d2 <- d[, .(value = mean(vals, na.rm = TRUE)), .(x)]
+        d2 <- d[, .(value = mean(vals, na.rm = TRUE)), .(x)] %>%
+            .[x <= ylim[2] & x >= ylim[1]]
         d2[is.na(value), value := 0]
 
         par(mar = c(0, 0, 0, 0), mgp = c(1, 0, 0), oma = c(0, 0, 0, 0), family = family)
         draw_polygon(d2$value, d2$x, length.out = nrow(d2), type = "vertical",
                      tcl = tcl,
                      ...,
-                     zlim = zlim, 
+                     ylim = ylim,
+                     zlim = zlim,
                      xaxs = "i", yaxs = "i",
                      xlab = "", ylab = "",
                      xaxt = "n", yaxt = yaxt)
@@ -75,12 +105,23 @@ panel.horizontalFreq <- function(x, y, z, subscripts,
         # usr <- par('usr')
         # axis(side = 2, tck = tck)
     })
+
+    ylim = rescale_npc2real(bbox[3:4], v$yscale)
+    xlim = rescale_npc2real(bbox[1:2], v$xscale)
+    bbox <- c(xlim, ylim)
+    unit = "native"
+
     panel.annotation(grid.rect(), bbox, unit)
     panel.annotation(g, bbox, unit, clip = "off")
 }
 
+rescale_npc2real <- function(range_npc, range) {
+    lm(y~x, data.frame(x = c(0, 1), y = range)) %>%
+        predict(data.frame(x = range_npc))
+}
+
 # if (is_spatial) labels <- label_sp(ticks)
-# 
+#
 label_sp <- function(x = seq(-60, 90, 30)) {
     res <- NULL
     for(i in seq_along(x)) {

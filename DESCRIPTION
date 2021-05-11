@@ -24,7 +24,8 @@ Imports:
     dplyr,
     stringr,
     reshape2,
-    Ipaper
+    Ipaper,
+    latticeExtra
 Remotes:
     rpkgs/Ipaper
 Suggests: 
@@ -39,7 +40,7 @@ Suggests:
     knitr,
     rmarkdown
 Depends: 
-    R (>= 2.10)
+    R (>= 3.4)
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1

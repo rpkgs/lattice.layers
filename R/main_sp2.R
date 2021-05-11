@@ -38,30 +38,3 @@ sp_area <- function(grid, weighted = TRUE){
     } else area <- rep(1, nrow(grid))
     area
 }
-
-# Statistic of median±sd or median
-spatial_meansd <- function(x, area, stat, unit, FUN = weightedMedian){
-    # mu <- median(x, na.rm = TRUE)
-    fmt = "%.1f"
-    if (!is.null(stat$digit)) fmt = sprintf("%%.%df", stat$digit)    
-    if (is.null(FUN)) FUN = weightedMedian
-    
-    x[is.infinite(x)] <- NA
-    mu <- FUN(x, area, na.rm = TRUE) %>% sprintf(fmt, .)
-    # weightedMedian, weightedMean
-    sd <- weightedSd(x, area, na.rm = TRUE) %>% sprintf(fmt, .)
-
-    unit2   = unit
-    if(!(is.null(unit) || unit == "")) {
-        unit2 <- unit
-        # unit2 <- sprintf(" (%s)", unit)
-    }
-
-    lst.env = c(list(mu=mu, sd=sd, unit = unit2), stat)
-    label <- if ( !is.null(stat$include.sd) && stat$include.sd ) {
-        eval(substitute(expression(bar(italic(name)) == mu * "±" * sd * " " * unit), lst.env)) # bolditalic
-    } else {
-        eval(substitute(expression(bar(bold(name)) == mu * " " * unit), lst.env))
-    }
-    label
-}

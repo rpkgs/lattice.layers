@@ -28,14 +28,14 @@
 #' If `mask` present in `df`, `df.mask` will be ignored.
 #' @param colorkey Boolean or list returned by [get_colorkey()].
 #' @param NO_begin beginning NO of the first panel
-#' 
+#'
 #' @example R/examples/ex-sp_plot.R
-#' 
+#'
 #' @seealso [sp::spplot()], [lattice::levelplot()]
 #' @note parameter `panel.title` change to `panel.titles_full`
 #' - `panel.titles_full` is for tags.
 #' - `strip.factors` is for strip factors
-#' 
+#'
 #' @importFrom raster plot
 #' @importFrom matrixStats weightedMedian weightedSd
 #' @importFrom sp spplot coordinates
@@ -44,8 +44,8 @@
 #' @importFrom data.table as.data.table
 #' @export
 sp_plot <- function(
-    SpatialPixel,
-    df = SpatialPixel@data,
+    grid,
+    df = grid@data,
     zcols,
     formula = NULL,
     df.mask = NULL,
@@ -61,8 +61,6 @@ sp_plot <- function(
     unit = "", unit.adj = 0.3,
 
     pars = NULL,
-    stat = list(show = FALSE, name = "RC", loc = c(81.5, 26.5), digit = 1,
-        include.sd = FALSE, FUN = weightedMedian),
     area.weighted = FALSE,
 
     colorkey = TRUE,
@@ -70,7 +68,7 @@ sp_plot <- function(
     key.height = 0.98,
     key.num2factor = FALSE,
 
-    aspect = 0.5,
+    # aspect = 0.5,
     interpolate = FALSE,
     lgd.title = NULL,
     sp.layout = NULL,
@@ -82,7 +80,9 @@ sp_plot <- function(
     ...)
 {
     if (missing(zcols)) zcols <- colnames(df)
+    if (is.numeric(zcols)) zcols <- colnames(df)[zcols]
     if (!is.data.table(df)) df <- data.table(df)
+    df = df %>% select(zcols)
 
     list.mask = NULL
     if (!is.null(formula)) {
@@ -125,22 +125,11 @@ sp_plot <- function(
         list.mask <- dlply(df.mask, rev(groups), function(d) d$mask)
     }
 
-    npixel <- nrow(SpatialPixel)
+    npixel <- nrow(grid)
     par.settings <- modifyList(par.settings, par.settings2)
 
     # 2. statistic mean value
-    data.stat <-
-        if (stat$show && !is.null(stat$loc)) {
-            area <- sp_area(SpatialPixel, area.weighted)
-            if (!is.null(formula)) {
-                labels <- dlply(df, rev(groups), function(d) {
-                    spatial_meansd(d[[value.vars]], area, stat, unit, FUN = stat$FUN)
-                })
-            } else {
-                labels <- df %>% lapply(spatial_meansd, area, stat, unit)
-            }
-            list(loc = stat$loc, label = labels)
-        } else NULL
+    grid_area = sp_area(grid, area.weighted)
 
     vals_1st <- df[[value.vars[1]]]
     is_factor <- is.factor(vals_1st)
@@ -158,12 +147,12 @@ sp_plot <- function(
             for(var in value.vars) df[[value.vars]] %<>% cut(brks)
         }
         levels <- cut(1, brks) %>% levels()
-        SpatialPixel@data <- df
+        grid@data <- df
     }
 
     cols <- get_break_colors2(colors, brks, is_factor)
-    class <- class(SpatialPixel)
-    data <- coordinates(SpatialPixel) %>% as.data.table() %>%
+    class <- class(grid)
+    data <- coordinates(grid) %>% as.data.table() %>%
         set_colnames(c("lon", "lat")) %>% cbind(df)
 
     if (strip == TRUE) {
@@ -172,7 +161,6 @@ sp_plot <- function(
         # names <- if (is.null(strip.factors)) zcols else strip.factors
         strip_levels <- label_tag(strip.factors)
         strip <- strip.custom(factor.levels = strip_levels)
-        # zcols <- NULL
     }
 
     params <- listk(
@@ -188,7 +176,7 @@ sp_plot <- function(
         as.table          = TRUE,
         sp.layout         = sp.layout,
         layout            = layout,
-        aspect            = aspect,
+        # aspect            = aspect,
 
         xlab              = NULL,
         ylab              = NULL,
@@ -197,16 +185,15 @@ sp_plot <- function(
 
         scales            = list(draw = FALSE),
         pars              = pars,
-        data.stat         = data.stat,
         class             = class
     )
+
     params = if (is.null(formula)) {
-        list(SpatialPixel, zcols) %>% c(params)
+        list(grid, zcols) %>% c(params)
     } else {
-        list(formula, data, list.mask = list.mask, SpatialPixel = SpatialPixel) %>% c(params)
+        list(formula, data, list.mask = list.mask, SpatialPixel = grid) %>% c(params)
     }
 
-    # browser()
     if (!is.null(xlim)) params$xlim <- xlim
     if (!is.null(ylim)) params$ylim <- ylim
 
@@ -245,3 +232,6 @@ check_brks <- function(brks){
     }
     brks
 }
+
+#' @importFrom latticeExtra layer
+layer <- layer

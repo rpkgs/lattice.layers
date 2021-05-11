@@ -100,3 +100,24 @@ asign_func <- function(func_old, func_new) {
     eval(parse(text = cmd1))
     eval(parse(text = cmd2))
 }
+
+
+#' @export
+dev_off <- function() {
+    tryCatch({
+        while(TRUE) {
+            cat("closed\n")
+            dev.off()
+        }
+    }, error = function(e) {
+        return(invisible())
+        # message(sprintf('%s', e))
+    })
+}
+
+round_decade <- function(x) {
+    p <- floor(log10(abs(x)))
+    if (x > 1000) p <- p - 1
+    times <- 10^p
+    round(x/times)*times
+}
