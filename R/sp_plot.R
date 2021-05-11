@@ -28,24 +28,26 @@
 #' If `mask` present in `df`, `df.mask` will be ignored.
 #' @param colorkey Boolean or list returned by [get_colorkey()].
 #' @param NO_begin beginning NO of the first panel
-#'
-#' @example R/examples/ex-spplot_grid.R
-#'
-#' @seealso [spplot_grid()], [sp::spplot()], [lattice::levelplot()]
+#' 
+#' @example R/examples/ex-sp_plot.R
+#' 
+#' @seealso [sp::spplot()], [lattice::levelplot()]
 #' @note parameter `panel.title` change to `panel.titles_full`
 #' - `panel.titles_full` is for tags.
 #' - `strip.factors` is for strip factors
-#'
+#' 
+#' @importFrom raster plot
 #' @importFrom matrixStats weightedMedian weightedSd
 #' @importFrom sp spplot coordinates
 #' @importFrom grid frameGrob placeGrob rectGrob segmentsGrob polygonGrob
 #' @importFrom lattice panel.number panel.segments panel.points panel.arrows
 #' @importFrom data.table as.data.table
 #' @export
-levelplot2 <- function(
-    formula,
-    df,
+sp_plot <- function(
     SpatialPixel,
+    df = SpatialPixel@data,
+    zcols,
+    formula = NULL,
     df.mask = NULL,
 
     brks, colors,
@@ -62,10 +64,13 @@ levelplot2 <- function(
     stat = list(show = FALSE, name = "RC", loc = c(81.5, 26.5), digit = 1,
         include.sd = FALSE, FUN = weightedMedian),
     area.weighted = FALSE,
-    legend.space = "right",
-    legend.num2factor = FALSE,
-#
+
     colorkey = TRUE,
+    key.space = "right",
+    key.height = 0.98,
+    key.num2factor = FALSE,
+
+    aspect = 0.5,
     interpolate = FALSE,
     lgd.title = NULL,
     sp.layout = NULL,
@@ -76,38 +81,41 @@ levelplot2 <- function(
     par.settings2 = list(axis.line = list(col = "transparent")),
     ...)
 {
-    info.formula <- parse.formula(formula)
-    value.var <- info.formula$value.var
-    groups <- info.formula$groups
+    if (missing(zcols)) zcols <- colnames(df)
+    if (!is.data.table(df)) df <- data.table(df)
 
-    if (!is.data.table(df)) df = data.table(df)
-    # zcols only for one group
-    d_grp = NULL
-    if (length(groups) > 0) {
-        d_grp = df %>% select(groups) %>% unique()
-        if (is.null(panel.titles_full)) {
-            panel.titles_full = d_grp[, do.call(paste, c(.SD, list(sep = " ")))] %>%
-                label_tag()
+    list.mask = NULL
+    if (!is.null(formula)) {
+        info.formula <- parse.formula(formula)
+        value.vars <- info.formula$value.var
+        groups <- info.formula$groups
+        # zcols only for one group
+        d_grp = NULL
+        if (!is_empty(groups)) {
+            d_grp = df %>% select(groups) %>% unique()
+            if (is.null(panel.titles_full)) {
+                panel.titles_full =
+                    d_grp[, do.call(paste, c(.SD, list(sep = " ")))] %>% label_tag()
+            }
         }
-    }
-
-    zcols <- if (length(groups) == 1) {
-        vals_unique <- d_grp[[1]]
-        levels <- levels(vals_unique)
-        levels <- if (is.null(levels)) vals_unique else  intersect(levels, vals_unique) # rm no-value levels
+        zcols <- if (length(groups) == 1) {
+            vals_unique <- d_grp[[1]]
+            levels <- levels(vals_unique)
+            levels <- if (is.null(levels)) vals_unique else intersect(levels, vals_unique) # rm no-value levels
+            levels
+        } else {
+            NULL
+        }
+        FUN = levelplot
     } else {
-        NULL
+        value.vars = zcols
+        groups = NULL
+        FUN = spplot
     }
 
-    npixel <- nrow(SpatialPixel)
-    par.settings <- modifyList(par.settings, par.settings2)
-
+    # 1. significant patch
     if (is.null(df.mask) && "mask" %in% colnames(df)) df.mask <- df
-    
-    list.mask <- NULL
-    labels_sign <- NULL
     if (!is.null(df.mask)) {
-        ## make sure factor is the same
         for (i in seq_along(groups)) {
             varname <- groups[i]
             levels <- levels(df[[varname]])
@@ -117,40 +125,46 @@ levelplot2 <- function(
         list.mask <- dlply(df.mask, rev(groups), function(d) d$mask)
     }
 
-    # statistic mean value
+    npixel <- nrow(SpatialPixel)
+    par.settings <- modifyList(par.settings, par.settings2)
+
+    # 2. statistic mean value
     data.stat <-
         if (stat$show && !is.null(stat$loc)) {
             area <- sp_area(SpatialPixel, area.weighted)
-            # need to debug for two variables group
-            labels <- dlply(df, rev(groups), function(d) {
-                  spatial_meansd(d[[value.var]], area, stat, unit, FUN = stat$FUN)
-              })
+            if (!is.null(formula)) {
+                labels <- dlply(df, rev(groups), function(d) {
+                    spatial_meansd(d[[value.vars]], area, stat, unit, FUN = stat$FUN)
+                })
+            } else {
+                labels <- df %>% lapply(spatial_meansd, area, stat, unit)
+            }
             list(loc = stat$loc, label = labels)
         } else NULL
 
-    is_factor <- is.factor(df[[value.var]])
+    vals_1st <- df[[value.vars[1]]]
+    is_factor <- is.factor(vals_1st)
     if (missing(colors)) colors <- c("red", "grey80", "blue4")
-
     if (missing(brks)) {
-        if (!is_factor) {
-            vals <- df[[value.var]]
-            range <- quantile(vals, c(0.05, 0.95), na.rm = TRUE)
-            vals %<>% clamp(range)
-            brks <- pretty(vals, n = 10) %>% c(-Inf, ., Inf)
+        brks <- if (!is_factor) {
+            range <- quantile(vals_1st, c(0.05, 0.95), na.rm = TRUE)
+            vals_1st %<>% clamp(range)
+            pretty(vals_1st, n = 10) %>% c(-Inf, ., Inf)
         } else {
-            brks <- levels(df[[value.var]])
+            levels(vals_1st)
         }
-        cols <- get_break_colors2(colors, brks, is_factor)
     } else {
-        cols <- get_break_colors2(colors, brks, is_factor)
-        if (toFactor) df[[value.var]] %<>% cut(brks) # cut into factor
+        if (toFactor) {
+            for(var in value.vars) df[[value.vars]] %<>% cut(brks)
+        }
         levels <- cut(1, brks) %>% levels()
+        SpatialPixel@data <- df
     }
 
+    cols <- get_break_colors2(colors, brks, is_factor)
     class <- class(SpatialPixel)
-    data <- coordinates(SpatialPixel) %>%
-        as.data.table() %>%
-        cbind(df)
+    data <- coordinates(SpatialPixel) %>% as.data.table() %>%
+        set_colnames(c("lon", "lat")) %>% cbind(df)
 
     if (strip == TRUE) {
         n <- length(zcols)
@@ -158,13 +172,10 @@ levelplot2 <- function(
         # names <- if (is.null(strip.factors)) zcols else strip.factors
         strip_levels <- label_tag(strip.factors)
         strip <- strip.custom(factor.levels = strip_levels)
-        zcols <- NULL
+        # zcols <- NULL
     }
 
-    params <- list(
-        formula, data,
-        list.mask = list.mask,
-        SpatialPixel = SpatialPixel,
+    params <- listk(
         ...,
         col.regions       = cols,
         panel.titles      = zcols,
@@ -172,10 +183,12 @@ levelplot2 <- function(
         panel             = panel,
         NO_begin          = NO_begin,
         brks              = brks,
+
         strip             = strip,
         as.table          = TRUE,
         sp.layout         = sp.layout,
         layout            = layout,
+        aspect            = aspect,
 
         xlab              = NULL,
         ylab              = NULL,
@@ -187,6 +200,13 @@ levelplot2 <- function(
         data.stat         = data.stat,
         class             = class
     )
+    params = if (is.null(formula)) {
+        list(SpatialPixel, zcols) %>% c(params)
+    } else {
+        list(formula, data, list.mask = list.mask, SpatialPixel = SpatialPixel) %>% c(params)
+    }
+
+    # browser()
     if (!is.null(xlim)) params$xlim <- xlim
     if (!is.null(ylim)) params$ylim <- ylim
 
@@ -194,16 +214,34 @@ levelplot2 <- function(
     params$at <- if (!is_factor) brks else seq(0.5, nbrk + 1)
 
     if (is.list(colorkey) || colorkey) {
-        is_factor2 <- legend.num2factor || is_factor
-        colorkey.param <- get_colorkey(brks, NULL, legend.space, lgd.title, is_factor2, cex = cex.lgd)
+        is_factor2 <- key.num2factor || is_factor
+        colorkey.param <- get_colorkey(brks, NULL, key.space, lgd.title, is_factor2, cex = cex.lgd)
         colorkey.param$unit <- unit
         colorkey.param$unit.adj <- unit.adj
+        colorkey.param$height = key.height
 
         if (is.list(colorkey)) colorkey.param %<>% updateList(colorkey)
         params$colorkey <- colorkey.param
     } else {
         params$colorkey <- FALSE
     }
+    do.call(FUN, params)
+    # +
+    #     theme_lattice(
+    #         key.margin = c(0, 1.5, 0, 0),
+    #         plot.margin = c(0, 3, -1.5, 1)
+    #     )
+}
 
-    do.call(levelplot, params)
+check_brks <- function(brks){
+    nbrk  <- length(brks)
+    delta <- median(diff(brks))
+    if (is.infinite(brks[1])) {
+        brks[1] <- brks[2] - delta
+    }
+
+    if (is.infinite(brks[nbrk])) {
+        brks[nbrk] <- brks[nbrk - 1] + delta
+    }
+    brks
 }

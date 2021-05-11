@@ -1,5 +1,6 @@
 library(testthat)
-library(latticeGrob)
+library(latticeMap)
 library(Ipaper)
+library(dplyr)
 
-test_check("latticeGrob")
+test_check("latticeMap")

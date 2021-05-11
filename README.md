@@ -1,22 +1,22 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# latticeGrob
+# latticeMap
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/rpkgs/latticeGrob/workflows/R-CMD-check/badge.svg)](https://github.com/rpkgs/latticeGrob/actions)
-[![codecov](https://codecov.io/gh/rpkgs/latticeGrob/branch/master/graph/badge.svg)](https://codecov.io/gh/rpkgs/latticeGrob)
-[![CRAN](http://www.r-pkg.org/badges/version/latticeGrob)](https://cran.r-project.org/package=latticeGrob)<!-- badges: end -->
+[![R-CMD-check](https://github.com/rpkgs/latticeMap/workflows/R-CMD-check/badge.svg)](https://github.com/rpkgs/latticeMap/actions)
+[![codecov](https://codecov.io/gh/rpkgs/latticeMap/branch/master/graph/badge.svg)](https://codecov.io/gh/rpkgs/latticeMap)
+[![CRAN](http://www.r-pkg.org/badges/version/latticeMap)](https://cran.r-project.org/package=latticeMap)<!-- badges: end -->
 
-The goal of latticeGrob is to …
+The goal of latticeMap is to …
 
 ## Installation
 
-You can install the released version of latticeGrob from
+You can install the released version of latticeMap from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-install.packages("latticeGrob")
+install.packages("latticeMap")
 # covr::package_coverage()
 ```
 
@@ -25,9 +25,9 @@ install.packages("latticeGrob")
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-library(latticeGrob)
+library(latticeMap)
 #> 
-#> Attaching package: 'latticeGrob'
+#> Attaching package: 'latticeMap'
 #> The following object is masked from 'package:datasets':
 #> 
 #>     volcano

@@ -9,7 +9,7 @@
 library(lattice)
 
 {
-    # load_all("I:/Research/phenology/latticeGrob.R")
+    # load_all("I:/Research/phenology/latticeMap.R")
     load("params.rda")
     polys_sign <- params[[1]]
 

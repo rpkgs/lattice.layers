@@ -1,4 +1,4 @@
-^latticeGrob\.Rproj$
+^latticeMap\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^LICENSE\.md$
@@ -6,5 +6,8 @@
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^codecov\.yml$
-^vignettes/latticeGrob\.Rmd$
+^vignettes/latticeMap\.Rmd$
 ^scripts$
+^\.github$
+^ch1_sp_plot\.Rmd$
+^vignettes/notes$

@@ -1,7 +1,7 @@
 #' panel.spatial
 #'
 #' @inheritParams lattice::panel.levelplot
-#' @inheritParams levelplot2
+#' @inheritParams sp_plot
 #' @param par position of title, `list(title = list(x, y))`
 #' @param list.mask NULL or list of masks. `mask` is a boolean vector, `TRUE`
 #' indicates significant.
@@ -31,7 +31,7 @@ panel.spatial <- function(x, y, z, subscripts,
     fontfamily = get_family()
     dot <- list(...)
 
-# browser()
+    # browser()
     panel.spatialBasic(x, y, z, subscripts, class, contour, interpolate, ..., sp.layout = sp.layout)
     # mask lat <= -60
     # panel.annotation(grid.rect(gp = gpar(col = "transparent", fill = "white")),
@@ -41,11 +41,10 @@ panel.spatial <- function(x, y, z, subscripts,
     if (show_signPerc) {
         # density = 1, angle = 45
         panel.signDist(list.mask, SpatialPixel, ...) # spatial polygon pattern
-        panel.signPerc(z, subscripts, mask = list.mask[[NO_panel]], xpos = 0.02, ypos = 0.65, ...)
+        panel.signPerc(z[subscripts], mask = list.mask[[NO_panel]], xpos = 0.02, ypos = 0.65, ...)
     }
 
     ## 3. add panel title
-    # browser()
     panel.text2(pars$title$x, pars$title$y, dot$panel.titles_full, dot$panel.titles,
         NO_begin, pars = pars, ...)
 

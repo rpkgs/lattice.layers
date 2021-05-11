@@ -6,7 +6,7 @@
 #' @importFrom graphics par polygon abline axis rect
 #' @importFrom methods as
 #' @importFrom data.table data.table is.data.table
-#' @importFrom Ipaper write_fig first last melt_list listk label_tag
+#' @importFrom Ipaper write_fig first last melt_list listk label_tag is_empty which.notna
 #' @importFrom plyr dlply
 #' @importFrom dplyr select
 #' 
@@ -49,7 +49,7 @@ asign_func <- function(func_old, func_new) {
 #' @keywords internal
 #' @export 
 init_lattice <- function() {
-    # latticeGrob:::`+.trellis`
+    # latticeMap:::`+.trellis`
     # environment(latticeExtra:::`+.trellis`)
     suppressWarnings({
         eval(parse(text = 'environment(draw.colorkey) <- environment(lattice::xyplot)'))

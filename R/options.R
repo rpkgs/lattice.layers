@@ -7,7 +7,7 @@
     shadePattern = list(col = "black", lty = 1, lwd = 1) # 
 ))
 
-#' set latticeGrob options
+#' set latticeMap options
 #' 
 #' @param options
 #' - style: font style, one of "EN" and "CH"

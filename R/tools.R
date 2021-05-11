@@ -41,7 +41,7 @@ clamp <- function(x, lims = c(0, 1), fill.na = FALSE){
     x
 }
 
-# for levelplot2
+# for sp_plot
 #' @importFrom stringr str_extract str_split
 parse.formula <- function(formula = x~s1+s2|b1+b2) {
     str_formula <- as.character(formula)

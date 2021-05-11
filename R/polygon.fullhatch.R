@@ -101,7 +101,7 @@ polygon.onehatch <- function(x, y, x0, y0, xd, yd, ..debug.hatch = FALSE, fillOd
 lsegments <- function(x0 = NULL, y0 = NULL, x1, y1, x2 = NULL, y2 = NULL,
                       col = add.line$col, alpha = add.line$alpha, lty = add.line$lty,
                       # lwd = add.line$lwd,
-                      lwd = 0.1,
+                      lwd = 0.5,
                       font, fontface, ..., identifier = NULL,
                       name.type = "panel") {
     if (missing(x0)) {

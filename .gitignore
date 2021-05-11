@@ -5,7 +5,9 @@
 # *.rda
 *.svg
 *.pdf
+*.png
 lgd*
 inst/doc
 
 # *.tif
+*/deprecated

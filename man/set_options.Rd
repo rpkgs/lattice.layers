@@ -3,7 +3,7 @@
 \name{set_options}
 \alias{set_options}
 \alias{get_options}
-\title{set latticeGrob options}
+\title{set latticeMap options}
 \usage{
 set_options(options)
 
@@ -17,5 +17,5 @@ get_options(verbose = TRUE)
 }}
 }
 \description{
-set latticeGrob options
+set latticeMap options
 }

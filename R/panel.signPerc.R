@@ -12,21 +12,19 @@
 #' panel.signPerc(z = NULL, mask = NULL, xpos = 0.1, ypos = 0.9, ...)
 #' }
 #' @export
-panel.signPerc <- function(z = NULL, subscripts, mask = NULL, xpos = 0.1, ypos = 0.9,
+panel.signPerc <- function(z = NULL, mask = NULL, xpos = 0.1, ypos = 0.9,
     col.regions = c("blue", "red"), ...)
 {
     # val <- sign(d[[value.var]]) # 只考虑-1, 1，不考虑0
-    val <- sign(z[subscripts])
+    val <- sign(z)
     val %<>% factor(c(-1, 0, 1), c("neg", NA, "pos"))
     # N   <- table(Z)
     if (!is.null(mask)) {
-        mask <- mask[subscripts] %>% as.character() %>% factor(c("FALSE", "TRUE"))
+        mask <- mask %>% as.character() %>% factor(c("FALSE", "TRUE"))
         tbl <- table(mask, val)
         # print(tbl)
-        # browser()
         N <- sum(as.numeric(tbl))
         perc <- tbl / N * 100
-        # browser()
         str_neg <- sprintf("N: %.1f%% (%.1f%%)", sum(perc[, 1]), perc[2, 1])
         str_pos <- sprintf("P: %.1f%% (%.1f%%)", sum(perc[, 3]), perc[2, 3])
     } else {
@@ -37,7 +35,7 @@ panel.signPerc <- function(z = NULL, subscripts, mask = NULL, xpos = 0.1, ypos =
         str_neg <- sprintf("N: %.1f%%", sum(perc[1]))
         str_pos <- sprintf("P: %.1f%%", sum(perc[3]))
     }
-
+    # listk(str_neg, str_pos) %>% str() %>% print() # debug
     width  <- max(stringWidth(str_neg), stringWidth(str_pos)) * 1.2
     height <- max(stringHeight(str_neg), stringHeight(str_pos))*2
 
@@ -54,6 +52,7 @@ panel.signPerc <- function(z = NULL, subscripts, mask = NULL, xpos = 0.1, ypos =
         col.neg = col.regions[2]
         col.pos = col.regions[ncolors-1]
     }
+
     grid.text(str_neg, xpos, ypos, just = c(0, 1),
               name = "label_perc.neg",
               gp = gpar(col = col.neg, fill = "transparent", fontfamily = .options$family))
@@ -61,29 +60,4 @@ panel.signPerc <- function(z = NULL, subscripts, mask = NULL, xpos = 0.1, ypos =
               name = "label_perc.pos",
               gp = gpar(col = col.pos, fill = "transparent", fontfamily = .options$family))
     # data.frame(str_neg, str_pos)
-}
-
-#' @importFrom stars st_as_stars
-#' @importFrom sf st_as_sf as_Spatial
-#' @rdname panel.signPerc
-#' @export
-panel.signDist <- function(list.mask, SpatialPixel, par.shade = NULL, density = 1, angle = 45, ... ) {
-    NO_panel = panel.number()
-    if (!is.null(list.mask) && !is.null(SpatialPixel)) {
-        mask = list.mask[[NO_panel]]
-        I_sign <- which(mask)
-
-        if (length(I_sign) > 0) {
-            grid <- SpatialPixel[I_sign, ]
-            grid@data <- data.frame(mask = rep(TRUE, length(grid)))
-
-            poly_shade <- st_as_stars(grid) %>%
-                st_as_sf(as_points = FALSE, merge = TRUE) %>% as_Spatial()
-            # poly_shade = st_as_sf(as_SpatialGridDataFrame(grid), as_points = FALSE, merge = TRUE) %>% as_Spatial()
-            # poly_shade <- raster2poly(grid)
-            params = listk(union = FALSE, density, angle, sp.layout = NULL) %>%
-                c(., list(...))
-            do.call(panel.poly_grid, c(list(poly_shade), params))
-        }
-    }
 }

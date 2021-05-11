@@ -1,8 +1,8 @@
 ---
-title: "latticeGrob"
+title: "latticeMap"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{latticeGrob}
+  %\VignetteIndexEntry{latticeMap}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 今天为大家介绍，如何采用`panel.annotation`制作下图格式的专业地图，抛砖引玉，以飨读者。
 
-该图使用的是R包latticeGrob中的levelplot2绘制。
+该图使用的是R包latticeMap中的levelplot2绘制。
 
 作为lattice的用户，想必你对如下形式的panel函数非常熟悉：
 ``` r
@@ -26,7 +26,7 @@ panel <- function(x, y, z, subscripts, ..., sp.layout) {
 ```
 lattice中以panel函数控制着每个面板中的绘图内容。通过修改panel函数，我们可以批量、便捷地做出专业、复杂的地图。
 
-latticeGrob中设计了`panel.annotation`函数，便捷地为子图添加插件。`panel.annotation`主要是将grob对象绘制到viewpoint的指定位置。调用方法如下：
+latticeMap中设计了`panel.annotation`函数，便捷地为子图添加插件。`panel.annotation`主要是将grob对象绘制到viewpoint的指定位置。调用方法如下：
 ``` r
 panel.annotation(
   grob,
@@ -129,7 +129,7 @@ panel.spatial <- function(x, y, z, subscripts,
 
 ## 带上panel.spatial出发
 ```r
-library(latticeGrob)
+library(latticeMap)
 library(rgdal)
 
 # shapefiles of countries
@@ -170,4 +170,4 @@ p <- levelplot2(mean ~ s1+s2 | band,
 
 经过前人的努力，绘制一幅专业的地图仅需20行代码左右，远比ArcGIS方便，值得你去学习。
 
-latticeGrob处于频繁维护期，尚未发布稳定版。想要尝鲜的用户，需要关注微信号，回复latticeGrob。
+latticeMap处于频繁维护期，尚未发布稳定版。想要尝鲜的用户，需要关注微信号，回复latticeMap。
