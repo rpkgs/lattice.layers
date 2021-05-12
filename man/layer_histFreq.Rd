@@ -13,6 +13,8 @@ layer_histFreq(
   yticks = seq(0, 0.3, 0.1),
   box.width = 0.8,
   digit = 2,
+  title = TRUE,
+  xlabels = TRUE,
   ...
 )
 
@@ -29,6 +31,8 @@ panel.histFreq(
   box.width = 0.8,
   digit = 2,
   unit = "npc",
+  title = TRUE,
+  xlabels = TRUE,
   border = "transparent",
   yscale = NULL,
   ntick = NULL,

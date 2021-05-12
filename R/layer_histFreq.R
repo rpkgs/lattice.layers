@@ -8,6 +8,7 @@ layer_histFreq <- function(
     yticks = seq(0, 0.3, 0.1),
     box.width = 0.8,
     digit = 2,
+    title = TRUE, xlabels = TRUE, 
     ...)
 {
     dots = mget(ls()) %>% c(...)
@@ -41,11 +42,12 @@ panel.histFreq <- function(z, subscripts, at, col.regions,
     box.width = 0.8,
     digit = 2,
     unit = "npc",
+    title = TRUE, xlabels = TRUE, 
     border = "transparent",
     yscale = NULL,
-    ntick = NULL, w = NULL, ...)
+    ntick = NULL, w = NULL, 
+    ...)
 {
-    # browser()
     d <- get_perc.factor(z, subscripts, at = at, ...)
     perc <- d$perc
     xpos <- seq_along(perc)
@@ -56,12 +58,15 @@ panel.histFreq <- function(z, subscripts, at, col.regions,
     if (is.null(yscale)) yscale = c(0, max(yticks))
 
     xticks <- seq_along(xpos)
-    xlabels <- if (!is.null(at) & !is.factor(z)) {
-        xticks  <- xticks - 0.5
-        round(at, digit)
-    } else levels(z)
+    if (xlabels) {
+        xlabels <- if (!is.null(at) & !is.factor(z)) {
+            xticks <- xticks - 0.5
+            round(at, digit)
+        } else {
+            levels(z)
+        }
+    }
     # ymax <- max(tick) + 0.1
-
     g <- as.grob(function(){
         panel.barchart(x = xpos, y = ypos, horizontal = F,
                        origin = 0,
@@ -72,7 +77,7 @@ panel.histFreq <- function(z, subscripts, at, col.regions,
         # panel.abline(h = yticks)
         xticks[1] = 0.4
         component_axis(ticks = xticks, labels = xlabels, origin = 0, angle = 90)
-        component_axis(ticks = yticks, origin = 0.4, type = "yaxis")
+        component_axis(ticks = yticks, origin = 0.4, type = "yaxis", title = title)
     })
 
     xscale = c(-1.9, max(xpos)+1.4)

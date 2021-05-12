@@ -7,17 +7,19 @@
 \usage{
 layer_latFreq(
   bbox = c(0.7, 1, 0, 1),
+  unit = "npc",
   length.out = 10000,
   tcl = 0.4,
   xlab = "",
   ylab = "",
+  xlabels = TRUE,
+  ylabels = TRUE,
+  ylim = NULL,
   zlim = NULL,
   zlim_ratio = c(-1, 1),
   prob_z = 0.9,
   is_spatial = FALSE,
   zticks = NULL,
-  xlabels = NULL,
-  ylabels = NULL,
   digit = 1,
   ...
 )
@@ -28,17 +30,19 @@ panel.latFreq(
   z,
   subscripts,
   bbox = c(0.7, 1, 0, 1),
+  unit = "npc",
   length.out = 10000,
   tcl = 0.4,
   xlab = "",
   ylab = "",
+  xlabels = TRUE,
+  ylabels = TRUE,
+  ylim = NULL,
   zlim = NULL,
   zlim_ratio = c(-1, 1),
   prob_z = 0.9,
   is_spatial = FALSE,
   zticks = NULL,
-  xlabels = NULL,
-  ylabels = NULL,
   digit = 1,
   ...
 )
@@ -46,6 +50,8 @@ panel.latFreq(
 \arguments{
 \item{bbox}{The region to plot \code{grob}, \verb{[xmin, xmax, ymin, ymax]} in the unit
 of npc.}
+
+\item{unit}{A character vector specifying the units for the corresponding numeric values.}
 
 \item{tcl}{The length of tick marks as a fraction of the smaller of the width
 or height of the plotting region. If tck >= 0.5 it is interpreted as a fraction

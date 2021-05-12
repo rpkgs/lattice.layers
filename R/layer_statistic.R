@@ -8,11 +8,11 @@ layer_statistic <- function(
     x = 0.1, y = 0.9,
     digit = 2, include.sd = TRUE, 
     name = "u", unit = "", FUN = weightedMedian,
-    hjust = 0, vjust = 1,
+    hjust = 0, vjust = 1, cex = 1,
     # cex = 1.2, adj = c(0, 0),
     ...)
 {
-    gp = gpar(fontfamily = get_family())
+    gp = gpar(fontfamily = get_family(), cex = cex)
     dots = listk(digit, include.sd, unit, FUN)
     layer({
         params <- listk(z = z[subscripts]) %>% c(dots)
@@ -25,6 +25,7 @@ layer_statistic <- function(
 }
 
 #' Statistic of median±sd or median
+#' @export
 spatial_meansd <- function(z, area = NULL, 
     digit = 2, include.sd = TRUE, 
     name = "u", unit = "", FUN = weightedMedian)

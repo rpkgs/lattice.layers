@@ -4,15 +4,16 @@
 #' @export
 layer_latFreq <- function(
     bbox = c(0.7, 1, 0, 1),
-    # unit = "npc",
+    unit = "npc",
     length.out = 1e4,
-    tcl = 0.4, xlab = "", ylab = "",
-    zlim = NULL,
-    zlim_ratio = c(-1, 1),
+    tcl = 0.4, 
+    xlab = "", ylab = "",
+    xlabels = TRUE, ylabels = TRUE, 
+    ylim = NULL, zlim = NULL, zlim_ratio = c(-1, 1),
     prob_z = 0.9,
     is_spatial = FALSE,
     zticks = NULL,
-    xlabels = NULL, ylabels = NULL, digit = 1,
+    digit = 1,
     ...)
 {
     dots = mget(ls()) #%>% c(...)
@@ -43,19 +44,22 @@ layer_latFreq <- function(
 #' @export
 panel.latFreq <- function(x, y, z, subscripts,
     bbox = c(0.7, 1, 0, 1),
-    # unit = "npc",
+    unit = "npc",
     length.out = 1e4,
-    tcl = 0.4, xlab = "", ylab = "",
-    zlim = NULL,
-    zlim_ratio = c(-1, 1),
+    tcl = 0.4, 
+    xlab = "", ylab = "",
+    xlabels = TRUE, ylabels = TRUE, 
+    ylim = NULL, zlim = NULL, zlim_ratio = c(-1, 1),
     prob_z = 0.9,
     is_spatial = FALSE,
     zticks = NULL,
-    xlabels = NULL, ylabels = NULL, digit = 1,
+    digit = 1,
     ...)
 {
     family <- get_family()
     v <- current.viewport()
+    if (is.null(ylim)) ylim = v$yscale
+
     g <- as.grob(function() {
         yaxt = "s"
         if (is_spatial) {
@@ -69,7 +73,6 @@ panel.latFreq <- function(x, y, z, subscripts,
             zlim <- zlim_ratio * zmax
         } else zmax = max(zlim)
 
-        ylim = v$yscale
         d <- data.table(vals = z[subscripts], x = y[subscripts])
         d2 <- d[, .(value = mean(vals, na.rm = TRUE)), .(x)] %>%
             .[x <= ylim[2] & x >= ylim[1]]
@@ -86,31 +89,31 @@ panel.latFreq <- function(x, y, z, subscripts,
                      xaxt = "n", yaxt = yaxt)
         if (is_spatial) {
             at = seq(-60, 90, 10)
-            abline(h = seq(-60, 90, 30), lty = 3, col = "grey", lwd  = 0.5)
-            ylabels <- as.character(yticks)
-            ylabels[c(1, length(ylabels))] <- " "
-            # browser()
+            abline(h = seq(-60, 60, 30), lty = 3, col = "grey", lwd = 0.5)
+            if (ylabels) {
+                ylabels <- as.character(yticks)
+                ylabels[c(1, length(ylabels))] <- " "
+            }
             axis(side = 2, tcl = tcl, at = yticks, labels = ylabels) # label_sp(yticks)
             axis(side = 2, tcl = tcl/2, at = seq(-60, 90, 10), labels = rep("", length(at)), lwd = 0.5)
+
             if (is.null(zticks)) {
                 xticks_major = c(-1, 0, 1)*zmax
                 xticks_minor = c(-1, 1)*zmax/2
-                axis(side = 1, tcl = tcl, at = xticks_major, labels = xticks_major) # label_sp(yticks)
                 axis(side = 1, tcl = tcl/2, at = xticks_minor, labels = rep("", length(xticks_minor)), lwd = 0.5)
             } else {
                 xticks_major = zticks
-                axis(side = 1, tcl = tcl, at = xticks_major, labels = xticks_major) # label_sp(yticks)
             }
+            axis(side = 1, tcl = tcl, at = xticks_major, labels = xticks_major) # label_sp(yticks)
         }
         # usr <- par('usr')
         # axis(side = 2, tck = tck)
     })
 
-    ylim = rescale_npc2real(bbox[3:4], v$yscale)
-    xlim = rescale_npc2real(bbox[1:2], v$xscale)
-    bbox <- c(xlim, ylim)
-    unit = "native"
-
+    # ylim = rescale_npc2real(bbox[3:4], v$yscale)
+    # xlim = rescale_npc2real(bbox[1:2], v$xscale)
+    # bbox <- c(xlim, ylim)
+    # unit = "native"
     panel.annotation(grid.rect(), bbox, unit)
     panel.annotation(g, bbox, unit, clip = "off")
 }

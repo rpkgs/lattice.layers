@@ -63,7 +63,7 @@ panel.signPerc <- function(z = NULL, mask = NULL, col.regions = c("blue", "red")
 
     family <- get_family()
     grid.rect(x, y, width = width*0.94, height = height*2, just = c(0, 1), 
-        gp = gpar(col = bg))
+        gp = gpar(col = "transparent", fill = bg))
     
     ncolors <- length(col.regions)
     col.neg = col.regions[1]

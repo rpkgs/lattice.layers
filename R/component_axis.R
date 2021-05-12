@@ -10,7 +10,8 @@
 #'
 #' @export
 component_axis <- function(ticks, labels = TRUE, origin = 0, tck = 0.4, angle = 0,
-    type = c("xaxis", "yaxis")[1])
+    type = c("xaxis", "yaxis")[1], 
+    title = TRUE)
 {
     tck_half = unit(tck/2, "lines")
     tck    = unit(tck, "lines")
@@ -54,28 +55,39 @@ component_axis <- function(ticks, labels = TRUE, origin = 0, tck = 0.4, angle = 
     family <- get_family()
     if (length(labels) > 1 || labels) {
         if (is.logical(labels)) labels <- ticks
+        ticks %<>% .[I]
+        labels %<>% .[I]
+
         adj <- c(0.5, 1)
         if (angle == 90)
             adj <- c(1, 0.5)
         if (type == "yaxis") {
             adj = c(1, 0.5)
-            title <- if (.options$style == "CH") "频率 (%)" else "Fraction (%)"
-            grid.text(x = origin - unit(1.2, "lines") - tck, y = unit(median(ticks), "native"), title,
-                gp = gpar(font = 2, fontfamily = family),
-                just = c(0, 0.5) %>% rev(),
-                rot = 90,
-                name = "ylab.title"
-            )
-            # browser()
+            if (title) {
+                ylab <- if (.options$style == "CH") "频率 (%)" else "Fraction (%)"
+                grid.text(
+                    x = origin - unit(1.2, "lines") - tck, y = unit(median(ticks), "native"), ylab,
+                    gp = gpar(font = 2, fontfamily = family),
+                    just = c(0, 0.5) %>% rev(),
+                    rot = 90,
+                    name = "ylab.title"
+                )
+            } else {
+                # add (%)
+                # delta = diff(ticks) %>% mean()
+                # ticks %<>% {c(., last(.) + delta)}
+                # labels %<>% c("(%)")
+                labels[2:length(labels)] %<>% paste0("%")
+            }            
             grid.text(
-                y = unit(ticks[I], "native"), x = origin - (tck + unit(0.1, "lines")),
-                labels[I],
+                y = unit(ticks, "native"), x = origin - (tck + unit(0.1, "lines")),
+                labels,
                 gp = gpar(fontfamily = .options$family, srt = angle, font = 2),
                 just = adj, name = paste0(type, ".text")
             )
         } else {
-            grid.text(x = unit(ticks[I], "native"), y = origin - (tck + unit(0.1, "lines")),
-                labels[I], rot = angle,
+            grid.text(x = unit(ticks, "native"), y = origin - (tck + unit(0.1, "lines")),
+                labels, rot = angle,
                 gp = gpar(fontfamily = .options$family, font = 2),
                 just = adj, name = paste0(type, ".text"))
         }

@@ -10,7 +10,8 @@ component_axis(
   origin = 0,
   tck = 0.4,
   angle = 0,
-  type = c("xaxis", "yaxis")[1]
+  type = c("xaxis", "yaxis")[1],
+  title = TRUE
 )
 }
 \arguments{

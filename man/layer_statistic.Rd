@@ -14,6 +14,7 @@ layer_statistic(
   FUN = weightedMedian,
   hjust = 0,
   vjust = 1,
+  cex = 1,
   ...
 )
 }

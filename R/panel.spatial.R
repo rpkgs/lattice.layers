@@ -27,7 +27,8 @@ panel.spatial <- function(x, y, z, subscripts,
 
     ## 2. add panel title
     panel_title = guess_panel_title(...)
-    title.param = pars$title %>% c(listk(labels = panel_title, identifier = "title"))
+    title.param = pars$title %>% c(listk(labels = panel_title, identifier = "title", 
+        fontfamily = get_family()))
     do.call(panel.text, title.param)
     # bbox = c(194, max(xlim), -60, 90) + c(0, -10, 0, 0)
     # panel.annotation(grid.rect(), bbox = bbox, "native")
