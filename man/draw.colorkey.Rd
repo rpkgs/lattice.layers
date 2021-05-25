@@ -11,7 +11,7 @@ draw.colorkey2(key, draw = FALSE, vp = NULL)
 }
 \arguments{
 \item{key}{
-    A list determining the key. See documentation for \code{levelplot},
+    A list determining the key. See documentation for \code{\link[lattice]{levelplot}},
     in particular the section describing the \code{colorkey} argument,
     for details.
   }

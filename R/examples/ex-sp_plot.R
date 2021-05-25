@@ -9,7 +9,7 @@ trellis.par.set("add.text" = list(fontfamily = get_family(), cex = 2))
 p <- sp_plot(grid_avhrr,
              pars = pars,
              interpolate = FALSE) +
-    layer_histFreq(x = 0.05, y = 0.15, width = 0.25) +
+    layer_barchart(x = 0.05, y = 0.15, width = 0.25) +
     layer_latFreq(zlim_ratio = c(0, 1), bbox = c(0.8, 1, 0, 1)) +
     layer_statistic(x = 0.5, y = 0.6, FUN = weightedMedian) +
     layer_signPerc(x = 0.05, y = 0.6) +
@@ -23,7 +23,7 @@ df = grid_avhrr@data %>% data.frame() %>%
 sp_plot(grid_avhrr, df,
               formula = X1982 ~ lon+lat | type,
               aspect = 0.5, pars = pars) +
-    layer_histFreq(x = 0.05, y = 0.15, width = 0.25) +
+    layer_barchart(x = 0.05, y = 0.15, width = 0.25) +
     layer_latFreq(zlim_ratio = c(0, 1), bbox = c(0.9, 1, 0, 1)) +
     layer_statistic(x = 0.5, y = 0.6, FUN = weightedMedian) +
     layer_signPerc(x = 0.05, y = 0.6) +

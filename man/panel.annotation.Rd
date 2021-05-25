@@ -33,7 +33,9 @@ of npc.}
     clip to the extent of this viewport, inherit the clipping region
     from the parent viewport, or turn clipping off altogether.
     For back-compatibility, a logical value of \code{TRUE} corresponds
-    to \code{"on"} and \code{FALSE} corresponds to \code{"inherit"}.}
+    to \code{"on"} and \code{FALSE} corresponds to \code{"inherit"}.
+
+    May also be a grob (or a gTree) that describes a clipping path.}
 
 \item{...}{ignored}
 }

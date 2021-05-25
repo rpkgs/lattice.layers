@@ -2,7 +2,7 @@
 #'
 #' @param ... other parameters to [panel.latFreq()]
 #' @export
-layer_histFreq <- function(
+layer_barchart <- function(
     x = 0.05, y = 0.15, 
     width = 0.25, height = 0.4, 
     yticks = seq(0, 0.3, 0.1),
@@ -19,6 +19,10 @@ layer_histFreq <- function(
     }, data = listk(dots2 = dots))
 }
 
+#' @rdname layer_barchart
+#' @export
+lay_hisFreq <- layer_barchart
+
 #' @inheritParams lattice::panel.levelplot
 #' @inheritParams lattice::panel.barchart
 #' @inheritParams panel.annotation
@@ -28,12 +32,12 @@ layer_histFreq <- function(
 #' @param yticks yaxis ticks position, in the range of `[0, 100]`
 #' @param ntick Integer, number of ticks
 #' @param digit the digit in the labels
-#'
+#' 
 #' @examples
 #' \dontrun{
 #' panel.barchartFreq(z, subscripts, bbox = c(0.05, 0.5, 0, 0.5), unit = "npc")
 #' }
-#' @rdname layer_histFreq
+#' @rdname layer_barchart
 #' @export
 panel.histFreq <- function(z, subscripts, at, col.regions,
     x = 0.05, y = 0.15, 

@@ -18,7 +18,7 @@ layer_latFreq <- function(
 {
     dots = mget(ls()) #%>% c(...)
     layer({
-        params <- listk(x, y, z, subscripts)
+        params <- listk(x, y, z, subscripts, col.regions)
         params %<>% c(dots2)
         do.call(panel.latFreq, params)
     }, data = listk(dots2 = dots))
@@ -109,7 +109,6 @@ panel.latFreq <- function(x, y, z, subscripts,
         # usr <- par('usr')
         # axis(side = 2, tck = tck)
     })
-
     # ylim = rescale_npc2real(bbox[3:4], v$yscale)
     # xlim = rescale_npc2real(bbox[1:2], v$xscale)
     # bbox <- c(xlim, ylim)
@@ -139,4 +138,3 @@ label_sp <- function(x = seq(-60, 90, 30)) {
     }
     do.call(c, res)
 }
-
