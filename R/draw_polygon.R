@@ -17,11 +17,12 @@
 #' @param length.out the length of interpolated `vals` and `x`
 #' @param alpha the alpha of polygon's fill color
 #' @param zlim limits of `vals`
-#'
+#' 
 #' @examples
 #' set.seed(1)
 #' y <- rnorm(10)
 #' x <- seq_along(y)
+#' @importFrom dplyr nth
 #' @export
 draw_polygon <- function(vals, x = NULL, type = "horizontal", length.out = 1e4,
     col.regions = c("blue", "red"), alpha = 0.6,
@@ -42,8 +43,8 @@ draw_polygon <- function(vals, x = NULL, type = "horizontal", length.out = 1e4,
     xx <- xx[ind]
 
     # polygon(x = xx, y = clamp_min(yy, 0), col = "red")
-    col.neg = alpha(col.regions[1], alpha = alpha)
-    col.pos = alpha(last(col.regions), alpha = alpha)
+    col.neg = alpha(nth(col.regions, 2), alpha = alpha)
+    col.pos = alpha(nth(col.regions, -2), alpha = alpha)
 
     params <- listk(type = "n", ...)
     if (all(is.finite(zlim))) params$xlim <- zlim

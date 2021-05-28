@@ -198,16 +198,18 @@ sp_plot <- function(
     if (!is.null(ylim)) params$ylim <- ylim
 
     nbrk <- length(brks)
-    params$at <- if (!is_factor) brks else seq(0.5, nbrk + 1)
+    if (!is_factor) params$at <- brks #else seq(0.5, nbrk + 1)
 
     if (is.list(colorkey) || colorkey) {
         is_factor2 <- key.num2factor || is_factor
-        colorkey.param <- get_colorkey(brks, NULL, key.space, lgd.title, is_factor2, cex = cex.lgd)
+        colorkey.param <- get_colorkey(brks, NULL, key.space, lgd.title,
+                                       is_factor2, cex = cex.lgd)
         colorkey.param$unit <- unit
         colorkey.param$unit.adj <- unit.adj
         colorkey.param$height = key.height
 
         if (is.list(colorkey)) colorkey.param %<>% updateList(colorkey)
+        if (is_factor) colorkey.param$at <- seq_len(length(colorkey.param$labels$labels) + 1) - 0.5
         params$colorkey <- colorkey.param
     } else {
         params$colorkey <- FALSE

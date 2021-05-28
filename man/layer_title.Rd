@@ -4,7 +4,7 @@
 \alias{layer_title}
 \title{layer_title}
 \usage{
-layer_title(x = 0, y = 1, cex = 1.4, hjust = 0, vjust = 1, ...)
+layer_title(x = 0, y = 1, cex = 1.4, labels = NULL, hjust = 0, vjust = 1, ...)
 }
 \arguments{
 \item{x}{A numeric vector or unit object specifying x-values.}

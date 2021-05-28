@@ -111,7 +111,7 @@ shadePattern can be set by \code{set_options(list(shadePattern = list(col = "bla
 }
 \examples{
 \dontrun{
-library(sp2)
+library(sf2)
 library(sp)
 # library(grid)
 

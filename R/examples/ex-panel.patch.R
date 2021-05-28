@@ -1,5 +1,5 @@
 \dontrun{
-library(sp2)
+library(sf2)
 library(sp)
 # library(grid)
 

@@ -67,7 +67,6 @@ formula的书写方式与`lattice::levelplot`的语法格式一致，只是这�
 `sp_plot`提供了给显著性的格点打patch的功能。需要`df`中含有mask变量，TRUE表示显著。
 
 ```{r sp_levelplot, fig.width=7.3, fig.width=6}
-load_all()
 set_options(list(style = "EN"))
 # levelplot style works
 grid2 = grid_slope

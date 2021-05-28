@@ -102,7 +102,7 @@ parameter \code{panel.title} change to \code{panel.titles_full}
 }
 \examples{
 library(Ipaper)
-load_all()
+library(lattice)
 
 set_font()
 data("grid_avhrr")

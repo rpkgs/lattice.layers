@@ -1,6 +1,6 @@
 #' @keywords internal
 #' @import magrittr
-#' @importFrom stats median approx setNames quantile
+#' @importFrom stats median approx setNames quantile lm predict
 #' @importFrom utils str assignInNamespace
 #' @importFrom grDevices cairo_pdf jpeg dev.off svg tiff colorRampPalette xy.coords
 #' @importFrom graphics par polygon abline axis rect

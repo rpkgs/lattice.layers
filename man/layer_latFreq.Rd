@@ -10,6 +10,7 @@ layer_latFreq(
   unit = "npc",
   length.out = 10000,
   tcl = 0.4,
+  cex = 1,
   xlab = "",
   ylab = "",
   xlabels = TRUE,
@@ -18,6 +19,7 @@ layer_latFreq(
   zlim = NULL,
   zlim_ratio = c(-1, 1),
   prob_z = 0.9,
+  col.regions = c("blue", "red"),
   is_spatial = FALSE,
   zticks = NULL,
   digit = 1,
@@ -33,6 +35,7 @@ panel.latFreq(
   unit = "npc",
   length.out = 10000,
   tcl = 0.4,
+  cex = 1,
   xlab = "",
   ylab = "",
   xlabels = TRUE,
@@ -58,6 +61,8 @@ or height of the plotting region. If tck >= 0.5 it is interpreted as a fraction
 of the relevant side, so if tck = 1 grid lines are drawn. The default setting
 (tck = NA) is to use tcl = -0.5.}
 
+\item{cex}{axis text size}
+
 \item{xlab, ylab}{the title of xaxis and yaxis.}
 
 \item{zlim}{the limits of \code{z} value. If not specified, it's \code{c(-1, 1)*quantile(abs(z), 0.9)}.}
@@ -65,6 +70,8 @@ of the relevant side, so if tck = 1 grid lines are drawn. The default setting
 \item{zlim_ratio}{If \code{zlim} not provided, \code{zlim = zlim_ratio * zmax}}
 
 \item{prob_z}{default 0.9, the probability of z quantile, which used to determine the zlim.}
+
+\item{col.regions}{If is null, it will use the default \code{col.regions} in the panel.}
 
 \item{...}{other parameters to \code{\link[=panel.latFreq]{panel.latFreq()}}}
 
@@ -84,6 +91,6 @@ layer of latitude frequency barchart
 }
 \examples{
 \dontrun{
-panel.horizontalFreq(x, y, z, subscripts, bbox = c(0.7, 1, 0, 1), unit = "npc")
+panel.latFreq(x, y, z, subscripts, bbox = c(0.7, 1, 0, 1), unit = "npc")
 }
 }

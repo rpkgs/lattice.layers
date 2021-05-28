@@ -17,6 +17,7 @@ Imports:
     RColorBrewer,
     data.table,
     lattice,
+    Cairo,
     magrittr,
     ggplotify, 
     methods,

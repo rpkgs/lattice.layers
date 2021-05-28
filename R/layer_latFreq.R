@@ -1,25 +1,32 @@
 #' layer of latitude frequency barchart
 #'
+#' @param cex axis text size
+#' @param col.regions If is null, it will use the default `col.regions` in the panel.
 #' @param ... other parameters to [panel.latFreq()]
+#' 
 #' @export
 layer_latFreq <- function(
     bbox = c(0.7, 1, 0, 1),
     unit = "npc",
     length.out = 1e4,
-    tcl = 0.4, 
+    tcl = 0.4, cex = 1,
     xlab = "", ylab = "",
     xlabels = TRUE, ylabels = TRUE, 
     ylim = NULL, zlim = NULL, zlim_ratio = c(-1, 1),
     prob_z = 0.9,
+    col.regions = c("blue", "red"),
     is_spatial = FALSE,
     zticks = NULL,
     digit = 1,
     ...)
 {
-    dots = mget(ls()) #%>% c(...)
+    dots = mget(ls()) %>% c(...)
     layer({
-        params <- listk(x, y, z, subscripts, col.regions)
+        params <- listk(x, y, z, subscripts)
         params %<>% c(dots2)
+        if (is.null(params$col.regions)) params$col.regions = col.regions
+        # print(str(params, 1))
+        # stop()
         do.call(panel.latFreq, params)
     }, data = listk(dots2 = dots))
 }
@@ -38,7 +45,7 @@ layer_latFreq <- function(
 #'
 #' @examples
 #' \dontrun{
-#' panel.horizontalFreq(x, y, z, subscripts, bbox = c(0.7, 1, 0, 1), unit = "npc")
+#' panel.latFreq(x, y, z, subscripts, bbox = c(0.7, 1, 0, 1), unit = "npc")
 #' }
 #' @rdname layer_latFreq
 #' @export
@@ -46,7 +53,7 @@ panel.latFreq <- function(x, y, z, subscripts,
     bbox = c(0.7, 1, 0, 1),
     unit = "npc",
     length.out = 1e4,
-    tcl = 0.4, 
+    tcl = 0.4, cex = 1,
     xlab = "", ylab = "",
     xlabels = TRUE, ylabels = TRUE, 
     ylim = NULL, zlim = NULL, zlim_ratio = c(-1, 1),
@@ -94,17 +101,17 @@ panel.latFreq <- function(x, y, z, subscripts,
                 ylabels <- as.character(yticks)
                 ylabels[c(1, length(ylabels))] <- " "
             }
-            axis(side = 2, tcl = tcl, at = yticks, labels = ylabels) # label_sp(yticks)
-            axis(side = 2, tcl = tcl/2, at = seq(-60, 90, 10), labels = rep("", length(at)), lwd = 0.5)
+            axis(side = 2, tcl = tcl, at = yticks, labels = ylabels, cex.axis = cex) # label_sp(yticks)
+            axis(side = 2, tcl = tcl / 2, at = seq(-60, 90, 10), labels = rep("", length(at)), lwd = 0.5, cex.axis = cex)
 
             if (is.null(zticks)) {
                 xticks_major = c(-1, 0, 1)*zmax
                 xticks_minor = c(-1, 1)*zmax/2
-                axis(side = 1, tcl = tcl/2, at = xticks_minor, labels = rep("", length(xticks_minor)), lwd = 0.5)
+                axis(side = 1, tcl = tcl / 2, at = xticks_minor, labels = rep("", length(xticks_minor)), lwd = 0.5, cex.axis = cex)
             } else {
                 xticks_major = zticks
             }
-            axis(side = 1, tcl = tcl, at = xticks_major, labels = xticks_major) # label_sp(yticks)
+            axis(side = 1, tcl = tcl, at = xticks_major, labels = xticks_major, cex.axis = cex) # label_sp(yticks)
         }
         # usr <- par('usr')
         # axis(side = 2, tck = tck)

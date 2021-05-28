@@ -1,6 +1,5 @@
 library(lattice)
 {
-    load_all()
     panel <- function(x, y, z, subscripts, at, ...) {
         panel.levelplot(x, y, z, subscripts, ...)
         panel.annotation(grid.circle(draw = FALSE))
@@ -47,8 +46,6 @@ trellis.par.set(list(axis.text=set_font,
 # grid.edit("label_perc", gp = gpar(fontface = 2), grep = TRUE, global = TRUE)
 
 {
-    load_all()
-
     d <- data.table(x = 1:10,y = 1:10)
     panel = function(x, y, ...){
         panel.xyplot(x, y, ...)

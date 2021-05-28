@@ -1,5 +1,5 @@
 library(Ipaper)
-load_all()
+library(lattice)
 
 set_font()
 data("grid_avhrr")

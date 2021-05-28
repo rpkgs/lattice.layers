@@ -1,3 +1,4 @@
+#' @importFrom grDevices as.raster
 panel.levelplot.raster <- function(x, y, z,
                                    subscripts,
                                    at = pretty(z),
