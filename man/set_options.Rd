@@ -3,11 +3,14 @@
 \name{set_options}
 \alias{set_options}
 \alias{get_options}
+\alias{get_family}
 \title{set latticeMap options}
 \usage{
 set_options(options)
 
 get_options(verbose = TRUE)
+
+get_family()
 }
 \arguments{
 \item{options}{\itemize{

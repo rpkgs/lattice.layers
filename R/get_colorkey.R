@@ -19,7 +19,7 @@ pal <- function(col, border = "light gray")
 #' @export
 get_colorkey <- function(breaks, cols = NULL, space = "bottom", lgd.title = NULL, is_factor = FALSE, 
     unit = NULL, unit.adj = 0.3,  
-    cex = 1.3, fontfamily = "Times", fontface = 2)
+    cex = 1.4, fontfamily = "Times", fontface = 2)
 {
     ncolor <- length(breaks) - 1
     # cols <- colorRampPalette(c("firebrick1","orange3", "darkgoldenrod2", "grey90",

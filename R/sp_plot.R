@@ -79,6 +79,7 @@ sp_plot <- function(
     par.settings2 = list(axis.line = list(col = "transparent")),
     ...)
 {
+    if (!is.null(layout)) layout %<>% rev()
     if (missing(zcols)) zcols <- colnames(df)
     if (is.numeric(zcols)) zcols <- colnames(df)[zcols]
     if (!is.data.table(df)) df <- data.table(df)

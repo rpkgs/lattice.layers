@@ -1,5 +1,3 @@
-
-
 .options <- list2env(list(
     style = c("EN", "CH")[1],
     family = "Times",
@@ -26,6 +24,8 @@ get_options <- function(verbose = TRUE) {
     as.list(.options)
 }
 
+#' @rdname set_options
+#' @export
 get_family <- function() {
     family <- par("family")
     if (family == "") {

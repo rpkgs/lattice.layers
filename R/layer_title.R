@@ -22,9 +22,15 @@ layer_title <- function(
         if (is.null(labels)) {
             label = guess_panel_title(panel.titles_full, panel.titles, NO_begin)
         } else {
-            label = labels[panel.number()]
+            if (is.call(labels) && length(labels) == 2) {
+                label = labels
+            } else {
+                label = labels[panel.number()]
+            }
         }
-        text.params$label = label
+        # print(label)
+        # print(as.expression(label))
+        text.params$label = as.expression(label)
         do.call(grid.text, text.params)
     }, data = listk(text.params = listk(x, y, hjust, vjust, gp), labels))
 }
