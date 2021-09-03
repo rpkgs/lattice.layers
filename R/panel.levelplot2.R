@@ -1,3 +1,5 @@
+# rewrite parameter `col`
+
 #' @export
 panel.levelplot2 <-
     function(x, y, z, 

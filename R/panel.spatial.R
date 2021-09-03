@@ -37,13 +37,12 @@ panel.spatialBasic <- function(x, y, z, subscripts,
     sppanel(list(sp.layout), panel.number(), first = TRUE)
     if (is.null(class) || class %in% c("SpatialPixelsDataFrame", "SpatialGridDataFrame")) {
         panel.levelplot.raster(x, y, z, subscripts, ..., interpolate = interpolate)
-        # panel.levelplot(x, y, z, subscripts, lty = 0, col = "transparent", ..., interpolate = interpolate)
-        # panel.levelplot.raster, panel.levelplot
+        # panel.levelplot2(x, y, z, subscripts, lty = 0, col = "transparent", ..., interpolate = interpolate)
     } else {
         panel.polygonsplot(x, y, z, subscripts, ..., sp.layout = sp.layout)
     }
     if (contour) {
-        panel.levelplot(x, y, z, subscripts,
+        panel.levelplot2(x, y, z, subscripts,
             region = TRUE, contour = TRUE, labels = TRUE, interpolate = FALSE)
     }
     sppanel(list(sp.layout), panel.number(), first = FALSE)

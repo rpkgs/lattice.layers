@@ -52,6 +52,10 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v1
 
+      - name: Install XQuartz on macOS
+        if: runner.os == 'macOS'
+        run: brew install xquartz --cask
+
       - name: Install pak and query dependencies
         run: |
           install.packages("pak", repos = "https://r-lib.github.io/p/pak/dev/")

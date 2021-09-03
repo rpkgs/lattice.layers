@@ -2,7 +2,7 @@ test_that("panel.annotation and panel.sign works", {
     library(lattice)
 
     panel <- function(x, y, z, subscripts, at, ...) {
-        panel.levelplot(x, y, z, subscripts, ...)
+        panel.levelplot2(x, y, z, subscripts, ...)
         panel.annotation(grid.circle(draw = FALSE))
         panel.annotation(grid.rect(), bbox = c(0.7, 1, 0, 1))
         # panel.annotation(~{

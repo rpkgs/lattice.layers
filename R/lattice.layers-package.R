@@ -36,8 +36,8 @@ NULL
         )
     }
 
-    rgdal::set_thin_PROJ6_warnings(FALSE)
-    init_lattice()
+    sysname <- tolower(Sys.info()[["sysname"]])
+    if ("windows" %in% sysname) init_lattice()
     # set_font()
     invisible()
 }
