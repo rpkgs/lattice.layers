@@ -117,7 +117,7 @@ p <- sp_plot(grid_avhrr,
     layer_statistic(x = 0.5, y = 0.6, FUN = weightedMedian) +
     layer_signPerc(x = 0.05, y = 0.6) +
     layer_signDist()
-write_fig(p, show = F)
+write_fig(p, show = FALSE)
 # write_fig(p, "ex-sp_plot1.pdf", 9.8, 5)
 
 ## levelplot stype

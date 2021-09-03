@@ -1,5 +1,5 @@
-Package: latticeMap
-Title: Extend Lattice Panels by Grob Objects
+Package: lattice.layers
+Title: Lattice Layers Functions
 Version: 0.1.1.9000
 Authors@R: person("Dongdong", "Kong", email = "kongdd.sysu@gmail.com",
   role = c("aut", "cre"))
@@ -12,11 +12,13 @@ Imports:
     sf,
     stars,
     sp,
+    rgdal,
     raster,
     matrixStats,
     RColorBrewer,
     data.table,
     lattice,
+    latticeExtra,
     Cairo,
     magrittr,
     ggplotify, 
@@ -25,8 +27,7 @@ Imports:
     dplyr,
     stringr,
     reshape2,
-    Ipaper,
-    latticeExtra
+    Ipaper
 Remotes:
     rpkgs/Ipaper
 Suggests: 
@@ -34,10 +35,8 @@ Suggests:
     devEMF,
     covr,
     gridExtra,
-    latticeExtra,
     maptools,
     rgeos,
-    Cairo,
     knitr,
     rmarkdown
 Depends: 

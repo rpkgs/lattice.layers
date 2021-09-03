@@ -14,21 +14,21 @@ knitr::opts_chunk$set(
 )
 ```
 
-# latticeMap
+# lattice.layers
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/rpkgs/latticeMap/workflows/R-CMD-check/badge.svg)](https://github.com/rpkgs/latticeMap/actions)
-[![codecov](https://codecov.io/gh/rpkgs/latticeMap/branch/master/graph/badge.svg)](https://codecov.io/gh/rpkgs/latticeMap)
-[![CRAN](http://www.r-pkg.org/badges/version/latticeMap)](https://cran.r-project.org/package=latticeMap)<!-- badges: end -->
+[![R-CMD-check](https://github.com/rpkgs/lattice.layers/workflows/R-CMD-check/badge.svg)](https://github.com/rpkgs/lattice.layers/actions)
+[![codecov](https://codecov.io/gh/rpkgs/lattice.layers/branch/master/graph/badge.svg)](https://codecov.io/gh/rpkgs/lattice.layers)
+[![CRAN](http://www.r-pkg.org/badges/version/lattice.layers)](https://cran.r-project.org/package=lattice.layers)<!-- badges: end -->
 <!-- badges: end -->
 
 ``` r
-install.packages("latticeMap")
+install.packages("lattice.layers")
 # covr::package_coverage()
 ```
 
 ```{r}
-library(latticeMap)
+library(lattice.layers)
 library(Ipaper) # install_githubrpkgs/Ipaper
 library(sp)
 ```

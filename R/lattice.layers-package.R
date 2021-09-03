@@ -2,10 +2,10 @@
 #' @import magrittr
 #' @importFrom stats median approx setNames quantile lm predict
 #' @importFrom utils str assignInNamespace
-#' @importFrom grDevices cairo_pdf jpeg dev.off svg tiff colorRampPalette xy.coords
+#' @importFrom grDevices cairo_pdf jpeg dev.off svg tiff colorRampPalette xy.coords contourLines
 #' @importFrom graphics par polygon abline axis rect
 #' @importFrom methods as
-#' @importFrom data.table data.table is.data.table
+#' @importFrom data.table data.table is.data.table `:=`
 #' @importFrom Ipaper write_fig melt_list listk label_tag is_empty which.notna
 #' @importFrom plyr dlply
 #' @importFrom dplyr select first last
@@ -26,6 +26,17 @@ NULL
     #     # library(lattice)
     #     library(devtools)
     # })
+    if (getRversion() >= "2.15.1") {
+        utils::globalVariables(
+            c(
+                "x", "y", "z", "subscripts", "dots", "dots2", "at", "col.regions",
+                "vals", "value",
+                ".", ".SD", ".N", "..vars"
+            )
+        )
+    }
+
+    rgdal::set_thin_PROJ6_warnings(FALSE)
     init_lattice()
     # set_font()
     invisible()
@@ -49,7 +60,7 @@ asign_func <- function(func_old, func_new) {
 #' @keywords internal
 #' @export 
 init_lattice <- function() {
-    # latticeMap:::`+.trellis`
+    # lattice.layers:::`+.trellis`
     # environment(latticeExtra:::`+.trellis`)
     suppressWarnings({
         eval(parse(text = 'environment(draw.colorkey) <- environment(lattice::xyplot)'))

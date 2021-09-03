@@ -48,7 +48,7 @@ panel.patch <- function(
         for (end in ends) {
             if (end > start) {
                 if (is.null(density) || is.na(density[i]) || density[i] < 0)
-                    .External.graphics(C_polygon,
+                    .External.graphics(graphics:::C_polygon,
                         xy$x[start:(end - 1)],
                         xy$y[start:(end - 1)],
                         col[i], NA, lty[i], ...)

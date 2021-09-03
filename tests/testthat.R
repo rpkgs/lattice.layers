@@ -1,6 +1,6 @@
 library(testthat)
-library(latticeMap)
+library(lattice.layers)
 library(Ipaper)
 library(dplyr)
 
-test_check("latticeMap")
+test_check("lattice.layers")

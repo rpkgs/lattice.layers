@@ -12,7 +12,7 @@ get_colorkey(
   is_factor = FALSE,
   unit = NULL,
   unit.adj = 0.3,
-  cex = 1.3,
+  cex = 1.4,
   fontfamily = "Times",
   fontface = 2
 )

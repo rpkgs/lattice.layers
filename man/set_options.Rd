@@ -4,7 +4,7 @@
 \alias{set_options}
 \alias{get_options}
 \alias{get_family}
-\title{set latticeMap options}
+\title{set lattice.layers options}
 \usage{
 set_options(options)
 
@@ -20,5 +20,5 @@ get_family()
 }}
 }
 \description{
-set latticeMap options
+set lattice.layers options
 }

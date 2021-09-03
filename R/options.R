@@ -4,7 +4,7 @@
     family_CH = c("TimesSimSun", "rTimes")[2] # TimesSimSun, rTimes
 ))
 
-#' set latticeMap options
+#' set lattice.layers options
 #' 
 #' @param options
 #' - style: font style, one of "EN" and "CH"
