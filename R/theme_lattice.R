@@ -1,20 +1,23 @@
-# update theme
-
-is_missing_arg <- function(x) identical(x, quote(expr = ))
-
-modify_list <- function(old, new)  {
-    for (i in names(new)) old[[i]] <- new[[i]]
-    old
+#' set_strip for lattice
+#'
+#' @param p lattice object
+#'
+#' @references
+#' https://stackoverflow.com/questions/17888505/varying-strip-heights-for-multi-panel-lattice-plots
+#' https://stackoverflow.com/questions/8536239/change-background-and-text-of-strips-associated-to-multiple-panels-in-r-lattic
+#'
+#' @export
+set_strip <- function(p, cex = 1, title = NULL, height = 1) {
+    param <- list(
+        factor.levels = title,
+        par.strip.text = list(cex = cex)
+    ) %>% rm_empty()
+    p$strip <- do.call(strip.custom, param)
+    p + theme_lattice(
+        layout.heights = list(strip = height)
+    )
 }
 
-find_args <- function(...)
-{
-    env <- parent.frame()
-    args <- names(formals(sys.function(sys.parent(1))))
-    vals <- mget(args, envir = env)
-    vals <- vals[!vapply(vals, is_missing_arg, logical(1))]
-    modify_list(vals, list(..., ... = NULL))
-}
 
 #' theme_lattice
 #'
@@ -33,13 +36,15 @@ find_args <- function(...)
 #'
 #' @export
 theme_lattice <- function(
-    plot.margin, 
+    plot.margin,
     key.margin, axis.margin,
     axis.components.inner,
     axis.components.outer,
     ...,
     layout.widths,
     layout.heights,
+    font_size = NULL,
+    font_family = "",
     par.settings)
 {
     orders = c("top", "right", "bottom", "left")
@@ -96,6 +101,9 @@ theme_lattice <- function(
     if (!missing(par.settings)) {
         setting %<>% updateList(par.settings)
     }
+
+    if (!font_family == "") setting$grid.pars$fontfamily = font_family
+    if (!is.null(font_size)) setting$fontsize$text = font_size
     setting
 }
 
@@ -204,4 +212,21 @@ layout.widths <- function(
 {
     elements <- find_args(..., complete = NULL, validate = NULL)
     elements
+}
+
+# update theme
+
+is_missing_arg <- function(x) identical(x, quote(expr = ))
+
+modify_list <- function(old, new) {
+    for (i in names(new)) old[[i]] <- new[[i]]
+    old
+}
+
+find_args <- function(...) {
+    env <- parent.frame()
+    args <- names(formals(sys.function(sys.parent(1))))
+    vals <- mget(args, envir = env)
+    vals <- vals[!vapply(vals, is_missing_arg, logical(1))]
+    modify_list(vals, list(..., ... = NULL))
 }

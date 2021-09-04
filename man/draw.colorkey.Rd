@@ -24,7 +24,6 @@ draw.colorkey2(key, draw = FALSE, vp = NULL)
 draw.colorkey
 }
 \examples{
-library(grid)
 brks_SOS  <- c(-Inf, seq(110, 150, 5), Inf)
 key <- list(
     at = brks_SOS, 
@@ -33,6 +32,7 @@ key <- list(
     labels=list(cex=1.2, fontface='bold'), 
     rect = list(col = "black", lwd = 0.2)
 )
+
 g <- draw.colorkey(key)
 grid.newpage()
 grid.draw(g)

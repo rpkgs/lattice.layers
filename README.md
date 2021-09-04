@@ -73,17 +73,6 @@ p <- sp_plot(grid,
              stat = stat, area.weighted = TRUE
 )
 p
-# Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
-# PostScript字体数据库里找不到'rTimes'这个字体系列
-
-# Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
-# PostScript字体数据库里找不到'rTimes'这个字体系列
-
-# Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
-# PostScript字体数据库里找不到'rTimes'这个字体系列
-
-# Warning in grid.Call.graphics(C_text, as.graphicsAnnot(x$label), x$x, x$y, :
-# PostScript字体数据库里找不到'rTimes'这个字体系列
 ```
 
 <img src="man/Figure/sp_plot-1.svg" width="100%" />

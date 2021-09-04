@@ -4,6 +4,11 @@
 \name{reexports}
 \alias{reexports}
 \alias{weightedMedian}
+\alias{grid.newpage}
+\alias{grid.draw}
+\alias{grid.rect}
+\alias{grid.circle}
+\alias{levelplot}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -11,6 +16,10 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
+  \item{grid}{\code{\link[grid]{grid.circle}}, \code{\link[grid]{grid.draw}}, \code{\link[grid]{grid.newpage}}, \code{\link[grid]{grid.rect}}}
+
+  \item{lattice}{\code{\link[lattice]{levelplot}}}
+
   \item{matrixStats}{\code{\link[matrixStats]{weightedMedian}}}
 }}
 

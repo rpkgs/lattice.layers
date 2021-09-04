@@ -7,12 +7,12 @@
 #' these are simply not shown in the legend, so probably new behaviour is no
 #' worse).
 #' When non-zero, controls fraction of key$height to be used for triangles at ends.
-#' 
-#' @param x height of triangle. If x in the range of `[0, 0.25]`, `height` will 
+#'
+#' @param x height of triangle. If x in the range of `[0, 0.25]`, `height` will
 #' be ignored.
 #' @param inf boolean
 #' @param height height of triangle
-#' 
+#'
 #' @keywords internal
 #' @export
 convertTri <- function(x, inf = FALSE, height = 0.05)
@@ -33,91 +33,124 @@ convertTri <- function(x, inf = FALSE, height = 0.05)
     0
 }
 
+#' fix non-equispaced colorkey
+#'
+#' @description Not processed if `key$equispaced` is not true.
+#'
+#' @param key A `colorkey` object (list), at least with the element of `at`.
+#'
+#' @example R/examples/ex-draw.colorkey_equispaced.R
+#'
+#' @keywords internal
+#' @export
+equispaced_colorkey <- function(key) {
+    if (!isTRUE(key$equispaced)) return(key) # not processed
+
+    at <- key$at
+    is_equispaced <- length(unique(diff(at[is.finite(at)]))) == 1
+    if (!is_equispaced) {
+        key$at <- seq_along(at)
+        labels_at <- seq_along(at)
+        labels <- at
+        if (first(at) == -Inf) {
+            key$at[1] <- -Inf
+            labels_at <- labels_at[-1]
+            labels <- labels[-1]
+        }
+        if (last(at) == Inf) {
+            key$at[length(key$at)] <- Inf
+            n <- length(labels_at)
+            labels_at <- labels_at[-n]
+            labels <- labels[-n]
+        }
+        key$labels <- list(at = labels_at, labels = labels)
+    }
+    key
+}
+
+#' @keywords internal
+#' @export
+process.colorkey <- function(
+    col = regions$col,
+    alpha = regions$alpha,
+    at,
+    pretty = FALSE, equispaced = TRUE, format = "%f",
+    tick.number = 7,
+    tck = 1,
+    width = 2,
+    height = 1,
+    space = "right",
+    raster = FALSE,
+    interpolate = FALSE,
+    tri.upper = NA,
+    tri.lower = NA,
+    title = NULL,
+    unit = NULL,
+    unit.adj = 0.3,
+    cex.title = 1,
+    axis.line = list(),
+    axis.text = list(),
+    key.padding = c(0, 0),
+    rect = list(col = "black", lwd = 0.3), # rect of legend
+    ...)
+{
+    regions <- trellis.par.get("regions")
+    listk(
+        col, alpha, at,
+        tick.number, tck,
+        width, height,
+        space,
+        raster,
+        interpolate,
+        pretty, equispaced, format,
+        tri.upper, tri.lower,
+        unit, unit.adj,
+        title, cex.title,
+        axis.line, axis.text,
+        key.padding,
+        rect,
+        ...
+    )
+}
+
+# Note: there are two 'at'-s here, one is key$at, which specifies
+# the breakpoints of the rectangles, and the other is key$lab$at
+# (optional) which is the positions of the ticks. We will use the
+# 'at' variable for the latter, 'atrange' for the range of the
+# former, and key$at explicitly when needed
+
 #' draw.colorkey
 #'
 #' @inheritParams lattice::draw.colorkey
-#' 
+#'
 #' @example R/examples/ex-draw.colorkey.R
 #' @import lattice
 #' @export
 draw.colorkey <- function(key, draw = FALSE, vp = NULL)
 {
-    process.colorkey <- function(
-        col = regions$col,
-        alpha = regions$alpha,
-        at,
-        tick.number = 7,
-        tck = 1,
-        width = 2,
-        height = 1,
-        space = "right",
-        raster = FALSE,
-        interpolate = FALSE,
-        tri.upper = NA,
-        tri.lower = NA,
-        title = NULL, 
-        unit = NULL,
-        unit.adj = 0.3, 
-        cex.title = 1,
-        axis.line = list(),
-        axis.text = list(),
-        key.padding = c(0, 0),
-        rect = list(col = "black", lwd = 0.3), # rect of legend
-        ...)
-    {
-        regions <- trellis.par.get("regions")
-        list(col         = col,
-            alpha       = alpha,
-            at          = at,
-            tick.number = tick.number,
-            tck         = tck,
-            width       = width,
-            height      = height,
-            space       = space,
-            raster      = raster,
-            interpolate = interpolate,
-            tri.upper   = tri.upper,
-            tri.lower   = tri.lower,
-            title       = title,
-            unit        = unit,
-            unit.adj    = unit.adj,
-            cex.title   = cex.title,
-            axis.line   = axis.line,
-            axis.text   = axis.text,
-            key.padding = key.padding,
-            rect        = rect,
-            ...)
-    }
-
     if (!is.list(key)) stop("key must be a list")
     key <- do.call(process.colorkey, key)
+    key %<>% equispaced_colorkey()
 
     axis.line <- updateList(trellis.par.get("axis.line"), key$axis.line)
     axis.text <- updateList(trellis.par.get("axis.text"), key$axis.text)
 
     key$axis.line <- axis.line
-    # layout_name <- ifelse(key$space %in% c("top", "bottom"), "layout.heights", "layout.widths") 
+    # layout_name <- ifelse(key$space %in% c("top", "bottom"), "layout.heights", "layout.widths")
     # colorkey.title.padding   <- lattice.options()[[layout_name]]$colorkey.title.padding
-    # colorkey.title.padding$x <- colorkey.title.padding$x * 
+    # colorkey.title.padding$x <- colorkey.title.padding$x *
     #     trellis.par.get(layout_name)$colorkey.title.padding
     ## made FALSE later if labels explicitly specified
     check.overlap <- TRUE
 
-    ## Note: there are two 'at'-s here, one is key$at, which specifies
-    ## the breakpoints of the rectangles, and the other is key$lab$at
-    ## (optional) which is the positions of the ticks. We will use the
-    ## 'at' variable for the latter, 'atrange' for the range of the
-    ## former, and key$at explicitly when needed
-
-    ## Getting the locations/dimensions/centers of the rectangles
+    # Getting the locations/dimensions/centers of the rectangles
     key$at <- sort(key$at) ## should check if ordered
     numcol <- length(key$at)-1
-    ##     numcol.r <- length(key$col)
-    ##     key$col <-
-    ##         if (is.function(key$col)) key$col(numcol)
-    ##         else if (numcol.r <= numcol) rep(key$col, length.out = numcol)
-    ##         else key$col[floor(1+(1:numcol-1)*(numcol.r-1)/(numcol-1))]
-
+    #     numcol.r <- length(key$col)
+    #     key$col <-
+    #         if (is.function(key$col)) key$col(numcol)
+    #         else if (numcol.r <= numcol) rep(key$col, length.out = numcol)
+    #         else key$col[floor(1+(1:numcol-1)*(numcol.r-1)/(numcol-1))]
     key$col <- level.colors(x = seq_len(numcol) - 0.5,
                      at = seq_len(numcol + 1) - 1,
                      col.regions = key$col,
@@ -129,6 +162,7 @@ draw.colorkey <- function(key, draw = FALSE, vp = NULL)
 
     if (key$raster && !isTRUE(all.equal(diff(range(diff(scat))), 0)))
         warning("'at' values are not equispaced; output may be wrong")
+    # browser()
 
     ## recnum <- length(scat)-1
     reccentre <- (scat[-1] + scat[-length(scat)]) / 2
@@ -142,12 +176,11 @@ draw.colorkey <- function(key, draw = FALSE, vp = NULL)
     lineheight <- axis.text$lineheight
     rot <- 0
 
-    ## The following code assumes names key$lab and key$lab$lab (which
-    ## may have been used in user code), whereas documentation says
-    ## key$labels and key$labels$labels.  To make both work without
-    ## 'partial matching' warnings, we rename key$labels to key$lab
-    ## etc.
-
+    # The following code assumes names key$lab and key$lab$lab (which
+    # may have been used in user code), whereas documentation says
+    # key$labels and key$labels$labels.  To make both work without
+    # 'partial matching' warnings, we rename key$labels to key$lab
+    # etc.
     if (!is.null(key[["labels"]])) {
         key[["lab"]] <- key[["labels"]]
         key[["labels"]] <- NULL
@@ -157,11 +190,17 @@ draw.colorkey <- function(key, draw = FALSE, vp = NULL)
         }
     }
 
-    if (is.null(key$lab)) {
-        at <- lpretty(atrange, key$tick.number)
-        at <- at[at >= atrange[1] & at <= atrange[2]]
+    lab = key$lab
+    if (is.null(lab)) {
+        if (key$pretty) {
+            at <- lpretty(atrange, key$tick.number)
+            at <- at[at >= atrange[1] & at <= atrange[2]]
+        } else {
+            # scat <- as.numeric(key$at) ## problems otherwise with DateTime objects (?)
+            at <- as.numeric(key$at)
+        }
         labels <- format(at, trim = TRUE)
-    } else if (is.characterOrExpression(key$lab) && length(key$lab)==length(key$at)) {
+    } else if (is.characterOrExpression(lab) && length(lab)==length(key$at)) {
         check.overlap <- FALSE
         at <- key$at
         labels <- key$lab
@@ -179,8 +218,7 @@ draw.colorkey <- function(key, draw = FALSE, vp = NULL)
         if (!is.null(key$lab$fontface))   fontface   <- key$lab$fontface
         if (!is.null(key$lab$fontfamily)) fontfamily <- key$lab$fontfamily
         if (!is.null(key$lab$lineheight)) lineheight <- key$lab$lineheight
-    }
-    else stop("malformed colorkey")
+    } else stop("malformed colorkey")
 
     labscat <- at
     do.labels <- (length(labscat) > 0)
@@ -192,9 +230,9 @@ draw.colorkey <- function(key, draw = FALSE, vp = NULL)
     key.rect   <- 1 - open.lower - open.upper
 
     # legend
-    just = switch(key$space, 
-        right  = if (rot == -90) c("center", "bottom") else c("left", "center"), 
-        left   = if (rot == 90) c("center", "bottom") else c("right", "center"), 
+    just = switch(key$space,
+        right  = if (rot == -90) c("center", "bottom") else c("left", "center"),
+        left   = if (rot == 90) c("center", "bottom") else c("right", "center"),
         top    = if (rot == 0) c("center","bottom") else c("left", "center"),
         bottom = if (rot == 0) c("center", "top") else c("right", "center"))
 
@@ -215,7 +253,7 @@ draw.colorkey <- function(key, draw = FALSE, vp = NULL)
         y_lab = rep(0, length(labscat))
         x_lab = labscat
     }
-    
+
     labelsGrob <-
         if (do.labels)
             textGrob(label = labels,
@@ -229,23 +267,22 @@ draw.colorkey <- function(key, draw = FALSE, vp = NULL)
                               fontface = chooseFace(fontface, font),
                               lineheight = lineheight))
         else nullGrob()
-    # browser()
 
     # layout
     grobwidth <- ifelse(key$space %in% c("top", "bottom"), "grobheight", "grobwidth")
     width_lab <- do.labels/length(labels)
     # For bottom and top, `lgd_width` is height
     widths.x    <- c(0.6*key$width, do.labels*(0.3 + key$tck*0.3), width_lab)
-    widths_unit <- c("lines", "lines", grobwidth)   
+    widths_unit <- c("lines", "lines", grobwidth)
     widths_data <- list(NULL, NULL, labelsGrob)
-    
+
     lgd_width   <- unit(widths.x, widths_unit, data = widths_data) # for 'right' and 'bottom'
     if (key$space %in% c('left', 'top')) lgd_width <- rev(lgd_width)
-    
+
     heights.x <- c(0.5*(1 - key$height) + key$key.padding[1],
                  key$height*c(open.upper, key.rect, open.lower),
                  0.5*(1 - key$height) + key$key.padding[2])
-        
+
     lgd_height <- unit(heights.x, rep("null", 5))
 
     if (key$space %in% c("right", "left")) {
@@ -260,7 +297,7 @@ draw.colorkey <- function(key, draw = FALSE, vp = NULL)
 
     key.gf <- key_gf(key, key.layout, vp, vp_label, reccentre, recdim, FALSE)
     key.gf <- key_triangle(key.gf, key, open.lower, open.upper)
-    
+
     key.gf <- key_border(key.gf, key, open.lower, open.upper)
     key.gf <- key_label(key.gf, key, labscat, labelsGrob, vp_label)
 

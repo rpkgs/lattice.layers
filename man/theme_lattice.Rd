@@ -13,6 +13,8 @@ theme_lattice(
   ...,
   layout.widths,
   layout.heights,
+  font_size = NULL,
+  font_family = "",
   par.settings
 )
 }
