@@ -22,9 +22,7 @@ get_colorkey <- function(breaks, cols = NULL, space = "bottom", lgd.title = NULL
     cex = 1.4, fontfamily = "Times", fontface = 2)
 {
     ncolor <- length(breaks) - 1
-    # cols <- colorRampPalette(c("firebrick1","orange3", "darkgoldenrod2", "grey90",
-    #                            brewer.pal(9, "YlGnBu")[c(4, 6, 7)], "green4"))(ncolor)#,colors()[504]
-    # prepare for spplot
+
     colorkey <- list(
         title = lgd.title,
         labels = list(cex = cex, fontfamily = fontfamily, fontface = fontface),
@@ -35,43 +33,21 @@ get_colorkey <- function(breaks, cols = NULL, space = "bottom", lgd.title = NULL
         unit = unit, unit.adj = unit.adj
     )
 
-    if (is_factor) {
-        labels = breaks
-        at = seq_along(breaks) #+ 0.5
-        labels_at = at
-
-        if (breaks[1] == -Inf) {
-            at[1]     = -Inf
-            labels_at = labels_at[-1]
-            labels    = labels[-1]
-        } 
-        if (breaks[length(breaks)] == Inf) {
-            at[length(at)] = Inf
-            n         = length(labels_at)
-            labels_at = labels_at[-n]
-            labels    = labels[-n]
-        }
-        colorkey$at <- at        
-        colorkey$labels$at     <- labels_at
-        colorkey$labels$labels <- labels
-    } else {
+    ## TESTS
+    if (!is_factor) {
         colorkey$labels$at <- breaks[-c(1, length(breaks))]
     }
     if (!is.null(cols)) colorkey$col = cols
     colorkey
 }
 
-get_break_colors <- function(colors, brks) {
-    colfun <- colors %>% colorRampPalette()
-    
-    ncolor <- length(brks) - 1
-    colfun(ncolor)
+get_break_colors <- function(cols, brks) {
+    nbrk <- length(brks) - 1
+    get_color(cols, nbrk)
 } 
 
-get_break_colors2 <- function(colors, brks, is_factor = FALSE) {
-    colfun <- colors %>% colorRampPalette()
-    
+get_break_colors2 <- function(cols, brks, is_factor = FALSE) {
     nbrk = length(brks)
     ncolor <- ifelse(is_factor, nbrk, nbrk - 1)
-    colfun(ncolor)
+    get_color(cols, nbrk)
 } 
