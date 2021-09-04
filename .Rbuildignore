@@ -11,3 +11,4 @@
 ^\.github$
 ^ch1_sp_plot\.Rmd$
 ^vignettes/notes$
+^\.covrignore$

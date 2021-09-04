@@ -90,8 +90,6 @@ panel.histFreq(
     for details on how the color assignment is done.
   }
 
-\item{unit}{A character vector specifying the units for the corresponding numeric values.}
-
 \item{border}{ Border color for rectangles used when \code{region=TRUE}. }
 
 \item{yscale}{frequency range, \verb{[0, 100]}}

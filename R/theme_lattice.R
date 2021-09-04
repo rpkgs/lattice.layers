@@ -32,7 +32,9 @@ find_args <- function(...)
 #' @note key.margin left not work (right controls)
 #'
 #' @export
-theme_lattice <- function(plot.margin, key.margin, axis.margin,
+theme_lattice <- function(
+    plot.margin, 
+    key.margin, axis.margin,
     axis.components.inner,
     axis.components.outer,
     ...,

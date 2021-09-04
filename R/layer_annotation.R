@@ -1,19 +1,4 @@
-#' convert plot into grob and draw grob
-#'
-#' @param p one of the supported figure
-#' @keywords internal
-#'
-#' @import grid
-#' @import ggplotify
-#' @export
-grid.draw2 <- function(p) {
-    suppressWarnings({
-        g <- as.grob(p)
-        grid.draw(g)
-    })
-}
-
-#' panel.annotation
+#' layer_annotation
 #' 
 #' @inheritParams grid::viewport
 #' @param grob grob object
@@ -21,8 +6,24 @@ grid.draw2 <- function(p) {
 #' of npc.
 #' @param unit A character vector specifying the units for the corresponding numeric values.
 #' @param ... ignored
-#' 
+#'
+#' @export
+layer_annotation <- function(
+    grob, bbox = c(0.5, 1, 0, 1), 
+    unit = "npc",
+    xscale = FALSE,
+    yscale = FALSE,
+    clip = "on", ...)
+{
+    dots_pa = mget(ls()) %>% c(...)
+
+    layer({
+        do.call(panel.annotation, dots_pa)
+    }, data = listk(dots_pa))
+}
+
 #' @inherit grid::unit details
+#' @rdname layer_latFreq
 #' @export
 panel.annotation <- function (grob, bbox = c(0.5, 1, 0, 1), 
     unit = "npc",
@@ -65,6 +66,21 @@ panel_scales <- function() {
     ylim <- v$yscale
     xlim <- v$xscale
     v
+}
+
+#' convert plot into grob and draw grob
+#'
+#' @param p one of the supported figure
+#' @keywords internal
+#'
+#' @import grid
+#' @import ggplotify
+#' @export
+grid.draw2 <- function(p) {
+    suppressWarnings({
+        g <- as.grob(p)
+        grid.draw(g)
+    })
 }
 
 # grid_plot <- function(x, y) {
