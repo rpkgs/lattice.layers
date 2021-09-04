@@ -4,10 +4,76 @@
 \alias{layer_contourf}
 \title{layer of contourf}
 \usage{
-layer_contourf(brks = NULL, ...)
+layer_contourf(
+  at = NULL,
+  col = NULL,
+  col.regions = NULL,
+  contour = TRUE,
+  region = FALSE,
+  labels = FALSE,
+  label.style = c("mixed", "flat", "align"),
+  format = "\%f",
+  ...
+)
 }
 \arguments{
-\item{...}{other parameters ignored}
+\item{at}{
+    Numeric vector giving breakpoints along the range of
+    \code{z}.  See \code{\link[lattice]{levelplot}} for details.
+  }
+
+\item{col}{ Graphical parameters for contour lines. }
+
+\item{col.regions}{
+    A vector of colors, or a function to produce a vecor of colors, to
+    be used if \code{region=TRUE}.  Each interval defined by \code{at}
+    is assigned a color, so the number of colors actually used is one
+    less than the length of \code{at}.  See \code{\link[lattice]{level.colors}}
+    for details on how the color assignment is done.
+  }
+
+\item{contour}{
+    A logical flag, specifying whether contour lines should be drawn.
+  }
+
+\item{region}{
+    A logical flag, specifying whether inter-contour regions should be
+    filled with appropriately colored rectangles.
+  }
+
+\item{labels}{
+    Either a logical scalar indicating whether the labels are to be
+    drawn, or a character or expression vector giving the labels
+    associated with the \code{at} values.  Alternatively, \code{labels}
+    can be a list with the following components:
+    
+    \describe{
+    
+      \item{\code{labels}:}{ a character or expression vector giving the
+	labels.  This can be omitted, in which case the defaults will be
+	used. }
+
+      \item{\code{col, cex, alpha}:}{ graphical parameters for label
+	texts }
+
+      \item{\code{fontfamily, fontface, font}:}{ font used for the
+	labels }
+    }
+    
+  }
+
+\item{label.style}{
+    Controls how label positions and rotation are determined.  A value
+    of \code{"flat"} causes the label to be positioned where the contour
+    is flattest, and the label is not rotated.  A value of
+    \code{"align"} causes the label to be drawn as far from the
+    boundaries as possible, and the label is rotated to align with the
+    contour at that point.  The default is to mix these approaches,
+    preferring the flattest location unless it is too close to the
+    boundaries.
+  }
+
+\item{...}{other parameters to \code{\link[lattice:panel.levelplot]{lattice::panel.levelplot()}}}
 }
 \description{
 layer of contourf

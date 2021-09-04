@@ -9,6 +9,7 @@
 #' @importFrom Ipaper write_fig melt_list listk label_tag is_empty which.notna
 #' @importFrom plyr dlply
 #' @importFrom dplyr select first last
+#' @import rcolors
 #' 
 "_PACKAGE"
 

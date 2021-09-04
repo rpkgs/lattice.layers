@@ -27,7 +27,7 @@ Imports:
     dplyr,
     stringr,
     reshape2,
-    Ipaper
+    Ipaper, rcolors
 Remotes:
     rpkgs/Ipaper
 Suggests: 

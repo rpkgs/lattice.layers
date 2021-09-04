@@ -11,12 +11,12 @@ layer_barchart <- function(
     title = TRUE, xlabels = TRUE, 
     ...)
 {
-    dots = mget(ls()) %>% c(...)
+    dots_pa = mget(ls()) %>% c(...)
     layer({
         params <- listk(z, subscripts, at, col.regions)
-        params %<>% c(dots2)
+        params %<>% c(dots_pa)
         do.call(panel.histFreq, params)
-    }, data = listk(dots2 = dots))
+    }, data = listk(dots_pa))
 }
 
 #' @rdname layer_barchart

@@ -1,8 +1,9 @@
 test_that("panel.annotation and panel.sign works", {
-    library(lattice)
+    library(grid)
 
     panel <- function(x, y, z, subscripts, at, ...) {
         panel.levelplot2(x, y, z, subscripts, ...)
+        panel.levelplot2(x, y, z, subscripts, contour = TRUE, ...)
         panel.annotation(grid.circle(draw = FALSE))
         panel.annotation(grid.rect(), bbox = c(0.7, 1, 0, 1))
         # panel.annotation(~{
@@ -21,11 +22,14 @@ test_that("panel.annotation and panel.sign works", {
     # data <- data.table(x, y, r)
     # d <- data[, .(value = mean(r)), .(y)]
     expect_silent({
-        p <- levelplot(z ~ x * y, dvolcano, col.regions = topo.colors(10),
+
+        levelplot(z ~ x * y, dvolcano, col.regions = topo.colors(10),
                        panel = panel,
                        at = c(-Inf, seq(-0.8, 0.8, by = 0.2), Inf)) +
-            layer_signPerc() + 
-            theme_lattice(c(0, 4, 0, 0))
+            # layer_contourf() +
+            layer_signPerc() +
+            layer_latFreq() +
+            theme_lattice(c(0, 4, 0, 0)) -> p
         print(p)
     })
 })
