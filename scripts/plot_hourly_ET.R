@@ -17,14 +17,12 @@ l_brks = list(
     HS = c(seq(0, 200, 50), Inf) %>% c(-rev(.), 0, .) %>% unique()
 )
 
-
 unit = expression("W/"~m^2)
 varnames = c("ET", "RH", "Tair", "Rn", "Rs", "HS", "ea")
 units = c("mm/d", "%", "℃", unit, "W/m2", "W/m2", "kPa")
 titles = sprintf("%s (%s)", varnames, units) %>% set_names(varnames)
 
 # how to paste expression?
-
 # titles[4] = expression("Rn (W/"~m^2~")")
 # titles[5] = expression("Rs (W/"~m^2~")")
 # titles[6] = expression("HS (W/"~m^2~")")

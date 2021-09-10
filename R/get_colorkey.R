@@ -32,7 +32,6 @@ get_colorkey <- function(breaks, cols = NULL, space = "bottom", lgd.title = NULL
         height = 1, space = space, tck = 1, 
         unit = unit, unit.adj = unit.adj
     )
-
     ## TESTS
     if (!is_factor) {
         colorkey$labels$at <- breaks[-c(1, length(breaks))]
@@ -43,11 +42,13 @@ get_colorkey <- function(breaks, cols = NULL, space = "bottom", lgd.title = NULL
 
 get_break_colors <- function(cols, brks) {
     nbrk <- length(brks) - 1
+    if (length(cols) == nbrk) return(cols)
     get_color(cols, nbrk)
-} 
+}
 
 get_break_colors2 <- function(cols, brks, is_factor = FALSE) {
     nbrk = length(brks)
     ncolor <- ifelse(is_factor, nbrk, nbrk - 1)
+    if (length(cols) == ncolor) return(cols)
     get_color(cols, nbrk)
 } 
