@@ -63,7 +63,9 @@ equispaced_colorkey <- function(key) {
             labels_at <- labels_at[-n]
             labels <- labels[-n]
         }
-        key$labels <- list(at = labels_at, labels = labels)
+        names = setdiff(names(key$labels), c("at", "labels"))
+        key$labels <- list(at = labels_at, labels = labels) %>%
+            c(key$labels[names])
     }
     key
 }

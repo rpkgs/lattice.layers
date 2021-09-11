@@ -74,7 +74,8 @@ If provided, group names in \code{df} will be overwritten.}
 \item{pars}{parameters controlling the position of histogram and panel titles,
 e.g. \code{list(title = list(x=77, y=39, cex=1.5), hist = list(origin.x=77, origin.y=28))}.}
 
-\item{colorkey}{Boolean or list returned by \code{\link[=get_colorkey]{get_colorkey()}}.}
+\item{colorkey}{Boolean or list returned by \code{\link[=get_colorkey]{get_colorkey()}}. \code{list} object can
+be passed to \code{\link[=draw.colorkey]{draw.colorkey()}} directly.}
 
 \item{sp.layout}{NULL or list; see notes below}
 

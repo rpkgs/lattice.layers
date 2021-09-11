@@ -26,7 +26,8 @@
 #' @param SpatialPixel corresponding SpatialPixel object of `df`
 #'
 #' If `mask` present in `df`, `df.mask` will be ignored.
-#' @param colorkey Boolean or list returned by [get_colorkey()].
+#' @param colorkey Boolean or list returned by [get_colorkey()]. `list` object can
+#' be passed to [draw.colorkey()] directly.
 #' @param NO_begin beginning NO of the first panel
 #'
 #' @example R/examples/ex-sp_plot.R
