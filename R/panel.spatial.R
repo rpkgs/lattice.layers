@@ -12,7 +12,6 @@
 #' @export
 panel.spatial <- function(x, y, z, subscripts,
     contour = FALSE,
-    pars,
     class = NULL,
     interpolate = TRUE,
     list.mask = NULL,

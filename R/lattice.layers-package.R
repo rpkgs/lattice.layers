@@ -38,7 +38,8 @@ NULL
     }
 
     sysname <- tolower(Sys.info()[["sysname"]])
-    if ("windows" %in% sysname) init_lattice()
+    # if ("windows" %in% sysname) 
+    init_lattice()
     # set_font()
     invisible()
 }

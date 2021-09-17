@@ -8,6 +8,7 @@ panel.signPerc(
   z = NULL,
   mask = NULL,
   col.regions = c("blue", "red"),
+  rm.zero = TRUE,
   x = 0.05,
   y = 0.8,
   bg = "transparent"

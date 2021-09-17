@@ -164,7 +164,6 @@ draw.colorkey <- function(key, draw = FALSE, vp = NULL)
 
     if (key$raster && !isTRUE(all.equal(diff(range(diff(scat))), 0)))
         warning("'at' values are not equispaced; output may be wrong")
-    # browser()
 
     ## recnum <- length(scat)-1
     reccentre <- (scat[-1] + scat[-length(scat)]) / 2
@@ -243,7 +242,7 @@ draw.colorkey <- function(key, draw = FALSE, vp = NULL)
         nlab <- length(labels)
         delta <- labscat[nlab] - labscat[nlab - 1]
         labscat[nlab+1] <- labscat[nlab] + delta*key$unit.adj
-        labels[nlab+1]  <- sprintf(" %s", key$unit)
+        labels[nlab+1]  <- sprintf("%s", key$unit)
     }
 
     if (key$space %in% c('right', 'left')) {

@@ -11,7 +11,6 @@ panel.spatial(
   z,
   subscripts,
   contour = FALSE,
-  pars,
   class = NULL,
   interpolate = TRUE,
   list.mask = NULL,
@@ -47,9 +46,6 @@ panel.spatialBasic(
 \item{contour}{
     A logical flag, specifying whether contour lines should be drawn.
   }
-
-\item{pars}{parameters controlling the position of histogram and panel titles,
-e.g. \code{list(title = list(x=77, y=39, cex=1.5), hist = list(origin.x=77, origin.y=28))}.}
 
 \item{interpolate}{ logical, passed to \code{\link{grid.raster}}. }
 

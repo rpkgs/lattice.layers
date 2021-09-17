@@ -2,6 +2,7 @@
 layer_signPerc <- function(
     x = 0.05, y = 0.6, 
     bg = "transparent",
+    rm.zero = TRUE, 
     # cex = 1.2, adj = c(0, 0),
     ...)
 {    
@@ -32,6 +33,7 @@ layer_signPerc <- function(
 #' }
 #' @export
 panel.signPerc <- function(z = NULL, mask = NULL, col.regions = c("blue", "red"), 
+    rm.zero = TRUE, 
     x = 0.05, y = 0.8, bg = "transparent")
 {
     # val <- sign(d[[value.var]]) # 只考虑-1, 1，不考虑0
@@ -41,19 +43,19 @@ panel.signPerc <- function(z = NULL, mask = NULL, col.regions = c("blue", "red")
     if (!is.null(mask)) {
         mask <- mask %>% as.character() %>% factor(c("FALSE", "TRUE"))
         tbl <- table(mask, val)
-        # print(tbl)
-        N <- sum(as.numeric(tbl))
+        N <- ifelse(rm.zero, sum(as.numeric(tbl[, -2])), sum(as.numeric(tbl)))
         perc <- tbl / N * 100
         str_neg <- sprintf("N: %.1f%% (%.1f%%)", sum(perc[, 1]), perc[2, 1])
         str_pos <- sprintf("P: %.1f%% (%.1f%%)", sum(perc[, 3]), perc[2, 3])
     } else {
-        tbl <- table(val)
-        N   <- sum(as.numeric(tbl))
+        tbl <- table(val) 
+        N <- ifelse(rm.zero, sum(as.numeric(tbl)[-2]), sum(as.numeric(tbl)))
         perc <- tbl / N * 100
-
         str_neg <- sprintf("N: %.1f%%", sum(perc[1]))
         str_pos <- sprintf("P: %.1f%%", sum(perc[3]))
     }
+    # print(tbl)
+    # glue("{str_neg}, {str_pos}")
     # listk(str_neg, str_pos) %>% str() %>% print() # debug
     width  <- max(stringWidth(str_neg), stringWidth(str_pos)) 
     height <- max(stringHeight(str_neg), stringHeight(str_pos))*2

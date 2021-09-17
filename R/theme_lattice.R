@@ -176,8 +176,6 @@ updateList <- function(x, val) {
     } else p
 }
 
-#' @importFrom utils modifyList
-## Test about modifyList
 
 # par.strip.text = list(cex = 2)
 layout.heights <- function(

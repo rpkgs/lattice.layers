@@ -35,14 +35,6 @@ layer_title <- function(
     }, data = listk(text.params = listk(x, y, hjust, vjust, gp), labels))
 }
 
-# #' @export
-# panel.text2 <- function(x, y,
-#     pars,
-#     ...)
-# {
-#     # family = get_family()
-#     # panel.text(x, y, panel.title, cex = pars$title$cex, font = 2, adj = 0)
-# }
 #' @export
 guess_panel_title <- function(panel.titles_full = NULL, panel.titles = NULL, NO_begin = 1, ...) {
     not.titles_full <- is.null(panel.titles_full)

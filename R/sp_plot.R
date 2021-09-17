@@ -61,7 +61,6 @@ sp_plot <- function(
     xlim = NULL, ylim = NULL,
     unit = "", unit.adj = 0.3,
 
-    pars = NULL,
     area.weighted = FALSE,
 
     colorkey = TRUE,
@@ -186,7 +185,6 @@ sp_plot <- function(
         par.settings      = par.settings,
 
         scales            = list(draw = FALSE),
-        pars              = pars,
         class             = class
     )
 

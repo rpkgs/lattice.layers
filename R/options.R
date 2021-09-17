@@ -34,6 +34,7 @@ get_family <- function() {
     family
 }
 
+# ' @importFrom utils modifyList
 modifyList <- function(x, val, keep.null = FALSE) {
     # stopifnot(is.list(x), is.list(val))
     xnames <- names(x)
