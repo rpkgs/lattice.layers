@@ -22,6 +22,7 @@ layer_signDist <- function(
 
 #' @importFrom stars st_as_stars
 #' @importFrom sf st_as_sf as_Spatial
+#' @importFrom raster raster
 #' @rdname layer_signDist
 #' @export
 panel.signDist <- function(mask, SpatialPixel, 
@@ -34,8 +35,10 @@ panel.signDist <- function(mask, SpatialPixel,
         if (length(I_sign) > 0) {
             grid <- SpatialPixel[I_sign, ]
             grid@data <- data.frame(mask = rep(TRUE, length(grid)))
-
-            poly_shade <- st_as_stars(grid) %>%
+            # weird bug, st_as_stars works for raster, but not for `SpatialGridDataFrame`
+            # or `SpatialPixelsDataFrame` (20210929)
+            r = raster(grid)
+            poly_shade <- st_as_stars(r) %>%
                 st_as_sf(as_points = FALSE, merge = TRUE) %>%
                 as_Spatial()
             # save(poly_shade, file = "poly_shade.rda")

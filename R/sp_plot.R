@@ -248,7 +248,7 @@ sp_area <- function(grid, weighted = TRUE) {
     sp_area_grid <- function(grid) {
         grid2 <- grid[, 1] # SpatialGridDataFrame
         grid2@data <- data.frame(id = 1:nrow(grid2))
-        r <- raster::raster(grid2)
+        r <- raster(grid2)
         I <- values(r) %>% which.notna() # pixel becomes data.frame
         area <- values(area(r))[I]
         area
@@ -256,7 +256,7 @@ sp_area <- function(grid, weighted = TRUE) {
 
     if (weighted) {
         if (class(grid) == "SpatialPolygonsDataFrame") {
-            area <- raster::area(grid)
+            area <- area(grid)
         } else {
             area <- sp_area_grid(grid)
         }
