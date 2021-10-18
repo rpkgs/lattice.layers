@@ -15,6 +15,7 @@ layer_statistic(
   hjust = 0,
   vjust = 1,
   cex = 1,
+  fill = "white",
   ...
 )
 }
@@ -33,7 +34,7 @@ layer_statistic(
 \item{vjust}{A numeric vector specifying vertical justification.
     If specified, overrides the \code{just} setting.}
 
-\item{...}{other parameters to \code{\link[=grid.text]{grid.text()}}}
+\item{...}{other parameters to \code{\link[grid:gpar]{grid::gpar()}}}
 }
 \description{
 layer of spatial statistic label

@@ -6,8 +6,7 @@
 \alias{lattice.layers-package}
 \title{lattice.layers: Lattice Layers Functions}
 \description{
-Based on lattice, this package extends Lattice Panels by `panel.annotation`,
-    and provides several high-level function for preoducing figure.
+Based on lattice, this package extends Lattice Panels by `panel.annotation`, and provides several high-level function for preoducing figure.
 }
 \author{
 \strong{Maintainer}: Dongdong Kong \email{kongdd.sysu@gmail.com}
