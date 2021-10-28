@@ -88,14 +88,16 @@ pixel2grid <- function(x, y, z, returnId = FALSE) {
 
     idx <- match_tolerance(x, ux)
     idy <- match_tolerance(y, rev(uy)) # image goes top to bottom
-    id <- idy + nrows * (idx - 1L)
-    range = c(xlow, xhigh, ylow, yhigh)
+    id <- idy + nrows * (idx - 1L)     # `id` might have Na values
+    range <- c(xlow, xhigh, ylow, yhigh)
     if (returnId) {
         id
     } else {
         init = ifelse(is.character(z[1]), NA_character_, NA_real_)
         zmat <- matrix(init, nrows, ncolumns)
-        zmat[id] <- z
+        ind_valid = !is.na(id)    
+        zmat[id[ind_valid]] <- z[ind_valid]
+        # zmat[id] <- z
         # dim(zmat) <- c(nrows, ncolumns)
         list(mat = zmat, range = range)
     }
