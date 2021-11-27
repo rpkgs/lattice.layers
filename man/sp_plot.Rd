@@ -32,6 +32,7 @@ sp_plot(
   layout = NULL,
   NO_begin = 1,
   cex.lgd = 1.3,
+  par.strip.text = NULL,
   par.settings = opt_trellis_default,
   par.settings2 = list(axis.line = list(col = "transparent")),
   ...

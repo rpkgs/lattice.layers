@@ -96,3 +96,27 @@ round_decade <- function(x) {
     times <- 10^p
     round(x/times)*times
 }
+
+# ' label_tag
+# '
+# ' @param labels character vector or expression vector
+# ' @param tag boolean
+# '
+# ' @examples
+# ' label_tag(1:5)
+# ' char2expr(1:5)
+# ' @export
+label_tag <- function(labels, tag = TRUE, letter_begin = 1) {
+    n <- length(labels)
+    sapply(seq_along(labels), function(i) {
+        name = labels[[i]]
+        data <- list(tag = letters[i + letter_begin - 1], x = name)
+        if (tag) {
+            eval(substitute(expression(bold("(" * tag * ")" ~ x)), data))
+            # eval(substitute(expression(bold(tag * ". " ~ x)), data))
+        } else {
+            eval(substitute(expression(bold(x)), data))
+        }
+    })
+    # sprintf("(%s) %s", letters[1:n], labels)
+}

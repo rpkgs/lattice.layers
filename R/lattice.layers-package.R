@@ -6,7 +6,7 @@
 #' @importFrom graphics par polygon abline axis rect
 #' @importFrom methods as
 #' @importFrom data.table data.table is.data.table `:=`
-#' @importFrom Ipaper write_fig melt_list listk label_tag is_empty which.notna
+#' @importFrom Ipaper write_fig melt_list listk is_empty which.notna
 #' @importFrom plyr dlply
 #' @importFrom dplyr select first last
 #' @import rcolors

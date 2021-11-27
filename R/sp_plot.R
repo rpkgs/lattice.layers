@@ -75,6 +75,7 @@ sp_plot <- function(
     layout = NULL,
     NO_begin = 1,
     cex.lgd = 1.3,
+    par.strip.text = NULL,
     par.settings = opt_trellis_default,
     par.settings2 = list(axis.line = list(col = "transparent")),
     ...)
@@ -160,8 +161,8 @@ sp_plot <- function(
         n <- length(zcols)
         if (is.null(strip.factors)) strip.factors <- zcols
         # names <- if (is.null(strip.factors)) zcols else strip.factors
-        strip_levels <- label_tag(strip.factors)
-        strip <- strip.custom(factor.levels = strip_levels)
+        strip_levels <- label_tag(strip.factors, letter_begin = NO_begin)
+        strip <- strip.custom(factor.levels = strip_levels, par.strip.text = par.strip.text)
     }
 
     params <- listk(
