@@ -18,7 +18,7 @@ layer_signPerc <- function(
 }
 
 #' Panel of percentage of negative (significant negative%) and positive% (significant positive%)
-#' 
+#'
 #' @inheritParams panel.spatial
 #' @param z numeric vector
 #' @param mask boolean vector with the same length as z, indicating whether
@@ -26,7 +26,7 @@ layer_signPerc <- function(
 #' @param x,y The x and y position of positive and negative percentage label.
 #' @param ... ignored
 #' @param fill background color
-#' 
+#'
 #' @examples
 #' \dontrun{
 #' panel.signPerc(z = NULL, mask = NULL, x = 0.1, y = 0.9, ...)
@@ -48,16 +48,12 @@ panel.signPerc <- function(z = NULL, mask = NULL, col.regions = c("blue", "red")
         str_neg <- sprintf("N: %.1f%% (%.1f%%)", sum(perc[, 1]), perc[2, 1])
         str_pos <- sprintf("P: %.1f%% (%.1f%%)", sum(perc[, 3]), perc[2, 3])
     } else {
-        tbl <- table(val)
-        # info = data.table(type = rownames(tbl), N = as.numeric(tbl))[!is.na(type), ]
-        # browser()
-        N <- ifelse(rm.zero, sum(as.numeric(tbl)[-2]), sum(as.numeric(tbl)))
-        perc <- tbl / N * 100
-        str_neg <- sprintf("N: %.1f%%", sum(perc[1]))
-        str_pos <- sprintf("P: %.1f%%", sum(perc[3]))
+        info = table(sign(z)) %>% as.data.table() %>% set_colnames(c("sign", "N"))
+        N <- ifelse(rm.zero, sum(info[sign != "0", N]), sum(info$N))
+        # perc <- tbl / N * 100
+        str_neg <- sprintf("N: %.1f%%", info[sign ==  "1", N] / N * 100)
+        str_pos <- sprintf("P: %.1f%%", info[sign == "-1", N] / N * 100)
     }
-    # print(tbl)
-    # glue("{str_neg}, {str_pos}")
     # listk(str_neg, str_pos) %>% str() %>% print() # debug
     width  <- max(stringWidth(str_neg), stringWidth(str_pos))
     height <- max(stringHeight(str_neg), stringHeight(str_pos))*2
@@ -84,5 +80,4 @@ panel.signPerc <- function(z = NULL, mask = NULL, col.regions = c("blue", "red")
     grid.text(str_pos, x, y - height , just = c(0, 1),
               name = "label_perc.pos",
               gp = gpar(col = col.pos, fill = "transparent", fontfamily = .options$family))
-    # data.frame(str_neg, str_pos)
 }
