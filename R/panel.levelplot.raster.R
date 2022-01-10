@@ -25,7 +25,7 @@ panel.levelplot.raster <- function(x, y, z,
     }
 
     ## create a suitable matrix of colors
-    l <- pixel2grid(x, y, zcol)
+    suppressWarnings(l <- pixel2grid(x, y, zcol)) # warning might here
     range = l$range
     # zmat <- rep("transparent", )
     grid.raster(as.raster(l$mat),

@@ -12,7 +12,6 @@
 
 ``` r
 install.packages("lattice.layers")
-# covr::package_coverage()
 ```
 
 ``` r
@@ -37,7 +36,7 @@ library(sp)
 > formula的书写方式与`lattice::levelplot`的语法格式一致，只是这里的横轴和纵轴坐标是固定`lon+lat`。以`formula = slope ~ lon + lat | type`为例：`~`前的变量slope是绘图变量z值，
 > `|`之后的变量type表示group。
 
-`sp_plot`提供了给显著性的格点打patch的功能。需要`df`中含有mask变量，TRUE表示显著。
+> `sp_plot`提供了给显著性的格点打patch的功能。需要`df`中含有mask变量，TRUE表示显著。
 
 ## spplot style
 
@@ -54,22 +53,25 @@ p <- sp_plot(grid2,
              layout = c(2, 1),
              colorkey = list(space = "bottom"),
              density = 0.1) + 
-    layer_signDist(density  = 0.1, lwd = 0.2) +  
-    layer_signPerc(x = 0.01, y = 0.72, fill = "white") +
-    layer_barchart(y = 0.12) +  
     theme_lattice(
         key.margin = c(1, 1, 1, 1),
         plot.margin = c(0, 1, 2, 1))
 p
-# Warning in pixel2grid(x, y, zcol): 'y' values are not equispaced; output may be
-# wrong
-
-# Warning in pixel2grid(x, y, zcol): 'y' values are not equispaced; output may be
-# wrong
 ```
 
-<img src="man/Figure/sp_levelplot-1.svg" width="100%" />
+<img src="man/Figure/sp_plot1-1.svg" width="100%" />
 
 ``` r
 # write_fig(p, "a.pdf", 7, 6)
 ```
+
+``` r
+# add layers
+lyrs = layers(
+    layer_signDist(density  = 0.1, lwd = 0.2), 
+    layer_signPerc(x = 0.01, y = 0.72, fill = "white"),
+    layer_barchart(y = 0.12))
+p + lyrs
+```
+
+<img src="man/Figure/sp_plot2-1.svg" width="100%" />

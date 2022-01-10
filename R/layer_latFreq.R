@@ -128,8 +128,6 @@ rescale_npc2real <- function(range_npc, range) {
         predict(data.frame(x = range_npc))
 }
 
-# if (is_spatial) labels <- label_sp(ticks)
-#
 label_sp <- function(x = seq(-60, 90, 30)) {
     res <- NULL
     for(i in seq_along(x)) {

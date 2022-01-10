@@ -7,5 +7,10 @@ lattice <- function(x, data = NULL, col.regions, ..., panel = panel_blank) {
 layer <- layer
 
 #' @export
+layers <- function(...) {
+    Reduce(latticeExtra:::`+.trellis`, list(...))
+}
+
+#' @export
 #' @keywords internal
 panel_blank <- function(x, y, z, ...) {}

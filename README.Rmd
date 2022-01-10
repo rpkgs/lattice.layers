@@ -24,7 +24,6 @@ knitr::opts_chunk$set(
 
 ``` r
 install.packages("lattice.layers")
-# covr::package_coverage()
 ```
 
 ```{r}
@@ -40,10 +39,10 @@ library(sp)
 
 > formula的书写方式与`lattice::levelplot`的语法格式一致，只是这里的横轴和纵轴坐标是固定`lon+lat`。以`formula = slope ~ lon + lat | type`为例：`~`前的变量slope是绘图变量z值， `|`之后的变量type表示group。
 
-`sp_plot`提供了给显著性的格点打patch的功能。需要`df`中含有mask变量，TRUE表示显著。
+> `sp_plot`提供了给显著性的格点打patch的功能。需要`df`中含有mask变量，TRUE表示显著。
 
 ## spplot style
-```{r sp_levelplot, fig.width=7, fig.width=6}
+```{r sp_plot1, fig.width=7, fig.width=6.2}
 grid2 = grid_slope
 df = grid2@data %>% mutate(mask = pvalue <= 0.05)
 df = list(a = df, b = df %>% mutate(slope = slope + 0.1)) %>%
@@ -56,12 +55,20 @@ p <- sp_plot(grid2,
              layout = c(2, 1),
              colorkey = list(space = "bottom"),
              density = 0.1) + 
-    layer_signDist(density  = 0.1, lwd = 0.2) +  
-    layer_signPerc(x = 0.01, y = 0.72, fill = "white") +
-    layer_barchart(y = 0.12) +  
     theme_lattice(
         key.margin = c(1, 1, 1, 1),
         plot.margin = c(0, 1, 2, 1))
 p
 # write_fig(p, "a.pdf", 7, 6)
 ```
+
+
+```{r sp_plot2, fig.width=7, fig.width=6.2}
+# add layers
+lyrs = layers(
+    layer_signDist(density  = 0.1, lwd = 0.2), 
+    layer_signPerc(x = 0.01, y = 0.72, fill = "white"),
+    layer_barchart(y = 0.12))
+p + lyrs
+```
+
