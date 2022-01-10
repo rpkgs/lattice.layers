@@ -18,6 +18,9 @@ panel.signDist(
   ...
 )
 }
+\arguments{
+\item{density}{A small (big) value corresponds to a low (high) contour density.}
+}
 \description{
 layer_signDist
 }

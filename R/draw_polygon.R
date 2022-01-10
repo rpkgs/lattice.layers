@@ -43,9 +43,14 @@ draw_polygon <- function(vals, x = NULL, type = "horizontal", length.out = 1e4,
     xx <- xx[ind]
 
     # polygon(x = xx, y = clamp_min(yy, 0), col = "red")
-    col.neg = alpha(nth(col.regions, 2), alpha = alpha)
-    col.pos = alpha(nth(col.regions, -2), alpha = alpha)
-
+    if (length(col.regions) >= 4) {
+        col.neg = alpha(nth(col.regions, 2), alpha = alpha)
+        col.pos = alpha(nth(col.regions, -2), alpha = alpha)    
+    } else {
+        col.neg = alpha(nth(col.regions, 1), alpha = alpha)
+        col.pos = alpha(nth(col.regions, -1), alpha = alpha)
+    }
+    
     params <- listk(type = "n", ...)
     if (all(is.finite(zlim))) params$xlim <- zlim
 

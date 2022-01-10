@@ -1,5 +1,7 @@
 #' layer_signDist
 #' 
+#' @param density A small (big) value corresponds to a low (high) contour density.
+#' 
 #' @export
 layer_signDist <- function(
     col = "black", lty = 1, lwd = 1, 

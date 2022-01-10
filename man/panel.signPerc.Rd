@@ -11,7 +11,7 @@ panel.signPerc(
   rm.zero = TRUE,
   x = 0.05,
   y = 0.8,
-  bg = "transparent"
+  fill = "transparent"
 )
 }
 \arguments{
@@ -22,7 +22,7 @@ corresponding z value is significant.}
 
 \item{x, y}{The x and y position of positive and negative percentage label.}
 
-\item{bg}{background color}
+\item{fill}{background color}
 
 \item{...}{ignored}
 }

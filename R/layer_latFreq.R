@@ -1,5 +1,5 @@
 #' layer of latitude frequency barchart
-#'
+#' 
 #' @param cex axis text size
 #' @param col.regions If is null, it will use the default `col.regions` in the panel.
 #' @param ... other parameters to [panel.latFreq()]
@@ -23,12 +23,11 @@ layer_latFreq <- function(
     dots = mget(ls()) %>% c(...)
     layer({
         params <- listk(x, y, z, subscripts)
-        params %<>% c(dots2)
-        if (is.null(params$col.regions)) params$col.regions = col.regions
+        if (is.null(.dots$col.regions)) .dots$col.regions = col.regions
+        params %<>% c(.dots)
         # print(str(params, 1))
-        # stop()
         do.call(panel.latFreq, params)
-    }, data = listk(dots2 = dots))
+    }, data = listk(.dots = dots))
 }
 
 #' @inheritParams lattice::panel.levelplot
@@ -42,7 +41,7 @@ layer_latFreq <- function(
 #' @param zlim the limits of `z` value. If not specified, it's `c(-1, 1)*quantile(abs(z), 0.9)`.
 #' @param zlim_ratio If `zlim` not provided, `zlim = zlim_ratio * zmax`
 #' @param prob_z default 0.9, the probability of z quantile, which used to determine the zlim.
-#'
+#' 
 #' @examples
 #' \dontrun{
 #' panel.latFreq(x, y, z, subscripts, bbox = c(0.7, 1, 0, 1), unit = "npc")

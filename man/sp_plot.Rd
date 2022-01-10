@@ -11,7 +11,7 @@ sp_plot(
   formula = NULL,
   df.mask = NULL,
   brks,
-  colors,
+  cols,
   strip = FALSE,
   strip.factors = NULL,
   toFactor = FALSE,
@@ -54,7 +54,7 @@ Note that factor levels should be same for grouped variables in \code{df} and \c
 \item{brks}{either a numeric vector of two or more unique cut points to convert
 values in df into factor.}
 
-\item{colors}{corresponding colors of every break interval}
+\item{cols}{corresponding colors of every break interval}
 
 \item{strip}{
     These arguments are described in the help page for

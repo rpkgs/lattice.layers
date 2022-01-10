@@ -1,6 +1,6 @@
 Package: lattice.layers
 Title: Lattice Layers Functions
-Version: 0.1.1.9000
+Version: 0.1.2
 Authors@R: person("Dongdong", "Kong", email = "kongdd.sysu@gmail.com",
   role = c("aut", "cre"))
 Description: Based on lattice, this package extends Lattice Panels by `panel.annotation`,

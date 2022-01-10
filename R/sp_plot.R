@@ -7,7 +7,7 @@
 #'
 #' @param brks either a numeric vector of two or more unique cut points to convert
 #' values in df into factor.
-#' @param colors corresponding colors of every break interval
+#' @param cols corresponding colors of every break interval
 #' @param xlim,ylim The limits of x and y
 #' @param pars parameters controlling the position of histogram and panel titles,
 #' e.g. `list(title = list(x=77, y=39, cex=1.5), hist = list(origin.x=77, origin.y=28))`.
@@ -51,7 +51,7 @@ sp_plot <- function(
     formula = NULL,
     df.mask = NULL,
 
-    brks, colors,
+    brks, cols,
     strip = FALSE,
     strip.factors = NULL,
     toFactor = FALSE,
@@ -124,6 +124,7 @@ sp_plot <- function(
             if (is.null(levels)) levels <- unique(df[[varname]])
             df.mask[[varname]] %<>% factor(levels = levels)
         }
+        # TODO: remove the dependency of plyr
         list.mask <- dlply(df.mask, rev(groups), function(d) d$mask)
     }
 
@@ -135,7 +136,7 @@ sp_plot <- function(
 
     vals_1st <- df[[value.vars[1]]]
     is_factor <- is.factor(vals_1st)
-    if (missing(colors)) colors <- c("red", "grey80", "blue4")
+    if (missing(cols)) cols <- c("red", "grey80", "blue4")
     if (missing(brks)) {
         brks <- if (!is_factor) {
             range <- quantile(vals_1st, c(0.05, 0.95), na.rm = TRUE)
@@ -152,7 +153,7 @@ sp_plot <- function(
         grid@data <- df
     }
 
-    cols <- get_break_colors2(colors, brks, is_factor)
+    cols <- get_break_colors2(cols, brks, is_factor)
     class <- class(grid)
     data <- coordinates(grid) %>% as.data.table() %>%
         set_colnames(c("lon", "lat")) %>% cbind(df)
