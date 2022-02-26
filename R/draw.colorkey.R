@@ -51,7 +51,7 @@ equispaced_colorkey <- function(key) {
     if (!is_equispaced) {
         key$at <- seq_along(at)
         labels_at <- seq_along(at)
-        labels <- at
+        labels <- key$labeller(at)
         if (first(at) == -Inf) {
             key$at[1] <- -Inf
             labels_at <- labels_at[-1]
@@ -73,10 +73,12 @@ equispaced_colorkey <- function(key) {
 #' @keywords internal
 #' @export
 process.colorkey <- function(
-    col = regions$col,
-    alpha = regions$alpha,
+    col = .regions$col,
+    alpha = .regions$alpha,
     at,
-    pretty = FALSE, equispaced = TRUE, format = "%f",
+    labeller  = format,
+    # format = "%f",
+    pretty = FALSE, equispaced = TRUE,
     tick.number = 7,
     tck = 1,
     width = 2,
@@ -96,23 +98,13 @@ process.colorkey <- function(
     rect = list(col = "black", lwd = 0.3), # rect of legend
     ...)
 {
-    regions <- trellis.par.get("regions")
-    listk(
-        col, alpha, at,
-        tick.number, tck,
-        width, height,
-        space,
-        raster,
-        interpolate,
-        pretty, equispaced, format,
-        tri.upper, tri.lower,
-        unit, unit.adj,
-        title, cex.title,
-        axis.line, axis.text,
-        key.padding,
-        rect,
-        ...
-    )
+    .regions <- trellis.par.get("regions")
+    key = mget(ls()) # return all parameters
+    # change labeller slightly
+    key$labeller = function(x) {
+        if (is.numeric(x)) labeller(x)  else x
+    }
+    key
 }
 
 # Note: there are two 'at'-s here, one is key$at, which specifies
@@ -122,14 +114,15 @@ process.colorkey <- function(
 # former, and key$at explicitly when needed
 
 #' draw.colorkey
-#'
+#' 
 #' @inheritParams lattice::draw.colorkey
-#'
+#' 
 #' @example R/examples/ex-draw.colorkey.R
 #' @import lattice
 #' @export
 draw.colorkey <- function(key, draw = FALSE, vp = NULL)
 {
+    # labeller = check_labeller(key$labeller)
     if (!is.list(key)) stop("key must be a list")
     key <- do.call(process.colorkey, key)
     key %<>% equispaced_colorkey()
@@ -200,7 +193,7 @@ draw.colorkey <- function(key, draw = FALSE, vp = NULL)
             # scat <- as.numeric(key$at) ## problems otherwise with DateTime objects (?)
             at <- as.numeric(key$at)
         }
-        labels <- format(at, trim = TRUE)
+        labels <- key$labeller(at) # , trim = TRUE
     } else if (is.characterOrExpression(lab) && length(lab)==length(key$at)) {
         check.overlap <- FALSE
         at <- key$at
@@ -210,8 +203,8 @@ draw.colorkey <- function(key, draw = FALSE, vp = NULL)
         at <- at[at >= atrange[1] & at <= atrange[2]]
         labels <- if (!is.null(key$lab$lab)) {
             check.overlap <- FALSE
-            key$lab$lab
-        } else format(at, trim = TRUE)
+            key$labeller(key$lab$lab)
+        } else key$labeller(at) # trim = TRUE
         if (!is.null(key$lab$cex))  cex  <- key$lab$cex
         if (!is.null(key$lab$col))  col  <- key$lab$col
         if (!is.null(key$lab$rot))  rot  <- key$lab$rot
@@ -313,8 +306,7 @@ draw.colorkey <- function(key, draw = FALSE, vp = NULL)
 #' @rdname draw.colorkey
 draw.colorkey2 <- draw.colorkey
 
-updateList <- function(x, val)
-{
+updateList <- function(x, val) {
     if (is.null(x)) x <- list()
     modifyList(x, val)
 }

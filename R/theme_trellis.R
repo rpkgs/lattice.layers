@@ -82,25 +82,27 @@ opt_trellis <- list(
 opt_trellis_default <- list(
     layout.heights = list(
         top.padding       = 0.5,
-        bottom.padding    = 0.5,         
+        bottom.padding    = 0.5, 
+        
         main.key.padding  = 0,
         key.axis.padding  = 0,
         axis.xlab.padding = 0,
         axis.top          = 1, 
+        axis.bottom       = 1,
         xlab.key.padding  = 1,
         key.sub.padding   = 1,
         strip             = 1
     ), 
     layout.widths = list(
-        left.padding      = 1, # left
-        right.padding     = 3, # right
+        left.padding      = 0, # left
+        right.padding     = 2, # right
         key.ylab.padding  = 0, # axis.y padding
         key.left          = 0, 
         key.right         = 1.5, 
         ylab.axis.padding = 0, # same as above
         axis.key.padding  = 0, # legend left padding
-        axis.left         = 1, 
-        axis.right        = 0.1
+        axis.left         = 0, 
+        axis.right        = 0
     ), 
     # axis.line = list(lwd = 1), 
     # axis.line = list(col = "white"),
@@ -111,5 +113,3 @@ opt_trellis_default <- list(
         bottom = list(pad1 = 1) 
     )
 )
-
-# opt_trellis_default$axis.line$lwd = 1
