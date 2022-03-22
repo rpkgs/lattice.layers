@@ -76,6 +76,7 @@ process.colorkey <- function(
     col = .regions$col,
     alpha = .regions$alpha,
     at,
+    labels = NULL,
     labeller  = format,
     # format = "%f",
     pretty = FALSE, equispaced = TRUE,
@@ -99,7 +100,7 @@ process.colorkey <- function(
     ...)
 {
     .regions <- trellis.par.get("regions")
-    key = mget(ls()) # return all parameters
+    key = c(mget(ls()), list(...)) # return all parameters
     # change labeller slightly
     key$labeller = function(x) {
         if (is.numeric(x)) labeller(x)  else x
