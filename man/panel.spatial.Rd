@@ -32,11 +32,7 @@ panel.spatialBasic(
 )
 }
 \arguments{
-\item{x}{ Variables defining the plot. }
-
-\item{y}{ Variables defining the plot. }
-
-\item{z}{ Variables defining the plot. }
+\item{x, y, z}{ Variables defining the plot. }
 
 \item{subscripts}{
     Integer vector indicating what subset of \code{x}, \code{y} and

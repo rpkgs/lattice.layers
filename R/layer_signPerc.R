@@ -51,8 +51,8 @@ panel.signPerc <- function(z = NULL, mask = NULL, col.regions = c("blue", "red")
         info = table(sign(z)) %>% as.data.table() %>% set_colnames(c("sign", "N"))
         N <- ifelse(rm.zero, sum(info[sign != "0", N]), sum(info$N))
         # perc <- tbl / N * 100
-        str_neg <- sprintf("N: %.1f%%", info[sign ==  "1", N] / N * 100)
-        str_pos <- sprintf("P: %.1f%%", info[sign == "-1", N] / N * 100)
+        str_neg <- sprintf("N: %.1f%%", info[sign ==  "-1", N] / N * 100)
+        str_pos <- sprintf("P: %.1f%%", info[sign == "1", N] / N * 100)
     }
     # listk(str_neg, str_pos) %>% str() %>% print() # debug
     width  <- max(stringWidth(str_neg), stringWidth(str_pos))
@@ -74,10 +74,10 @@ panel.signPerc <- function(z = NULL, mask = NULL, col.regions = c("blue", "red")
     }
 
     y = y - height*0.2
-    grid.text(str_neg, x, y, just = c(0, 1),
-              name = "label_perc.neg",
-              gp = gpar(col = col.neg, fill = "transparent", fontfamily = .options$family))
-    grid.text(str_pos, x, y - height , just = c(0, 1),
+    grid.text(str_pos, x, y, just = c(0, 1),
               name = "label_perc.pos",
               gp = gpar(col = col.pos, fill = "transparent", fontfamily = .options$family))
+    grid.text(str_neg, x, y - height, just = c(0, 1),
+              name = "label_perc.neg",
+              gp = gpar(col = col.neg, fill = "transparent", fontfamily = .options$family))
 }

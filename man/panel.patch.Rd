@@ -56,10 +56,7 @@ panel.gridplot2(
 )
 }
 \arguments{
-\item{x}{vectors containing the coordinates of the vertices
-    of the polygon.}
-
-\item{y}{vectors containing the coordinates of the vertices
+\item{x, y}{vectors containing the coordinates of the vertices
     of the polygon.}
 
 \item{density}{the density of shading lines, in lines per inch.  The

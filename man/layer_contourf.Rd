@@ -22,8 +22,6 @@ layer_contourf(
     \code{z}.  See \code{\link[lattice]{levelplot}} for details.
   }
 
-\item{col}{ Graphical parameters for contour lines. }
-
 \item{col.regions}{
     A vector of colors, or a function to produce a vecor of colors, to
     be used if \code{region=TRUE}.  Each interval defined by \code{at}

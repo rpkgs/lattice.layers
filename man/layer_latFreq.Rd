@@ -81,11 +81,7 @@ of the relevant side, so if tck = 1 grid lines are drawn. The default setting
 
 \item{col.regions}{If is null, it will use the default \code{col.regions} in the panel.}
 
-\item{x}{ Variables defining the plot. }
-
-\item{y}{ Variables defining the plot. }
-
-\item{z}{ Variables defining the plot. }
+\item{x, y, z}{ Variables defining the plot. }
 
 \item{subscripts}{
     Integer vector indicating what subset of \code{x}, \code{y} and

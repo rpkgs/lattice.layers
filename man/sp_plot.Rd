@@ -56,11 +56,6 @@ values in df into factor.}
 
 \item{cols}{corresponding colors of every break interval}
 
-\item{strip}{
-    These arguments are described in the help page for
-    \code{\link[lattice]{xyplot}}.
-  }
-
 \item{panel.titles_full}{string or expression vectors of panel titles, default NULL.
 If provided, group names in \code{df} will be overwritten.}
 

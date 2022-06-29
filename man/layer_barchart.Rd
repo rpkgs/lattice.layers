@@ -55,9 +55,7 @@ panel.histFreq(
 )
 }
 \arguments{
-\item{x}{ Variables defining the plot. }
-
-\item{y}{ Variables defining the plot. }
+\item{x, y, z}{ Variables defining the plot. }
 
 \item{yticks}{yaxis ticks position, in the range of \verb{[0, 100]}}
 
@@ -69,8 +67,6 @@ panel.histFreq(
 \item{digit}{the digit in the labels}
 
 \item{...}{other parameters to \code{\link[=panel.latFreq]{panel.latFreq()}}}
-
-\item{z}{ Variables defining the plot. }
 
 \item{subscripts}{
     Integer vector indicating what subset of \code{x}, \code{y} and
