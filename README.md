@@ -14,6 +14,11 @@
 install.packages("lattice.layers")
 ```
 
+## TODO
+
+- [ ] 添加`vignette`介绍绘图方法
+- [ ] 兼容`gg.layers`的legend，优化legend space设置
+
 ``` r
 library(lattice.layers)
 # Registered S3 method overwritten by 'lattice.layers':
