@@ -22,6 +22,8 @@ knitr::opts_chunk$set(
 [![CRAN](http://www.r-pkg.org/badges/version/lattice.layers)](https://cran.r-project.org/package=lattice.layers)<!-- badges: end -->
 <!-- badges: end -->
 
+> `lattice.layers`确实可以做出一些炫酷的图，但维护着实不易。
+
 ``` r
 install.packages("lattice.layers")
 ```

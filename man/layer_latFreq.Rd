@@ -30,7 +30,7 @@ layer_latFreq(
   zlim = NULL,
   zlim_ratio = c(-1, 1),
   prob_z = 0.9,
-  col.regions = c("blue", "red"),
+  col.regions = NULL,
   is_spatial = FALSE,
   zticks = NULL,
   digit = 1,
@@ -79,7 +79,9 @@ of the relevant side, so if tck = 1 grid lines are drawn. The default setting
 
 \item{prob_z}{default 0.9, the probability of z quantile, which used to determine the zlim.}
 
-\item{col.regions}{If is null, it will use the default \code{col.regions} in the panel.}
+\item{col.regions}{If is null, it will use the default \code{col.regions} in the panel.
+Note: Previous default of \code{c("blue", "red")} has been deprecated. The latest version
+get \code{col.regions} from previous layers.}
 
 \item{x, y, z}{ Variables defining the plot. }
 

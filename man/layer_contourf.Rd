@@ -76,6 +76,11 @@ layer_contourf(
 \description{
 layer of contourf
 }
+\note{
+\itemize{
+\item the parameter \code{brks} was renamed as \code{at}
+}
+}
 \examples{
 cols <- get_color("Blues")
 

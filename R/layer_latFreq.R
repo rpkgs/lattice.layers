@@ -2,6 +2,8 @@
 #' 
 #' @param cex axis text size
 #' @param col.regions If is null, it will use the default `col.regions` in the panel.
+#' Note: Previous default of `c("blue", "red")` has been deprecated. The latest version 
+#' get `col.regions` from previous layers.
 #' @param ... other parameters to [panel.latFreq()]
 #' 
 #' @export
@@ -14,7 +16,7 @@ layer_latFreq <- function(
     xlabels = TRUE, ylabels = TRUE, 
     ylim = NULL, zlim = NULL, zlim_ratio = c(-1, 1),
     prob_z = 0.9,
-    col.regions = c("blue", "red"),
+    col.regions = NULL,
     is_spatial = FALSE,
     zticks = NULL,
     digit = 1,

@@ -35,7 +35,8 @@ of npc.}
     For back-compatibility, a logical value of \code{TRUE} corresponds
     to \code{"on"} and \code{FALSE} corresponds to \code{"inherit"}.
 
-    May also be a grob (or a gTree) that describes a clipping path.}
+    May also be a grob (or a gTree) that describes a clipping path
+    or the result of a call to \code{\link[grid]{as.path}}.}
 
 \item{...}{ignored}
 }
