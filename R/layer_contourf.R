@@ -17,28 +17,28 @@ layer_contourf <- function(at = NULL,
                            labels = FALSE,
                            label.style = c("mixed", "flat", "align"),
                            format = "%f", ...) {
-  dots_pa <- mget(ls()) %>% c(...)
+  dots <- mget(ls()) %>% c(...)
 
   layer({
     env <- parent.frame(n = 2) # parent Environment
-    dots_pa$at %<>% `%||%`(at)
-    nbrk <- length(dots_pa$at) - 1
+    dots$at %<>% `%||%`(at)
+    nbrk <- length(dots$at) - 1
     cols_default <- get_color("amwg256", nbrk)
-    dots_pa$col %<>% `%||%`(env$col) %>%
+    dots$col %<>% `%||%`(env$col) %>%
       `%||%`(cols_default)
 
-    dots_pa$col.regions %<>% `%||%`(env$col.regions) %>%
+    dots$col.regions %<>% `%||%`(env$col.regions) %>%
       `%||%`(cols_default)
 
-    nbrk <- length(dots_pa$at)
-    dots_pa$col %<>% get_color(nbrk)
-    dots_pa$col.regions %<>% get_color(nbrk)
+    nbrk <- length(dots$at)
+    dots$col %<>% get_color(nbrk)
+    dots$col.regions %<>% get_color(nbrk)
 
-    if (isTRUE(dots_pa$labels)) {
-      dots_pa$labels <- sprintf(dots_pa$format, dots_pa$at)
+    if (isTRUE(dots$labels)) {
+      dots$labels <- sprintf(dots$format, dots$at)
     }
 
-    param <- listk(x, y, z, subscripts) %>% c(dots_pa)
+    param <- listk(x, y, z, subscripts) %>% c(dots)
     do.call(panel.levelplot2, param)
-  }, data = listk(dots_pa))
+  }, data = listk(dots))
 }

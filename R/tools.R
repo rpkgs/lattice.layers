@@ -128,7 +128,7 @@ label_tag <- function(labels, tag = TRUE, letter_begin = 1) {
 #' @keywords internal
 #' @export
 `%||%` <- function(x, y) {
-  if (is_null(x)) {
+  if (is.null(x)) {
     y
   } else {
     x
