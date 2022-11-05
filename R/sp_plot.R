@@ -84,7 +84,7 @@ sp_plot <- function(
     if (missing(zcols)) zcols <- colnames(df)
     if (is.numeric(zcols)) zcols <- colnames(df)[zcols]
     if (!is.data.table(df)) df <- data.table(df)
-    df = df %>% select(zcols)
+    df = df %>% select(all_of(zcols))
 
     list.mask = NULL
     if (!is.null(formula)) {
@@ -94,7 +94,7 @@ sp_plot <- function(
         # zcols only for one group
         d_grp = NULL
         if (!is_empty(groups)) {
-            d_grp = df %>% select(groups) %>% unique()
+            d_grp = df %>% select(all_of(groups)) %>% unique()
             if (is.null(panel.titles_full)) {
                 panel.titles_full =
                     d_grp[, do.call(paste, c(.SD, list(sep = " ")))] %>% label_tag()
@@ -257,7 +257,7 @@ sp_area <- function(grid, weighted = TRUE) {
     }
 
     if (weighted) {
-        if (class(grid) == "SpatialPolygonsDataFrame") {
+        if (inherits(grid, "SpatialPolygonsDataFrame")) {
             area <- area(grid)
         } else {
             area <- sp_area_grid(grid)
