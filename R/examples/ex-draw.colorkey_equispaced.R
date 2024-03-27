@@ -1,3 +1,5 @@
+library(magrittr)
+
 x <- seq(pi/4, 5 * pi, length.out = 100)
 y <- seq(pi/4, 5 * pi, length.out = 100)
 r <- as.vector(sqrt(outer(x^2, y^2, "+")))

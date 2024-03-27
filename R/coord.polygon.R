@@ -26,5 +26,6 @@ coord.polygons <- function(x) {
 
 #' @export
 union_polygon <- function(x){
-    maptools::unionSpatialPolygons(x, rep(1, length(x)))
+  message("union_polygon: please rewrite this function with sf")
+  # maptools::unionSpatialPolygons(x, rep(1, length(x)))
 }

@@ -34,8 +34,6 @@ Suggests:
     devEMF,
     covr,
     gridExtra,
-    maptools,
-    rgeos,
     knitr,
     rmarkdown
 Depends: 
