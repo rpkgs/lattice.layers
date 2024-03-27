@@ -15,7 +15,7 @@ alpha <- function(colour, alpha = NA) {
   farver::encode_colour(rgb, rgb[, 4])
 }
 
-clamp <- function(x, lims = c(0, 1), fill.na = FALSE) {
+clamp2 <- function(x, lims = c(0, 1), fill.na = FALSE) {
   if (fill.na) {
     x[x < lims[1]] <- NA_real_
     x[x > lims[2]] <- NA_real_

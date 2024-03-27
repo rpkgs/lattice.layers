@@ -140,7 +140,7 @@ sp_plot <- function(
     if (missing(brks)) {
         brks <- if (!is_factor) {
             range <- quantile(vals_1st, c(0.05, 0.95), na.rm = TRUE)
-            vals_1st %<>% clamp(range)
+            vals_1st %<>% clamp2(range)
             pretty(vals_1st, n = 10) %>% c(-Inf, ., Inf)
         } else {
             levels(vals_1st)
