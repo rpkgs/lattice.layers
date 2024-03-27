@@ -12,7 +12,6 @@ Imports:
     sf,
     stars,
     sp,
-    rgdal,
     raster,
     matrixStats,
     RColorBrewer,
@@ -43,4 +42,4 @@ Depends:
     R (>= 3.4)
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.1

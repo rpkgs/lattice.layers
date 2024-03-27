@@ -8,14 +8,14 @@
 #'
 #' @export
 set_strip <- function(p, cex = 1, title = NULL, height = 1) {
-    param <- list(
-        factor.levels = title,
-        par.strip.text = list(cex = cex)
-    ) %>% rm_empty()
-    p$strip <- do.call(strip.custom, param)
-    p + theme_lattice(
-        layout.heights = list(strip = height)
-    )
+  param <- list(
+    factor.levels = title,
+    par.strip.text = list(cex = cex)
+  ) %>% rm_empty()
+  p$strip <- do.call(strip.custom, param)
+  p + theme_lattice(
+    layout.heights = list(strip = height)
+  )
 }
 
 
@@ -45,116 +45,122 @@ theme_lattice <- function(
     layout.heights,
     font_size = NULL,
     font_family = "",
-    par.settings)
-{
-    orders = c("top", "right", "bottom", "left")
-    dots   = list(...)
+    par.settings) {
+  orders <- c("top", "right", "bottom", "left")
+  dots <- list(...)
 
-    setting = NULL
-     # elements <- find_args(..., complete = NULL, validate = NULL)
-    if (!missing(plot.margin)) {
-        margin = plot.margin %>% as.numeric()
-        setting$layout.heights %<>% updateList(list(top.padding   = margin[1], bottom.padding = margin[3]))
-        setting$layout.widths  %<>% updateList(list(right.padding = margin[2], left.padding = margin[4]))
+  setting <- NULL
+  # elements <- find_args(..., complete = NULL, validate = NULL)
+  if (!missing(plot.margin)) {
+    margin <- plot.margin %>% as.numeric()
+    setting$layout.heights %<>% updateList(list(top.padding = margin[1], bottom.padding = margin[3]))
+    setting$layout.widths %<>% updateList(list(right.padding = margin[2], left.padding = margin[4]))
+  }
+
+  if (!missing(key.margin)) {
+    margin <- key.margin %>% as.numeric()
+    setting$layout.heights %<>% updateList(list(key.top = margin[1], key.bottom = margin[3]))
+    setting$layout.widths %<>% updateList(list(key.right = margin[2], key.left = margin[4]))
+  }
+
+  if (!missing(axis.margin)) {
+    margin <- axis.margin %>% as.numeric()
+    setting$layout.heights %<>% updateList(list(axis.top = margin[1], axis.bottom = margin[3]))
+    setting$layout.widths %<>% updateList(list(axis.right = margin[2], axis.left = margin[4]))
+  }
+
+  if (!missing(axis.components.inner)) {
+    margin <- axis.components.inner %>% as.numeric()
+    axis.components <- NULL
+    for (i in seq_along(orders)) {
+      axis.components[[orders[i]]]$pad1 <- margin[i]
     }
+    setting$axis.components %<>% updateList(axis.components)
+  }
 
-    if (!missing(key.margin)) {
-        margin = key.margin %>% as.numeric()
-        setting$layout.heights %<>% updateList(list(key.top   = margin[1], key.bottom = margin[3]))
-        setting$layout.widths  %<>% updateList(list(key.right = margin[2], key.left = margin[4]))
+  if (!missing(axis.components.outer)) {
+    margin <- axis.components.outer %>% as.numeric()
+    axis.components <- NULL
+    for (i in seq_along(orders)) {
+      axis.components[[orders[i]]]$pad2 <- margin[i]
     }
+    setting$axis.components %<>% updateList(axis.components)
+  }
 
-    if (!missing(axis.margin)) {
-        margin = axis.margin %>% as.numeric()
-        setting$layout.heights %<>% updateList(list(axis.top   = margin[1], axis.bottom = margin[3]))
-        setting$layout.widths  %<>% updateList(list(axis.right = margin[2], axis.left = margin[4]))
-    }
+  if (!missing(layout.widths)) {
+    setting$layout.widths %<>% updateList(layout.widths)
+  }
 
-    if (!missing(axis.components.inner)) {
-        margin = axis.components.inner %>% as.numeric()
-        axis.components = NULL
-        for (i in seq_along(orders)) {
-            axis.components[[orders[i]]]$pad1 = margin[i]
-        }
-        setting$axis.components %<>% updateList(axis.components)
-    }
+  if (!missing(layout.heights)) {
+    setting$layout.heights %<>% updateList(layout.heights)
+  }
 
-    if (!missing(axis.components.outer)) {
-        margin = axis.components.outer %>% as.numeric()
-        axis.components = NULL
-        for (i in seq_along(orders)) {
-            axis.components[[orders[i]]]$pad2 = margin[i]
-        }
-        setting$axis.components %<>% updateList(axis.components)
-    }
+  if (!is.null(dots)) setting %<>% updateList(dots)
 
-    if (!missing(layout.widths)) {
-        setting$layout.widths %<>% updateList(layout.widths)
-    }
+  if (!missing(par.settings)) {
+    setting %<>% updateList(par.settings)
+  }
 
-    if (!missing(layout.heights)) {
-        setting$layout.heights %<>% updateList(layout.heights)
-    }
-
-    if (!is.null(dots)) setting %<>% updateList(dots)
-
-    if (!missing(par.settings)) {
-        setting %<>% updateList(par.settings)
-    }
-
-    if (!font_family == "") setting$grid.pars$fontfamily = font_family
-    if (!is.null(font_size)) setting$fontsize$text = font_size
-    setting
+  if (!font_family == "") setting$grid.pars$fontfamily <- font_family
+  if (!is.null(font_size)) setting$fontsize$text <- font_size
+  setting
 }
 
+#' @export
 print.theme <- function(x, ...) {
-    print(str(x))
-    invisible()
+  print(str(x))
+  invisible()
 }
 
 updateList <- function(x, val) {
-    if (is.null(x)) x <- list()
-    if (is.null(val)) val <- list()
-    modifyList(x, val)
+  if (is.null(x)) x <- list()
+  if (is.null(val)) val <- list()
+  modifyList(x, val)
 }
 
-`+.trellis0` <- function (object, lay)
-{
-    ocall <- sys.call(sys.parent())
-    ocall[[1]] <- quote(`+`)
-    if (missing(object) || missing(lay))
-        stop("Only one argument supplied to binary operator + which requires two.")
-    stopifnot(inherits(object, "trellis"))
+#' @export
+`+.trellis0` <- function(object, lay) {
+  ocall <- sys.call(sys.parent())
+  ocall[[1]] <- quote(`+`)
+  if (missing(object) || missing(lay)) {
+    stop("Only one argument supplied to binary operator + which requires two.")
+  }
+  stopifnot(inherits(object, "trellis"))
 
-    lay <- latticeExtra::as.layer(lay)
-    if (inherits(object, "layer")) {
-        return(structure(c(unclass(object), unclass(lay)), class = c("layer", "trellis")))
-    }
+  lay <- latticeExtra::as.layer(lay)
+  if (inherits(object, "layer")) {
+    return(structure(c(unclass(object), unclass(lay)), class = c("layer", "trellis")))
+  }
 
-    panel <- if ("panel" %in% names(object$panel.args.common))
-        object$panel.args.common$panel
-    else object$panel
-    panel <- if (is.function(panel))
-        panel
-    else if (is.character(panel)) {
-        tmp <- function(...) NA
-        body(tmp) <- call(panel, quote(...))
-        environment(tmp) <- globalenv()
-        tmp
-    }
-    else eval(panel)
-    .is.a.layer <- TRUE
-    newpanel <- function(...) {
-        .UNDER <- unlist(lapply(lay, attr, "under"))
-        latticeExtra::drawLayer(lay[.UNDER], list(...))
-        panel(...)
-        latticeExtra::drawLayer(lay[.UNDER == FALSE], list(...))
-    }
-    if ("panel" %in% names(object$panel.args.common))
-        object$panel.args.common$panel <- newpanel
-    else object$panel <- newpanel
-    object$call <- call("update", ocall)
-    object
+  panel <- if ("panel" %in% names(object$panel.args.common)) {
+    object$panel.args.common$panel
+  } else {
+    object$panel
+  }
+  panel <- if (is.function(panel)) {
+    panel
+  } else if (is.character(panel)) {
+    tmp <- function(...) NA
+    body(tmp) <- call(panel, quote(...))
+    environment(tmp) <- globalenv()
+    tmp
+  } else {
+    eval(panel)
+  }
+  .is.a.layer <- TRUE
+  newpanel <- function(...) {
+    .UNDER <- unlist(lapply(lay, attr, "under"))
+    latticeExtra::drawLayer(lay[.UNDER], list(...))
+    panel(...)
+    latticeExtra::drawLayer(lay[.UNDER == FALSE], list(...))
+  }
+  if ("panel" %in% names(object$panel.args.common)) {
+    object$panel.args.common$panel <- newpanel
+  } else {
+    object$panel <- newpanel
+  }
+  object$call <- call("update", ocall)
+  object
 }
 
 #' lattice plus manipulation
@@ -164,52 +170,52 @@ updateList <- function(x, val) {
 #'
 #' @keywords internal
 #' @export
-`+.trellis` <- function(p, setting){
-    if (!missing(setting)) {
-        if ("layer" %in% class(setting)) {
-            `+.trellis0`(p, setting)
-        } else {
-            # setting = p$par.settings
-            p$par.settings %<>% updateList(setting)
-            p
-        }
-    } else p
+`+.trellis` <- function(p, setting) {
+  if (!missing(setting)) {
+    if ("layer" %in% class(setting)) {
+      `+.trellis0`(p, setting)
+    } else {
+      # setting = p$par.settings
+      p$par.settings %<>% updateList(setting)
+      p
+    }
+  } else {
+    p
+  }
 }
 
 
 # par.strip.text = list(cex = 2)
 layout.heights <- function(
-    main             = 1,
+    main = 1,
     main.key.padding = 1,
-    xlab.top         = 1,
+    xlab.top = 1,
     key.axis.padding = 1,
-    strip            = 1,
-    panel            = 1,
-    axis.panel       = 1,
-    between          = 1,
-    axis.xlab.padding= 1,
-    xlab             = 1,
+    strip = 1,
+    panel = 1,
+    axis.panel = 1,
+    between = 1,
+    axis.xlab.padding = 1,
+    xlab = 1,
     xlab.key.padding = 0,
-    key.sub.padding  = 1,
-    sub              = 1, ...)
-{
-    elements <- find_args(..., complete = NULL, validate = NULL)
-    elements
+    key.sub.padding = 1,
+    sub = 1, ...) {
+  elements <- find_args(..., complete = NULL, validate = NULL)
+  elements
 }
 
 layout.widths <- function(
     axis.key.padding = 1,
-    axis.panel       = 1,
-    between          = 1,
+    axis.panel = 1,
+    between = 1,
     key.ylab.padding = 0,
-    panel            = 1,
-    strip.left       = 1,
-    ylab             = 1,
-    ylab.axis.padding= 1,
-    ylab.right       = 1, ...)
-{
-    elements <- find_args(..., complete = NULL, validate = NULL)
-    elements
+    panel = 1,
+    strip.left = 1,
+    ylab = 1,
+    ylab.axis.padding = 1,
+    ylab.right = 1, ...) {
+  elements <- find_args(..., complete = NULL, validate = NULL)
+  elements
 }
 
 # update theme
@@ -217,14 +223,14 @@ layout.widths <- function(
 is_missing_arg <- function(x) identical(x, quote(expr = ))
 
 modify_list <- function(old, new) {
-    for (i in names(new)) old[[i]] <- new[[i]]
-    old
+  for (i in names(new)) old[[i]] <- new[[i]]
+  old
 }
 
 find_args <- function(...) {
-    env <- parent.frame()
-    args <- names(formals(sys.function(sys.parent(1))))
-    vals <- mget(args, envir = env)
-    vals <- vals[!vapply(vals, is_missing_arg, logical(1))]
-    modify_list(vals, list(..., ... = NULL))
+  env <- parent.frame()
+  args <- names(formals(sys.function(sys.parent(1))))
+  vals <- mget(args, envir = env)
+  vals <- vals[!vapply(vals, is_missing_arg, logical(1))]
+  modify_list(vals, list(..., ... = NULL))
 }

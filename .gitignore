@@ -12,3 +12,5 @@ inst/doc
 # *.tif
 */deprecated
 .vscode
+
+scripts

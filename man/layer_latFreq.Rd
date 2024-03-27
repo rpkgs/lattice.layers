@@ -170,6 +170,9 @@ Unit objects allow the user to specify locations and dimensions
   the arguments for the default \code{format} method, e.g.,
   \code{digits} to control the number of significant digits
   printed for numeric values.
+
+  The \code{is.unit()} function is a convenience for checking whether
+  \code{x} inherits from the \code{"unit"} class.
 }
 \examples{
 \dontrun{
